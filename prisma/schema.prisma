@@ -1,0 +1,15 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Our permanent table for storing UK wholesale customer quote entries
+model QuoteRequest {
+  id           String   @id @default(uuid())
+  companyName  String
+  contactEmail String
+  createdAt    DateTime @default(now())
+}
