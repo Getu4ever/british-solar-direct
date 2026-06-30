@@ -41,8 +41,7 @@ export async function POST(request: Request) {
         email: customerEmail,
         name: customerName,
         items: lineItems.data,
-        total: orderTotal,      
-        orderId: session.id
+        total: orderTotal      
       });
 
       console.log(`Order confirmation emails sent for: ${customerEmail}`);
