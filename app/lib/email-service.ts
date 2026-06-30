@@ -1,5 +1,4 @@
 import { Resend } from 'resend';
-import { getItemImage } from './email-utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -36,7 +35,7 @@ export async function sendOrderEmails({
       <body>
         <div class="container">
           <div class="header">
-            <img src="https://british-solar-direct.vercel.app/BSD-logo.png" alt="British Solar Direct Logo" />
+            <img src="https://british-solar-direct.vercel.app//BSD-logo.png" alt="British Solar Direct Logo" /> <!-- Update with real URL after deploy -->
             <h1>British Solar Direct</h1>
           </div>
           
@@ -49,7 +48,7 @@ export async function sendOrderEmails({
             
             ${items.map((item: any) => `
               <div class="item">
-                ${getItemImage(item) ? `<img src="${getItemImage(item)}" alt="${item.description}">` : ''}
+                ${item.images?.[0] ? `<img src="${item.images[0]}" alt="${item.description}">` : ''}
                 <div>
                   <strong>${item.description || 'Solar Panel'}</strong><br>
                   Quantity: ${item.quantity || 1}<br>
