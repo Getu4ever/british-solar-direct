@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 
+// Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendOrderEmails({
@@ -16,6 +17,12 @@ export async function sendOrderEmails({
   try {
     console.log('📧 Sending professional email to:', email);
 
+    // Helper to extract image URL safely
+    const getImageUrl = (item: any) => {
+      // Prioritize the expanded product object's images
+      return item.price?.product?.images?.[0] || item.images?.[0] || null;
+    };
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -27,7 +34,7 @@ export async function sendOrderEmails({
           .header { background: #0f172a; color: white; padding: 30px; text-align: center; }
           .header img { max-height: 80px; }
           .content { padding: 40px 30px; }
-          .item { display: flex; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+          .item { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
           .item img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; margin-right: 20px; }
           .footer { background: #f8fafc; padding: 25px; text-align: center; font-size: 14px; color: #64748b; line-height: 1.6; }
         </style>
@@ -35,7 +42,7 @@ export async function sendOrderEmails({
       <body>
         <div class="container">
           <div class="header">
-            <img src="https://british-solar-direct.vercel.app//BSD-logo.png" alt="British Solar Direct Logo" /> <!-- Update with real URL after deploy -->
+            <img src="https://british-solar-direct.vercel.app/BSD-logo.png" alt="British Solar Direct Logo" />
             <h1>British Solar Direct</h1>
           </div>
           
@@ -46,16 +53,18 @@ export async function sendOrderEmails({
             <h3 style="margin-top: 30px;">Order Summary</h3>
             <p><strong>Total: $${total}</strong></p>
             
-            ${items.map((item: any) => `
+            ${items.map((item: any) => {
+              const image = getImageUrl(item);
+              return `
               <div class="item">
-                ${item.images?.[0] ? `<img src="${item.images[0]}" alt="${item.description}">` : ''}
+                ${image ? `<img src="${image}" alt="${item.description}">` : ''}
                 <div>
                   <strong>${item.description || 'Solar Panel'}</strong><br>
                   Quantity: ${item.quantity || 1}<br>
                   Price: $${(item.amount_total / 100).toFixed(2)}
                 </div>
               </div>
-            `).join('')}
+            `}).join('')}
             
             <p style="margin-top: 40px;">We appreciate your trust in British Solar Direct.</p>
           </div>
@@ -74,7 +83,7 @@ export async function sendOrderEmails({
 
     // Customer Email
     await resend.emails.send({
-      from: 'British Solar Direct <noreply@karoldigital.co.uk>',
+      from: 'British Solar Direct <info@karoldigital.co.uk>',
       to: email,
       subject: `Order Confirmation - Thank You, ${name}!`,
       html: html,
@@ -82,9 +91,9 @@ export async function sendOrderEmails({
 
     console.log('✅ Professional customer email sent');
 
-    // Admin Notification with better details
+    // Admin Notification
     await resend.emails.send({
-      from: 'British Solar Direct <noreply@karoldigital.co.uk>',
+      from: 'British Solar Direct <info@karoldigital.co.uk>',
       to: 'info@karoldigital.co.uk',
       subject: `New Order Received - $${total}`,
       html: `
@@ -92,9 +101,14 @@ export async function sendOrderEmails({
         <p><strong>Total: $${total}</strong></p>
         <h3>Items:</h3>
         <ul>
-          ${items.map((item: any) => `
-            <li>${item.description || 'Product'} × ${item.quantity || 1} - $${(item.amount_total / 100).toFixed(2)}</li>
-          `).join('')}
+          ${items.map((item: any) => {
+            const image = getImageUrl(item);
+            return `
+              <li style="margin-bottom: 10px;">
+                ${image ? `<img src="${image}" width="50" style="vertical-align: middle; border-radius: 4px;" /> ` : ''}
+                ${item.description || 'Product'} × ${item.quantity || 1} - $${(item.amount_total / 100).toFixed(2)}
+              </li>
+            `}).join('')}
         </ul>
       `,
     });
@@ -103,7 +117,7 @@ export async function sendOrderEmails({
     return { success: true };
 
   } catch (error: any) {
-    console.error('❌ Email failed:', error.message || error);
+    console.error('❌ Email failed:', error.response?.data || error.message || error);
     throw error;
   }
 }
