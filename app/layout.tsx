@@ -25,11 +25,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900">
-        <RootClientWrapper>
-          {children}
-        </RootClientWrapper>
-      </body>
+      <body className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 overflow-x-hidden">
+  <RootClientWrapper>
+    {children}
+  </RootClientWrapper>
+</body>
     </html>
   );
 }

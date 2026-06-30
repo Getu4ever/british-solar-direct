@@ -40,20 +40,31 @@ export default function ProjectQuotePage() {
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
 
       <main className="flex-1">
-        <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-              Project Quote
-            </p>
-            <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-              Request pricing for your solar panel order
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
-              Send your company and order details to receive trade pricing, lead times, and a
-              pro-forma invoice for your project or wholesale requirement.
-            </p>
-          </div>
-        </section>
+      <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
+  {/* Background Image */}
+  <div className="absolute inset-0">
+    <img
+      src="/images/project-hero.webp"
+      alt="Solar Panel Background"
+      className="h-full w-full object-cover opacity-50"
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40" />
+  </div>
+
+  {/* Content */}
+  <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
+    <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+    Project Quote
+    </p>
+    <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+    Request pricing for your solar panel order
+    </h1>
+    <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+    Send your company and order details to receive trade pricing, lead times, and a
+    pro-forma invoice for your project or wholesale requirement.
+    </p>
+  </div>
+</section>
 
         <section className="mx-auto max-w-7xl px-4 py-16">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">

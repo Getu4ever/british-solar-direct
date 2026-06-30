@@ -12,6 +12,8 @@ export async function POST(request: Request) {
         currency: 'gbp',
         product_data: {
           name: item.name,
+          // Prepend the base URL so Stripe receives a full, valid URL
+          images: item.image ? [`${process.env.NEXT_PUBLIC_SITE_URL}${item.image}`] : [],
         },
         unit_amount: item.price,
       },
@@ -22,6 +24,11 @@ export async function POST(request: Request) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
+      // Professional address collection:
+      shipping_address_collection: {
+        allowed_countries: ['GB'], // Restricts address to UK only
+      },
+      billing_address_collection: 'required',
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart`,
       metadata: {

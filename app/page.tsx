@@ -51,8 +51,7 @@ export default function HomePage() {
 
 
       <main>
-      <section className="relative -mx-6 -mt-8 flex min-h-screen items-center overflow-hidden rounded-b-[2rem] bg-slate-950 text-white shadow-xl lg:-mx-8 pt-24">
-  <video
+      <section className="relative -mx-6 -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 text-white shadow-xl lg:-mx-8 py-20">       <video
     autoPlay
     loop
     muted
@@ -64,7 +63,7 @@ export default function HomePage() {
 
   <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/55 to-slate-950/35" />
 
-  <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-12 xl:px-16">
+  <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
     <div className="max-w-3xl">
       <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
         UK trade supply and international fulfillment

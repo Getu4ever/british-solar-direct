@@ -11,8 +11,9 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { cart, totalPrice } = useCart();
+  const { cart, totalPrice, updateQuantity } = useCart();
   const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
@@ -106,9 +107,23 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                     </div>
                     {/* Item Text Details */}
                     <div className="flex-grow min-w-0">
-                      <h3 className="font-semibold text-sm text-slate-900 truncate">{item.name}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5">Qty: {item.quantity}</p>
-                    </div>
+  <h3 className="font-semibold text-sm text-slate-900 truncate">{item.name}</h3>
+  <div className="flex items-center gap-3 mt-2">
+    <button
+      onClick={() => updateQuantity(item.slug, -1)}
+      className="w-6 h-6 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition"
+    >
+      -
+    </button>
+    <span className="text-xs font-medium w-4 text-center">{item.quantity}</span>
+    <button
+      onClick={() => updateQuantity(item.slug, 1)}
+      className="w-6 h-6 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition"
+    >
+      +
+    </button>
+  </div>
+</div>
                     {/* Total Price Per Product Line */}
                     <div className="font-bold text-sm text-slate-900 flex-shrink-0">
                       £{((item.price * item.quantity) / 100).toFixed(2)}
@@ -142,15 +157,29 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                   <span className="flex items-center gap-1"><ShieldCheck size={13} /> Tier-1 Warranty</span>
                 </div>
 
-                {/* Checkout CTA */}
-                <button
-                  onClick={handleCheckout}
-                  disabled={loading || cart.length === 0}
-                  className="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-slate-300 disabled:text-slate-500 text-slate-950 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm"
-                >
-                  <Lock size={16} />
-                  {loading ? 'Processing...' : 'Pay Securely'}
-                </button>
+                {/* Shipping Confirmation */}
+            <div className="mb-4 p-3 bg-white border border-slate-200 rounded-xl text-[11px] text-slate-600 flex items-start gap-3">
+              <input 
+                type="checkbox" 
+                id="confirm"
+                className="mt-0.5 accent-amber-500 cursor-pointer"
+                checked={confirmed}
+                onChange={(e) => setConfirmed(e.target.checked)}
+              />
+              <label htmlFor="confirm" className="cursor-pointer leading-tight">
+                I confirm my delivery address is within the <strong>UK Mainland</strong> and agree to the supply terms.
+              </label>
+            </div>
+
+            {/* Checkout CTA */}
+            <button
+              onClick={handleCheckout}
+              disabled={loading || cart.length === 0 || !confirmed}
+              className="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-slate-300 disabled:text-slate-500 text-slate-950 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm"
+            >
+              <Lock size={16} />
+              {loading ? 'Processing...' : 'Pay Securely'}
+            </button>
                 <p className="text-center text-[9px] text-slate-400 mt-3">Powered by Stripe • Secure 256-bit SSL</p>
               </footer>
             )}
