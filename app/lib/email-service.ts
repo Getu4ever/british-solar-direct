@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { getItemImage } from './email-utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -35,7 +36,7 @@ export async function sendOrderEmails({
       <body>
         <div class="container">
           <div class="header">
-            <img src="https://british-solar-direct.vercel.app/BSD-logo.png" alt="British Solar Direct Logo" />
+            <img src="https://british-solar-direct.vercel.app//BSD-logo.png" alt="British Solar Direct Logo" /> <!-- Update with real URL after deploy -->
             <h1>British Solar Direct</h1>
           </div>
           
@@ -46,21 +47,16 @@ export async function sendOrderEmails({
             <h3 style="margin-top: 30px;">Order Summary</h3>
             <p><strong>Total: $${total}</strong></p>
             
-            ${items.map((item: any) => {
-              const imageUrl = item.images?.[0] || 
-                               (item.price?.product?.images?.[0]) || 
-                               '';
-              return `
-                <div class="item">
-                  ${imageUrl ? `<img src="${imageUrl}" alt="${item.description}">` : ''}
-                  <div>
-                    <strong>${item.description || 'Solar Panel'}</strong><br>
-                    Quantity: ${item.quantity || 1}<br>
-                    Price: $${(item.amount_total / 100).toFixed(2)}
-                  </div>
+            ${items.map((item: any) => `
+              <div class="item">
+                ${getItemImage(item) ? `<img src="${getItemImage(item)}" alt="${item.description}">` : ''}
+                <div>
+                  <strong>${item.description || 'Solar Panel'}</strong><br>
+                  Quantity: ${item.quantity || 1}<br>
+                  Price: $${(item.amount_total / 100).toFixed(2)}
                 </div>
-              `;
-            }).join('')}
+              </div>
+            `).join('')}
             
             <p style="margin-top: 40px;">We appreciate your trust in British Solar Direct.</p>
           </div>
@@ -77,6 +73,7 @@ export async function sendOrderEmails({
       </html>
     `;
 
+    // Customer Email
     await resend.emails.send({
       from: 'British Solar Direct <noreply@karoldigital.co.uk>',
       to: email,
@@ -84,9 +81,9 @@ export async function sendOrderEmails({
       html: html,
     });
 
-    console.log('✅ Professional customer email sent with images');
+    console.log('✅ Professional customer email sent');
 
-    // Admin
+    // Admin Notification with better details
     await resend.emails.send({
       from: 'British Solar Direct <noreply@karoldigital.co.uk>',
       to: 'info@karoldigital.co.uk',
