@@ -36,7 +36,7 @@ export async function sendOrderEmails({
       <body>
         <div class="container">
           <div class="header">
-            <img src="https://british-solar-direct.vercel.app//BSD-logo.png" alt="British Solar Direct Logo" /> <!-- Update with real URL after deploy -->
+            <img src="https://british-solar-direct.vercel.app/BSD-logo.png" alt="British Solar Direct Logo" />
             <h1>British Solar Direct</h1>
           </div>
           
