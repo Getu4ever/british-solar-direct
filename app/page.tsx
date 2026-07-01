@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -37,7 +37,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 overflow-x-hidden">
       <div className="border-b border-slate-800 bg-slate-950 px-4 py-2.5 text-xs text-slate-300">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 md:flex-row md:items-center">
           <div>British Solar Direct - Tier-1 solar supply for trade and wholesale buyers</div>
@@ -49,53 +49,52 @@ export default function HomePage() {
         </div>
       </div>
 
-
       <main>
-      <section className="relative -mx-6 -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 text-white shadow-xl lg:-mx-8 py-20">       <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="absolute inset-0 h-full w-full object-cover brightness-[0.55]"
-  >
-    <source src="/solar-panel-installation-video.mp4" type="video/mp4" />
-  </video>
+        <section className="relative -mx-6 -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 text-white shadow-xl lg:-mx-8 py-20">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover brightness-[0.55]"
+          >
+            <source src="/solar-panel-installation-video.mp4" type="video/mp4" />
+          </video>
 
-  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/55 to-slate-950/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/55 to-slate-950/35" />
 
-  <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
-    <div className="max-w-3xl">
-      <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
-        UK trade supply and international fulfillment
-      </span>
+          <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
+            <div className="max-w-3xl">
+              <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
+                UK trade supply and international fulfillment
+              </span>
 
-      <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-6xl">
-        Trade solar panels for installers, EPCs, and wholesale buyers
-      </h1>
+              <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-6xl">
+                Trade solar panels for installers, EPCs, and wholesale buyers
+              </h1>
 
-      <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-200">
-        Stock-ready and forward-order solar modules from Tier-1 manufacturers, with UK
-        delivery, project pricing, and container-based international supply.
-      </p>
+              <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-200">
+                Stock-ready and forward-order solar modules from Tier-1 manufacturers, with UK
+                delivery, project pricing, and container-based international supply.
+              </p>
 
-      <div className="flex flex-wrap gap-4">
-        <Link
-          href="/products"
-          className="rounded-lg bg-amber-500 px-6 py-3 text-base font-bold text-slate-950 transition hover:bg-amber-600"
-        >
-          Browse Inventory
-        </Link>
-        <Link
-          href="/project-quote"
-          className="rounded-lg border border-slate-500 bg-slate-900/50 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-slate-800/80"
-        >
-          Request Trade Quote
-        </Link>
-      </div>
-    </div>
-  </div>
-</section>
-
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/products"
+                  className="rounded-lg bg-amber-500 px-6 py-3 text-base font-bold text-slate-950 transition hover:bg-amber-600"
+                >
+                  Browse Inventory
+                </Link>
+                <Link
+                  href="/project-quote"
+                  className="rounded-lg border border-slate-500 bg-slate-900/50 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-slate-800/80"
+                >
+                  Request Trade Quote
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 text-sm md:grid-cols-4">
@@ -239,58 +238,56 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="bg-white py-20">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-12 text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
+                <Sparkles className="h-7 w-7" />
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                Built for every type of solar buyer
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                Flexible supply support for installers, procurement teams, and international wholesale orders.
+              </p>
+            </div>
 
-<section className="bg-white py-20">
-  <div className="mx-auto max-w-7xl px-4">
-    <div className="mb-12 text-center">
-      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
-        <Sparkles className="h-7 w-7" />
-      </div>
-      <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-        Built for every type of solar buyer
-      </h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-        Flexible supply support for installers, procurement teams, and international wholesale orders.
-      </p>
-    </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
+                  <Wrench className="h-6 w-6" />
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">For installers</h3>
+                <p className="text-sm leading-6 text-slate-600">
+                  Source stock-ready panels for residential and commercial jobs with simplified quote
+                  support and dependable UK delivery.
+                </p>
+              </div>
 
-    <div className="grid gap-8 md:grid-cols-3">
-      <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-          <Wrench className="h-6 w-6" />
-        </div>
-        <h3 className="mb-3 text-xl font-bold text-slate-900">For installers</h3>
-        <p className="text-sm leading-6 text-slate-600">
-          Source stock-ready panels for residential and commercial jobs with simplified quote
-          support and dependable UK delivery.
-        </p>
-      </div>
+              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
+                  <Building2 className="h-6 w-6" />
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">For project buyers</h3>
+                <p className="text-sm leading-6 text-slate-600">
+                  Secure volume pricing, scheduled supply planning, and procurement support for larger
+                  commercial requirements.
+                </p>
+              </div>
 
-      <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-          <Building2 className="h-6 w-6" />
-        </div>
-        <h3 className="mb-3 text-xl font-bold text-slate-900">For project buyers</h3>
-        <p className="text-sm leading-6 text-slate-600">
-          Secure volume pricing, scheduled supply planning, and procurement support for larger
-          commercial requirements.
-        </p>
-      </div>
-
-      <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-          <Ship className="h-6 w-6" />
-        </div>
-        <h3 className="mb-3 text-xl font-bold text-slate-900">For export orders</h3>
-        <p className="text-sm leading-6 text-slate-600">
-          Coordinate bulk purchasing and container-based international fulfillment for
-          distributor and wholesale demand.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
+              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
+                  <Ship className="h-6 w-6" />
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">For export orders</h3>
+                <p className="text-sm leading-6 text-slate-600">
+                  Coordinate bulk purchasing and container-based international fulfillment for
+                  distributor and wholesale demand.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <Calculator />
 
