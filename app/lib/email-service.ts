@@ -70,7 +70,7 @@ export async function sendOrderEmails({
           </div>
           
           <div class="footer">
-            <p><strong>Karol Digital</strong><br>
+            <p><strong>British Solar Panel</strong><br>
             British Solar Panels Specialist<br>
             Email: iuma@britishsolardirect.co.uk<br>
             Phone: +44 7544414241</p>
