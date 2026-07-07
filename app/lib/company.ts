@@ -11,7 +11,7 @@ export const COMPANY = {
 } as const;
 
 export const DIRECTOR_BIO =
-  'Juma Mohammedi is a highly sought-after builder in Nottingham with over 20 years in the construction industry. Originally from Afghanistan, he personally coordinates delivery and professional installation for the majority of our residential customers — around 90% of whom are local homeowners.';
+  'Juma Mohammedi is a highly sought-after builder in Nottingham with over 20 years in the construction industry. He personally coordinates delivery and professional installation for the majority of our residential customers — around 90% of whom are local homeowners.';
 
 export const DELIVERY_AREAS = [
   'Nottingham & Nottinghamshire',
