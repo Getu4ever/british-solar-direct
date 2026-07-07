@@ -4,6 +4,7 @@ import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
 import GuidePriceLabel from '../../components/GuidePriceLabel';
 import { products, formatPrice } from '../lib/products';
+import { PRODUCT_RANGE } from '../lib/company';
 
 export default function ProductsPage() {
   return (
@@ -28,8 +29,9 @@ export default function ProductsPage() {
                 Six core Tier-1 modules for homeowners &amp; trade
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                A focused catalogue of premium solar panels with UK stock lines and forward-order
-                commercial supply. Guide prices shown — request a quote for confirmed pricing.
+                Tier-1 monocrystalline and bifacial modules for homeowners and trade buyers — plus
+                polycrystalline panels and system accessories available on quote. Guide prices shown
+                for in-stock catalogue lines.
               </p>
             </HeroSlideIn>
           </div>
@@ -54,6 +56,38 @@ export default function ProductsPage() {
                   Trade pricing, project quotes, and delivery coordination
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-12">
+            <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">Product range</h2>
+            <p className="mb-8 max-w-2xl text-sm text-slate-500">
+              Panels listed below are available to browse and quote now. Additional lines and
+              accessories are sourced on request.
+            </p>
+            <div className="grid gap-6 md:grid-cols-2">
+              {PRODUCT_RANGE.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-6"
+                >
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <h3 className="font-bold text-slate-900">{item.title}</h3>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                        item.status === 'in-catalogue'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }`}
+                    >
+                      {item.status === 'in-catalogue' ? 'In catalogue' : 'On request'}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-6 text-slate-600">{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

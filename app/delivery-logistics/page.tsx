@@ -7,6 +7,7 @@ import {
   DELIVERY_AREAS,
   DELIVERY_EXCLUSIONS,
   PAYMENT_NOTE,
+  SUPPLY_CHAIN,
 } from '../lib/company';
 
 export default function DeliveryLogisticsPage() {
@@ -61,16 +62,35 @@ export default function DeliveryLogisticsPage() {
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold text-slate-900">Trade & bulk orders</h2>
+              <h2 className="mb-4 text-xl font-bold text-slate-900">Trade &amp; container loads</h2>
               <p className="text-sm leading-6 text-slate-600">
-                Installers and project buyers receive pallet-based delivery planning, phased dispatch
-                where needed, and commercial handling notes confirmed before dispatch.
+                Wholesale supply for installers, construction firms, and resellers — from single
+                pallets through to full 20ft and 40ft HQ container loads. Import from China with
+                shipping documentation and customs paperwork handled.
               </p>
             </div>
           </div>
         </section>
 
         <HowOrderingWorks showCta={false} />
+
+        <section className="border-y border-slate-200 bg-slate-50">
+          <div className="mx-auto max-w-7xl px-4 py-16">
+            <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
+              Import &amp; wholesale logistics
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {SUPPLY_CHAIN.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-6 text-slate-600 shadow-sm"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="border-y border-slate-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-16">
@@ -136,6 +156,14 @@ export default function DeliveryLogisticsPage() {
                   <p className="mt-1">
                     Yes. Juma has over 20 years of building experience in Nottingham. Select
                     installation on your quote request and we will include fitting options.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-900">Do you handle full container orders?</p>
+                  <p className="mt-1">
+                    Yes. We import directly from China and can fulfil 20ft and 40ft HQ container
+                    loads for trade buyers. Shipping documentation and customs clearance are
+                    coordinated as part of your order.
                   </p>
                 </div>
                 <div>

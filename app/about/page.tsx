@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
-import { COMPANY, DIRECTOR_BIO } from '../lib/company';
+import { COMPANY, DIRECTOR_BIO, SUPPLY_CHAIN, TARGET_CUSTOMERS } from '../lib/company';
 
 export default function AboutPage() {
   return (
@@ -65,9 +65,9 @@ export default function AboutPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
                 <h2 className="mb-4 text-xl font-bold text-slate-900">Who we serve</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-600">
-                  <p>Homeowners across Nottingham and the East Midlands.</p>
-                  <p>Installers, electrical contractors, and trade resellers.</p>
-                  <p>Commercial project buyers and repeat wholesale customers.</p>
+                  {TARGET_CUSTOMERS.map((customer) => (
+                    <p key={customer}>{customer}</p>
+                  ))}
                 </div>
               </div>
 
@@ -96,6 +96,27 @@ export default function AboutPage() {
                 Request a free quote
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="border-y border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-16">
+            <h2 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">What we do</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {SUPPLY_CHAIN.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-sm leading-6 text-slate-500">
+              For homeowners, Juma coordinates local delivery and installation. For trade buyers, we
+              supply wholesale pallet and full-container orders with import logistics handled end to
+              end.
+            </p>
           </div>
         </section>
 

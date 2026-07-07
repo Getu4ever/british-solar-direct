@@ -210,8 +210,8 @@ export default function HomePage() {
                 Built for homeowners and trade buyers
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Around 90% of our customers are local homeowners. We also supply installers and
-                commercial project buyers across Nottingham and the East Midlands.
+                Around 90% of our customers are local homeowners. We also import and supply wholesale
+                to installers, construction firms, self-builders, and trade resellers.
               </p>
             </div>
 
@@ -231,10 +231,10 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Wrench className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">For installers</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">For installers &amp; trade</h3>
                 <p className="text-sm leading-6 text-slate-600">
-                  Stock-ready pallet supply with trade pricing, pro-forma invoicing, and dependable
-                  UK delivery coordination.
+                  Wholesale pallet and container supply — direct China import with customs and
+                  shipping documentation handled. Inverters and mounting kits available on quote.
                 </p>
               </div>
 
@@ -242,10 +242,10 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Building2 className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">For project buyers</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">For construction &amp; projects</h3>
                 <p className="text-sm leading-6 text-slate-600">
-                  Volume pricing and forward-order supply for commercial rooftops and larger
-                  procurement requirements.
+                  Full 20ft and 40ft container loads for commercial rooftops, self-build projects,
+                  and larger procurement requirements.
                 </p>
               </div>
             </div>

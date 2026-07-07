@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import { submitTradeApplication } from '../actions';
+import { SUPPLY_CHAIN, TARGET_CUSTOMERS } from '../lib/company';
 
 export default function TradeAccountPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,8 +60,8 @@ export default function TradeAccountPage() {
                 Apply for a British Solar Direct trade account
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                Open a trade account for streamlined quoting, commercial support, and easier access
-                to product and order discussions for your business.
+                Wholesale solar supply for installers, construction firms, self-builders, and trade
+                resellers — with direct China import, container loads, and customs handled for you.
               </p>
             </HeroSlideIn>
           </div>
@@ -93,7 +94,9 @@ export default function TradeAccountPage() {
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">Business type</label>
                   <select name="businessType" required className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500">
-                    <option value="Installer">Installer</option>
+                    <option value="Installer">Solar installer</option>
+                    <option value="Construction firm">Construction firm / Builder</option>
+                    <option value="Self-builder">Self-builder</option>
                     <option value="EPC / Project Buyer">EPC / Project Buyer</option>
                     <option value="Wholesaler / Reseller">Wholesaler / Reseller</option>
                     <option value="Developer">Developer</option>
@@ -118,19 +121,19 @@ export default function TradeAccountPage() {
 
             <div className="space-y-6">
               <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-                <h2 className="mb-4 text-xl font-bold text-slate-900">Why open a trade account?</h2>
+                <h2 className="mb-4 text-xl font-bold text-slate-900">Trade supply includes</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-600">
-                  <p>Dedicated support for trade and commercial enquiries.</p>
-                  <p>Simpler quote requests for repeat purchasing requirements.</p>
-                  <p>Faster commercial discussions around product availability and project needs.</p>
+                  {SUPPLY_CHAIN.map((item) => (
+                    <p key={item}>{item}</p>
+                  ))}
                 </div>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-900 p-8 text-white shadow-sm">
                 <h2 className="mb-4 text-xl font-bold">Who this is for</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-300">
-                  <p>Solar installers and electrical contractors.</p>
-                  <p>Commercial buyers and EPC procurement teams.</p>
-                  <p>Wholesalers, resellers, and repeat trade customers.</p>
+                  {TARGET_CUSTOMERS.filter((c) => !c.startsWith('Homeowners')).map((customer) => (
+                    <p key={customer}>{customer}</p>
+                  ))}
                 </div>
               </div>
             </div>
