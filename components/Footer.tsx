@@ -72,9 +72,22 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between md:px-10 lg:px-16">
-          <p>© {new Date().getFullYear()} British Solar Direct. All rights reserved.</p>
-          <div className="flex flex-wrap gap-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-3 px-6 py-6 text-xs text-slate-500 md:grid-cols-3 md:px-10 lg:px-16">
+          <p className="text-center md:text-left">
+            Website by{' '}
+            <a
+              href="https://www.karoldigital.co.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-slate-400 transition hover:text-amber-500"
+            >
+              Karol Digital
+            </a>
+          </p>
+          <p className="text-center">
+            © {new Date().getFullYear()} British Solar Direct. All rights reserved.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 md:justify-end">
             <Link href="/privacy" className="transition hover:text-white">Privacy</Link>
             <Link href="/terms" className="transition hover:text-white">Terms</Link>
             <Link href="/delivery-logistics" className="transition hover:text-white">Shipping</Link>
