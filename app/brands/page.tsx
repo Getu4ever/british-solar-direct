@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
+import HeroSlideIn from '../../components/HeroSlideIn';
 
 const brands = [
   {
@@ -47,16 +48,18 @@ export default function BrandsPage() {
 
   {/* Content */}
   <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
-    <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-      Brands
-    </p>
-    <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-      Tier-1 solar manufacturers for trade supply
-    </h1>
-    <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-      Browse the manufacturers behind our current product catalogue and view representative
-      module lines available for trade, wholesale, and project procurement.
-    </p>
+    <HeroSlideIn>
+      <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+        Brands
+      </p>
+      <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+        Tier-1 solar manufacturers for trade supply
+      </h1>
+      <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+        Browse the manufacturers behind our current product catalogue and view representative
+        module lines available for trade, wholesale, and project procurement.
+      </p>
+    </HeroSlideIn>
   </div>
 </section>
 

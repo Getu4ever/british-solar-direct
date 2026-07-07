@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
+import HeroSlideIn from '../../components/HeroSlideIn';
 import { products } from '../lib/products';
 
 export default function ProductsPage() {
@@ -17,15 +18,17 @@ export default function ProductsPage() {
           </div>
 
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-              Products
-            </p>
-            <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-              Solar panels for trade, wholesale, and project supply
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-              Browse current module lines available for UK dispatch and larger commercial procurement.
-            </p>
+            <HeroSlideIn>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+                Products
+              </p>
+              <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+                Solar panels for trade, wholesale, and project supply
+              </h1>
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+                Browse current module lines available for UK dispatch and larger commercial procurement.
+              </p>
+            </HeroSlideIn>
           </div>
         </section>
 

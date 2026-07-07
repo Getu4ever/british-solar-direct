@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Footer from '../../components/Footer';
+import HeroSlideIn from '../../components/HeroSlideIn';
 import { submitTradeApplication } from '../actions';
 
 export default function TradeAccountPage() {
@@ -50,16 +51,18 @@ export default function TradeAccountPage() {
           </div>
 
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-              Trade Account
-            </p>
-            <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-              Apply for a British Solar Direct trade account
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-              Open a trade account for streamlined quoting, commercial support, and easier access
-              to product and order discussions for your business.
-            </p>
+            <HeroSlideIn>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+                Trade Account
+              </p>
+              <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+                Apply for a British Solar Direct trade account
+              </h1>
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+                Open a trade account for streamlined quoting, commercial support, and easier access
+                to product and order discussions for your business.
+              </p>
+            </HeroSlideIn>
           </div>
         </section>
 

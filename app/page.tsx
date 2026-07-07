@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { submitQuoteRequest } from './actions';
 import Footer from '../components/Footer';
 import Calculator from '../components/Calculator';
+import HeroSlideIn from '../components/HeroSlideIn';
 import { Wrench, Building2, Ship, Sparkles } from "lucide-react";
 
 export default function HomePage() {
@@ -64,7 +65,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/55 to-slate-950/35" />
 
           <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
-            <div className="max-w-3xl">
+            <HeroSlideIn className="max-w-3xl">
               <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
                 UK trade supply and international fulfillment
               </span>
@@ -92,7 +93,7 @@ export default function HomePage() {
                   Request Trade Quote
                 </Link>
               </div>
-            </div>
+            </HeroSlideIn>
           </div>
         </section>
 

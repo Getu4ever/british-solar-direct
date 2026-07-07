@@ -1,4 +1,5 @@
 import Footer from '../../components/Footer';
+import HeroSlideIn from '../../components/HeroSlideIn';
 
 export default function DeliveryLogisticsPage() {
   return (
@@ -18,16 +19,18 @@ export default function DeliveryLogisticsPage() {
 
   {/* Content */}
   <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
-    <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-      Delivery & Logistics
-    </p>
-    <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-      Commercial solar panel delivery for UK and project-based orders
-    </h1>
-    <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-      We support trade buyers with clear delivery planning, pallet-based order handling,
-      and coordinated logistics for larger commercial requirements.
-    </p>
+    <HeroSlideIn>
+      <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+        Delivery & Logistics
+      </p>
+      <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+        Commercial solar panel delivery for UK and project-based orders
+      </h1>
+      <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+        We support trade buyers with clear delivery planning, pallet-based order handling,
+        and coordinated logistics for larger commercial requirements.
+      </p>
+    </HeroSlideIn>
   </div>
 </section>
 
