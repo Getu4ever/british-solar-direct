@@ -27,14 +27,33 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 const STORAGE_KEY = 'bsd-cart';
 const CART_EVENT = 'bsd-cart-change';
+const EMPTY_CART: CartItem[] = [];
 
-function loadCartFromStorage(): CartItem[] {
+let cachedRaw: string | null = null;
+let cachedSnapshot: CartItem[] = EMPTY_CART;
+
+function parseCart(raw: string | null): CartItem[] {
+  if (!raw) return EMPTY_CART;
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as CartItem[]) : [];
+    const parsed = JSON.parse(raw) as CartItem[];
+    return parsed.length > 0 ? parsed : EMPTY_CART;
   } catch {
-    return [];
+    return EMPTY_CART;
   }
+}
+
+function getSnapshot(): CartItem[] {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw === cachedRaw) {
+    return cachedSnapshot;
+  }
+  cachedRaw = raw;
+  cachedSnapshot = parseCart(raw);
+  return cachedSnapshot;
+}
+
+function getServerSnapshot(): CartItem[] {
+  return EMPTY_CART;
 }
 
 function subscribe(callback: () => void) {
@@ -46,16 +65,12 @@ function subscribe(callback: () => void) {
   };
 }
 
-function getSnapshot(): CartItem[] {
-  return loadCartFromStorage();
-}
-
-function getServerSnapshot(): CartItem[] {
-  return [];
-}
-
 function persistCart(cart: CartItem[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  const next = cart.length > 0 ? cart : EMPTY_CART;
+  const raw = JSON.stringify(next);
+  localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedSnapshot = next;
   window.dispatchEvent(new Event(CART_EVENT));
 }
 
@@ -63,7 +78,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const cart = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const addToCart = (product: AddToCartProduct) => {
-    const prev = loadCartFromStorage();
+    const prev = getSnapshot();
     const existing = prev.find((item) => item.slug === product.slug);
     const next = existing
       ? prev.map((item) =>
@@ -76,11 +91,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (slug: string) => {
-    persistCart(loadCartFromStorage().filter((item) => item.slug !== slug));
+    persistCart(getSnapshot().filter((item) => item.slug !== slug));
   };
 
   const updateQuantity = (slug: string, delta: number) => {
-    const next = loadCartFromStorage()
+    const next = getSnapshot()
       .map((item) =>
         item.slug === slug ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item
       )
@@ -88,7 +103,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     persistCart(next);
   };
 
-  const clearCart = () => persistCart([]);
+  const clearCart = () => persistCart(EMPTY_CART);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) / 100;
