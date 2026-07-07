@@ -5,13 +5,8 @@ import { useCart } from './CartContext';
 import { useState } from 'react';
 import { ShieldCheck, Truck, Lock, X } from 'lucide-react';
 
-interface CartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { cart, totalPrice, updateQuantity } = useCart();
+  const { cart, totalPrice, totalVat, totalIncVat, updateQuantity } = useCart();
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
@@ -24,7 +19,9 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart }),
+        body: JSON.stringify({
+          cart: cart.map(({ slug, quantity }) => ({ slug, quantity })),
+        }),
       });
 
       const { url } = await response.json();
@@ -143,11 +140,11 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                   </div>
                   <div className="flex justify-between">
                     <span>VAT (20%)</span>
-                    <span className="font-medium text-slate-900">£{(totalPrice * 0.2).toFixed(2)}</span>
+                    <span className="font-medium text-slate-900">£{totalVat.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm font-bold pt-2 border-t border-slate-200 text-slate-900">
                     <span>Total (inc. VAT)</span>
-                    <span className="text-amber-600">£{(totalPrice * 1.2).toFixed(2)}</span>
+                    <span className="text-amber-600">£{totalIncVat.toFixed(2)}</span>
                   </div>
                 </div>
 

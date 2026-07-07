@@ -4,7 +4,7 @@ export default function TermsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
 
-      <main className="flex-1">
+      <div className="flex-1">
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-16">
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
@@ -69,7 +69,7 @@ export default function TermsPage() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       <Footer />
     </div>

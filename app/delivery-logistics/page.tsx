@@ -4,7 +4,7 @@ export default function DeliveryLogisticsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
 
-      <main className="flex-1">
+      <div className="flex-1">
       <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
   {/* Background Image */}
   <div className="absolute inset-0">
@@ -148,7 +148,7 @@ export default function DeliveryLogisticsPage() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       <Footer />
     </div>

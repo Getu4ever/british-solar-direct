@@ -6,10 +6,37 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Our permanent table for storing UK wholesale customer quote entries
 model QuoteRequest {
+  id              String   @id @default(uuid())
+  companyName     String
+  contactEmail    String
+  productInterest String?
+  quantity        String?
+  projectNotes    String?
+  createdAt       DateTime @default(now())
+}
+
+model ContactEnquiry {
+  id          String   @id @default(uuid())
+  name        String
+  companyName String?
+  email       String
+  message     String
+  createdAt   DateTime @default(now())
+}
+
+model TradeApplication {
   id           String   @id @default(uuid())
   companyName  String
-  contactEmail String
+  contactName  String
+  email        String
+  phone        String?
+  businessType String
+  notes        String?
   createdAt    DateTime @default(now())
+}
+
+model ProcessedWebhook {
+  eventId   String   @id
+  createdAt DateTime @default(now())
 }

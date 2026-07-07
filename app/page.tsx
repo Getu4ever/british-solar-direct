@@ -49,7 +49,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <main>
+      <div>
         <section className="relative -mx-6 -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 text-white shadow-xl lg:-mx-8 py-20">
           <video
             autoPlay
@@ -348,7 +348,7 @@ export default function HomePage() {
             )}
           </div>
         </section>
-      </main>
+      </div>
 
       <Footer />
     </div>

@@ -1,104 +1,33 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
-
-const products = [
-  {
-    slug: 'vertex-s-450w',
-    name: 'Vertex S+ 450W',
-    brand: 'Trina Solar',
-    category: 'Residential / Light Commercial',
-    power: '450W',
-    availability: 'In UK stock',
-    leadTime: '2-3 working days',
-    description: 'N-type monocrystalline dual-glass module designed for efficient output in residential and light commercial installations.',
-    image: '/images/vertex.webp',
-  },
-  {
-    slug: 'himo-6-580w',
-    name: 'Hi-MO 6 Commercial 580W',
-    brand: 'LONGi',
-    category: 'Commercial / Industrial',
-    power: '580W',
-    availability: 'Forward order',
-    leadTime: 'Project and container supply',
-    description: 'High-output commercial module suited to warehouse roofs, larger commercial sites, and bulk procurement.',
-    image: '/images/himo.webp',
-  },
-  {
-    slug: 'ultra-black-430w',
-    name: 'Ultra Black 430W',
-    brand: 'JA Solar',
-    category: 'Premium Residential',
-    power: '430W',
-    availability: 'In UK stock',
-    leadTime: '2-3 working days',
-    description: 'Full-black module intended for premium residential projects where visual finish matters alongside performance.',
-    image: '/images/ultrablack.webp',
-  },
-  {
-    slug: 'tiger-neo-475w',
-    name: 'Tiger Neo 475W',
-    brand: 'Jinko Solar',
-    category: 'Residential / Commercial',
-    power: '475W',
-    availability: 'In UK stock',
-    leadTime: 'Immediate dispatch',
-    description: 'TOPCon N-type technology delivering excellent efficiency and low degradation for versatile installations.',
-    image: '/images/tiger-neo.webp',
-  },
-  {
-    slug: 'deepblue-650w',
-    name: 'DeepBlue 4.0 650W',
-    brand: 'JA Solar',
-    category: 'Commercial / Utility',
-    power: '650W',
-    availability: 'Forward order',
-    leadTime: 'Container & project supply',
-    description: 'High-power TOPCon module with outstanding efficiency for large-scale commercial and ground-mount projects.',
-    image: '/images/deepblue.webp',
-  },
-  {
-    slug: 'q-tron-440w',
-    name: 'Q.TRON BLK 440W',
-    brand: 'Qcells',
-    category: 'Premium Residential',
-    power: '440W',
-    availability: 'In UK stock',
-    leadTime: '2-4 working days',
-    description: 'All-black aesthetic panel with advanced cell technology for high performance and elegant roof integration.',
-    image: '/images/qtron.webp',
-  },
-];
+import { products } from '../lib/products';
 
 export default function ProductsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+      <div className="flex-1">
+        <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src="/images/products-hero.webp"
+              alt="Solar Panel Background"
+              className="h-full w-full object-cover opacity-50"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40" />
+          </div>
 
-      <main className="flex-1">
-      <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
-  {/* Background Image */}
-  <div className="absolute inset-0">
-    <img
-      src="/images/products-hero.webp"
-      alt="Solar Panel Background"
-      className="h-full w-full object-cover opacity-50"
-    />
-    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40" />
-  </div>
-
-  {/* Content */}
-  <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
-    <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-      Products
-    </p>
-    <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-      Solar panels for trade, wholesale, and project supply
-    </h1>
-    <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-      Browse current module lines available for UK dispatch and larger commercial procurement.
-    </p>
-  </div>
-</section>
+          <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
+              Products
+            </p>
+            <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+              Solar panels for trade, wholesale, and project supply
+            </h1>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+              Browse current module lines available for UK dispatch and larger commercial procurement.
+            </p>
+          </div>
+        </section>
 
         <section className="mx-auto max-w-7xl px-4 py-8">
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -107,14 +36,12 @@ export default function ProductsPage() {
                 <p className="text-sm font-semibold text-slate-900">Category</p>
                 <p className="mt-1 text-sm text-slate-500">Solar Panels</p>
               </div>
-
               <div>
                 <p className="text-sm font-semibold text-slate-900">Supply Model</p>
                 <p className="mt-1 text-sm text-slate-500">
                   UK stock lines and project-based forward orders
                 </p>
               </div>
-
               <div>
                 <p className="text-sm font-semibold text-slate-900">Order Support</p>
                 <p className="mt-1 text-sm text-slate-500">
@@ -155,7 +82,6 @@ export default function ProductsPage() {
                       {product.name}
                     </h3>
                   </div>
-
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
                     {product.power}
                   </span>
@@ -187,7 +113,7 @@ export default function ProductsPage() {
             ))}
           </div>
         </section>
-      </main>
+      </div>
 
       <Footer />
     </div>

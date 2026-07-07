@@ -12,15 +12,22 @@ export async function GET(request: Request) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['line_items'],
-    });
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    return NextResponse.json(session);
-  } catch (error: any) {
-    console.error('Stripe session retrieval error:', error);
-    return NextResponse.json({ 
-      error: error.message || 'Failed to retrieve session' 
-    }, { status: 500 });
+    if (session.payment_status !== 'paid') {
+      return NextResponse.json({ error: 'Payment not completed' }, { status: 402 });
+    }
+
+    return NextResponse.json({
+      id: session.id,
+      payment_status: session.payment_status,
+      amount_total: session.amount_total,
+      currency: session.currency,
+      customer_email: session.customer_details?.email ?? null,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to retrieve session';
+    console.error('Stripe session retrieval error:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
