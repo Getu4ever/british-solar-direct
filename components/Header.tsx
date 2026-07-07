@@ -55,8 +55,8 @@ export default function Header({ onOpenCart }: { onOpenCart: () => void }) {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <Link href="/project-quote" className="hidden md:flex rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-amber-600">
-            Request Quote
+          <Link href="/project-quote" className="hidden md:flex rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-sm transition hover:bg-amber-600">
+            Request Free Quote
           </Link>
           
           <button onClick={onOpenCart} className="relative p-2 hover:bg-slate-100 rounded-full transition">
@@ -81,8 +81,8 @@ export default function Header({ onOpenCart }: { onOpenCart: () => void }) {
               {item.name}
             </Link>
           ))}
-          <Link href="/project-quote" onClick={() => setIsMenuOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-slate-900 py-4 text-white font-bold text-lg">
-            Request Quote
+          <Link href="/project-quote" onClick={() => setIsMenuOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-amber-500 py-4 text-slate-950 font-bold text-lg">
+            Request Free Quote
           </Link>
         </div>
       )}

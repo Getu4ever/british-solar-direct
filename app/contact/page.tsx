@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import { submitContactEnquiry } from '../actions';
+import { COMPANY } from '../lib/company';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,9 +50,12 @@ export default function ContactPage() {
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
             <HeroSlideIn>
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">Contact</p>
-              <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">Speak with the British Solar Direct team</h1>
+              <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+                Speak with {COMPANY.director}
+              </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                Contact us for product enquiries, trade support, quote discussions, and delivery planning.
+                For product advice, quote discussions, delivery planning, or installation enquiries —
+                contact Juma directly or send a message below.
               </p>
             </HeroSlideIn>
           </div>
@@ -98,8 +102,16 @@ export default function ContactPage() {
                     <p className="font-semibold text-slate-900">British Solar Direct</p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase text-slate-500">Company Director</p>
-                    <p className="font-semibold text-slate-900">Juma Mohammedi</p>
+                    <p className="text-[10px] font-bold uppercase text-slate-500">Contact</p>
+                    <p className="font-semibold text-slate-900">{COMPANY.director}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-slate-500">Role</p>
+                    <p className="text-sm text-slate-700">{COMPANY.directorTitle}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-slate-500">Response time</p>
+                    <p className="text-sm text-slate-700">Typically {COMPANY.responseTime}</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Address</p>

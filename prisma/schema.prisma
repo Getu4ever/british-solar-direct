@@ -10,6 +10,8 @@ model QuoteRequest {
   id              String   @id @default(uuid())
   companyName     String
   contactEmail    String
+  contactPhone    String?
+  deliveryPostcode String?
   productInterest String?
   quantity        String?
   projectNotes    String?

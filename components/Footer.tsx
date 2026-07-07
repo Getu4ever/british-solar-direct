@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
-import Image from "next/image";
+import Image from 'next/image';
+import { COMPANY } from '../app/lib/company';
 
-const SOCIAL_LINKS = {
-  facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? 'https://www.facebook.com/',
-  instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? 'https://www.instagram.com/',
-};
+const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL;
+const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
+const hasSocialLinks = Boolean(facebookUrl || instagramUrl);
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -27,27 +27,29 @@ export default function Footer() {
   return (
     <footer className="mt-auto border-t border-slate-800 bg-slate-950 text-sm text-slate-400">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:px-10 lg:grid-cols-4 lg:px-16">
-        {/* Column 1 */}
-<div>
-  <Link href="/" className="mb-4 flex items-center gap-3">
-    <Image
-      src="/BSD-logo.png"
-      alt="British Solar Direct Logo"
-      width={40}
-      height={40}
-      className="object-contain"
-    />
-    <span className="text-xl font-bold tracking-tight text-white">
-      BRITISH SOLAR <span className="text-amber-500">DIRECT</span>
-    </span>
-  </Link>
+        <div>
+          <Link href="/" className="mb-4 flex items-center gap-3">
+            <Image
+              src="/BSD-logo.png"
+              alt="British Solar Direct Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+            <span className="text-xl font-bold tracking-tight text-white">
+              BRITISH SOLAR <span className="text-amber-500">DIRECT</span>
+            </span>
+          </Link>
 
-  <p className="max-w-sm text-sm leading-6 text-slate-400">
-    Trade solar panel supply for UK installers, EPCs, wholesalers, and project buyers.
-  </p>
-</div>
+          <p className="max-w-sm text-sm leading-6 text-slate-400">
+            Tier-1 solar panel supply for Nottingham homeowners and trade buyers. Delivery and
+            installation coordinated by {COMPANY.director}.
+          </p>
+          <p className="mt-3 text-xs text-slate-500">
+            Director: {COMPANY.director} · {COMPANY.city}
+          </p>
+        </div>
 
-        {/* Column 2 */}
         <div>
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-200">
             Navigation
@@ -56,11 +58,10 @@ export default function Footer() {
             <Link href="/products" className="block transition hover:text-white">Products</Link>
             <Link href="/brands" className="block transition hover:text-white">Brands</Link>
             <Link href="/delivery-logistics" className="block transition hover:text-white">Delivery & Logistics</Link>
-            <Link href="/project-quote" className="block transition hover:text-white">Project Quote</Link>
+            <Link href="/project-quote" className="block transition hover:text-white">Request Quote</Link>
           </div>
         </div>
 
-        {/* Column 3 */}
         <div>
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-200">
             Company
@@ -73,7 +74,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Column 4: Contact */}
         <div>
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-200">
             Contact
@@ -81,40 +81,47 @@ export default function Footer() {
           <div className="space-y-4 text-slate-400">
             <div>
               <p className="text-[10px] font-bold uppercase text-slate-500">Address</p>
-              <p className="leading-5">Southwell Lane, Kirkby-in-Ashfield, Nottingham NG17 8EY</p>
+              <p className="leading-5">{COMPANY.address}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase text-slate-500">Phone</p>
-              <a href="tel:07544414241" className="hover:text-amber-500 transition">07544414241</a>
+              <a href={`tel:${COMPANY.phone}`} className="transition hover:text-amber-500">
+                {COMPANY.phoneDisplay}
+              </a>
             </div>
-            <div>
-              <p className="mb-2 text-[10px] font-bold uppercase text-slate-500">Follow us</p>
-              <div className="flex items-center gap-3">
-                <a
-                  href={SOCIAL_LINKS.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="British Solar Direct on Facebook"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-amber-500 hover:text-amber-500"
-                >
-                  <FacebookIcon className="h-4 w-4" />
-                </a>
-                <a
-                  href={SOCIAL_LINKS.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="British Solar Direct on Instagram"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-amber-500 hover:text-amber-500"
-                >
-                  <InstagramIcon className="h-4 w-4" />
-                </a>
+            {hasSocialLinks && (
+              <div>
+                <p className="mb-2 text-[10px] font-bold uppercase text-slate-500">Follow us</p>
+                <div className="flex items-center gap-3">
+                  {facebookUrl && (
+                    <a
+                      href={facebookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="British Solar Direct on Facebook"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-amber-500 hover:text-amber-500"
+                    >
+                      <FacebookIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                  {instagramUrl && (
+                    <a
+                      href={instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="British Solar Direct on Instagram"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition hover:border-amber-500 hover:text-amber-500"
+                    >
+                      <InstagramIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-slate-800">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-3 px-6 py-6 text-xs text-slate-500 md:grid-cols-3 md:px-10 lg:px-16">
           <p className="text-center md:text-left">

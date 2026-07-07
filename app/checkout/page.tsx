@@ -3,6 +3,8 @@
 import { useCart } from '../../components/CartContext';
 import { useState } from 'react';
 import { ShieldCheck, Truck, Lock } from 'lucide-react';
+import GuidePriceLabel from '../../components/GuidePriceLabel';
+import { PAYMENT_NOTE } from '../lib/company';
 
 export default function CheckoutPage() {
   const { cart, totalPrice, totalVat, totalIncVat } = useCart();
@@ -80,6 +82,11 @@ export default function CheckoutPage() {
                 <span>Total (inc. VAT)</span>
                 <span>£{totalIncVat.toFixed(2)}</span>
               </div>
+            </div>
+
+            <div className="mb-4 rounded-xl border border-slate-700 bg-slate-800 p-3 text-xs leading-5 text-slate-300">
+              <GuidePriceLabel className="text-slate-400" />
+              <p className="mt-2">{PAYMENT_NOTE}</p>
             </div>
 
             <div className="mb-4 p-3 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-300 flex items-start gap-3">

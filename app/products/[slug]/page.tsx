@@ -4,7 +4,8 @@ import { useCart } from '../../../components/CartContext';
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { productBySlug } from '../../lib/products';
+import { productBySlug, formatPrice } from '../../lib/products';
+import GuidePriceLabel from '../../../components/GuidePriceLabel';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -51,10 +52,11 @@ export default function ProductDetailPage() {
           <div className="flex flex-col justify-between">
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight mb-2">{product.name}</h1>
-              <p className="text-amber-600 font-bold text-2xl mb-4">
-                £{(product.priceInPence / 100).toFixed(2)}{' '}
-                <span className="text-xs font-normal text-slate-500">/ unit est. B2B wholesale (ex. VAT)</span>
+              <p className="text-amber-600 font-bold text-2xl mb-1">
+                {formatPrice(product.priceInPence)}{' '}
+                <span className="text-xs font-normal text-slate-500">/ unit</span>
               </p>
+              <GuidePriceLabel className="mb-4" />
               <p className="text-slate-600 text-sm leading-relaxed mb-6">{product.description}</p>
             </div>
 
@@ -107,10 +109,10 @@ export default function ProductDetailPage() {
               </button>
 
               <button
-                onClick={() => router.push('/project-quote')}
+                onClick={() => router.push(`/project-quote?product=${slug}`)}
                 className="w-full rounded-xl bg-slate-900 py-3.5 text-base font-bold tracking-wide text-white shadow-sm transition hover:bg-slate-800"
               >
-                Request Project Quote
+                Request Free Quote
               </button>
 
               <AnimatePresence>

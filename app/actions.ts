@@ -1,6 +1,6 @@
 'use server';
 
-import type { QuoteRequest } from '@prisma/client';
+import type { QuoteRequest, ContactEnquiry, TradeApplication } from '@prisma/client';
 import { prisma } from './lib/prisma';
 import {
   sendQuoteNotification,
@@ -12,26 +12,47 @@ import { isAdminAuthenticated } from './lib/admin-auth';
 export async function submitQuoteRequest(formData: FormData) {
   const companyName = (formData.get('companyName') as string)?.trim();
   const contactEmail = (formData.get('contactEmail') as string)?.trim().toLowerCase();
+  const contactPhone = (formData.get('contactPhone') as string)?.trim() || null;
+  const deliveryPostcode = (formData.get('deliveryPostcode') as string)?.trim().toUpperCase() || null;
   const productInterest = (formData.get('productInterest') as string)?.trim() || null;
   const quantity = (formData.get('quantity') as string)?.trim() || null;
   const projectNotes = (formData.get('projectNotes') as string)?.trim() || null;
+  const needsInstallation = formData.get('needsInstallation') === 'yes';
 
-  if (!companyName || !contactEmail) {
-    return { success: false, error: 'Please provide both company name and email.' };
+  if (!companyName || !contactEmail || !quantity || !deliveryPostcode) {
+    return {
+      success: false,
+      error: 'Please provide your name, email, estimated quantity, and delivery postcode.',
+    };
   }
+
+  const notesWithInstall = needsInstallation
+    ? `[Installation requested] ${projectNotes ?? ''}`.trim()
+    : projectNotes;
 
   try {
     await prisma.quoteRequest.create({
-      data: { companyName, contactEmail, productInterest, quantity, projectNotes },
+      data: {
+        companyName,
+        contactEmail,
+        contactPhone,
+        deliveryPostcode,
+        productInterest,
+        quantity,
+        projectNotes: notesWithInstall,
+      },
     });
 
     try {
       await sendQuoteNotification({
         companyName,
         contactEmail,
+        contactPhone,
+        deliveryPostcode,
         productInterest,
         quantity,
-        projectNotes,
+        projectNotes: notesWithInstall,
+        needsInstallation,
       });
     } catch (emailError) {
       console.error('Quote saved but email notification failed:', emailError);
@@ -109,32 +130,66 @@ export async function submitTradeApplication(formData: FormData) {
   }
 }
 
-export async function getWholesaleLeads() {
+export async function getAdminDashboard() {
   const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
-    return { success: false, data: [], error: 'Unauthorized' };
+    return { success: false, error: 'Unauthorized' };
   }
 
   try {
-    const leads = await prisma.quoteRequest.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+    const [quotes, contacts, tradeApps] = await Promise.all([
+      prisma.quoteRequest.findMany({ orderBy: { createdAt: 'desc' } }),
+      prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' } }),
+      prisma.tradeApplication.findMany({ orderBy: { createdAt: 'desc' } }),
+    ]);
 
     return {
       success: true,
-      data: leads.map((lead: QuoteRequest) => ({
-        id: lead.id,
-        company: lead.companyName,
-        email: lead.contactEmail,
-        productInterest: lead.productInterest,
-        quantity: lead.quantity,
-        date: lead.createdAt.toLocaleString('en-GB'),
-      })),
+      data: {
+        quotes: quotes.map((lead: QuoteRequest) => ({
+          id: lead.id,
+          company: lead.companyName,
+          email: lead.contactEmail,
+          phone: lead.contactPhone,
+          postcode: lead.deliveryPostcode,
+          productInterest: lead.productInterest,
+          quantity: lead.quantity,
+          notes: lead.projectNotes,
+          date: lead.createdAt.toLocaleString('en-GB'),
+        })),
+        contacts: contacts.map((item: ContactEnquiry) => ({
+          id: item.id,
+          name: item.name,
+          company: item.companyName,
+          email: item.email,
+          message: item.message,
+          date: item.createdAt.toLocaleString('en-GB'),
+        })),
+        tradeApps: tradeApps.map((item: TradeApplication) => ({
+          id: item.id,
+          company: item.companyName,
+          contact: item.contactName,
+          email: item.email,
+          phone: item.phone,
+          businessType: item.businessType,
+          notes: item.notes,
+          date: item.createdAt.toLocaleString('en-GB'),
+        })),
+      },
     };
   } catch (error) {
-    console.error('Failed to fetch leads:', error);
-    return { success: false, data: [] };
+    console.error('Failed to fetch admin dashboard:', error);
+    return { success: false, error: 'Failed to load dashboard data.' };
   }
+}
+
+/** @deprecated Use getAdminDashboard */
+export async function getWholesaleLeads() {
+  const result = await getAdminDashboard();
+  if (!result.success || !result.data) {
+    return { success: false, data: [], error: result.error };
+  }
+  return { success: true, data: result.data.quotes };
 }
 
 export async function adminLogin(password: string) {

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
-import { products } from '../lib/products';
+import HowOrderingWorks from '../../components/HowOrderingWorks';
+import GuidePriceLabel from '../../components/GuidePriceLabel';
+import { products, formatPrice } from '../lib/products';
 
 export default function ProductsPage() {
   return (
@@ -23,10 +25,11 @@ export default function ProductsPage() {
                 Products
               </p>
               <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Solar panels for trade, wholesale, and project supply
+                Six core Tier-1 modules for homeowners &amp; trade
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                Browse current module lines available for UK dispatch and larger commercial procurement.
+                A focused catalogue of premium solar panels with UK stock lines and forward-order
+                commercial supply. Guide prices shown — request a quote for confirmed pricing.
               </p>
             </HeroSlideIn>
           </div>
@@ -96,6 +99,10 @@ export default function ProductsPage() {
 
                 <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
                   <p>
+                    <span className="font-semibold text-slate-900">Guide price:</span>{' '}
+                    {formatPrice(product.priceInPence)} / unit (ex. VAT)
+                  </p>
+                  <p>
                     <span className="font-semibold text-slate-900">Category:</span>{' '}
                     {product.category}
                   </p>
@@ -115,7 +122,11 @@ export default function ProductsPage() {
               </Link>
             ))}
           </div>
+
+          <GuidePriceLabel className="mt-8 text-center" />
         </section>
+
+        <HowOrderingWorks variant="dark" />
       </div>
 
       <Footer />

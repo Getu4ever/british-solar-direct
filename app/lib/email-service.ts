@@ -73,7 +73,7 @@ export async function sendOrderEmails({
               </div>`;
             })
             .join('')}
-          <p style="margin-top: 40px;">We appreciate your trust in British Solar Direct.</p>
+          <p style="margin-top: 40px;">Juma Mohammedi will coordinate delivery for your order. If you selected installation support, our team will contact you separately to arrange a site visit.</p>
         </div>
         <div class="footer">
           <p><strong>British Solar Direct</strong><br>
@@ -123,19 +123,28 @@ export async function sendOrderEmails({
 export async function sendQuoteNotification({
   companyName,
   contactEmail,
+  contactPhone,
+  deliveryPostcode,
   productInterest,
   quantity,
   projectNotes,
+  needsInstallation,
 }: {
   companyName: string;
   contactEmail: string;
+  contactPhone?: string | null;
+  deliveryPostcode?: string | null;
   productInterest?: string | null;
   quantity?: string | null;
   projectNotes?: string | null;
+  needsInstallation?: boolean;
 }) {
   const details = [
+    contactPhone && `<p><strong>Phone:</strong> ${contactPhone}</p>`,
+    deliveryPostcode && `<p><strong>Delivery postcode:</strong> ${deliveryPostcode}</p>`,
     productInterest && `<p><strong>Product interest:</strong> ${productInterest}</p>`,
     quantity && `<p><strong>Quantity:</strong> ${quantity}</p>`,
+    needsInstallation && `<p><strong>Installation:</strong> Requested</p>`,
     projectNotes && `<p><strong>Notes:</strong> ${projectNotes}</p>`,
   ]
     .filter(Boolean)
@@ -146,8 +155,8 @@ export async function sendQuoteNotification({
     to: ADMIN_EMAIL,
     subject: `New Quote Request - ${companyName}`,
     html: `
-      <h2>New Quote Request</h2>
-      <p><strong>Company:</strong> ${companyName}</p>
+      <h2>New Quote Request — respond within 4 business hours</h2>
+      <p><strong>Name / company:</strong> ${companyName}</p>
       <p><strong>Email:</strong> ${contactEmail}</p>
       ${details}
     `,
@@ -159,8 +168,10 @@ export async function sendQuoteNotification({
     subject: 'Quote Request Received - British Solar Direct',
     html: `
       <h2>Thank you, ${companyName}</h2>
-      <p>We have received your quote request and our sales team will be in touch shortly with pricing and a pro-forma invoice.</p>
-      <p>If you have any urgent questions, contact us at ${ADMIN_EMAIL} or call +44 7544414241.</p>
+      <p>We have received your solar panel quote request.</p>
+      <p><strong>Juma Mohammedi</strong> or a member of the British Solar Direct team will review your requirements and send pricing, lead time, and a pro-forma invoice <strong>within 4 business hours</strong>.</p>
+      <p>We can also arrange delivery and professional installation across Nottingham and surrounding areas.</p>
+      <p>Questions? Call <strong>07544 14241</strong> or reply to this email.</p>
       <p>— British Solar Direct</p>
     `,
   });
