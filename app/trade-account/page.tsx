@@ -45,9 +45,9 @@ export default function TradeAccountPage() {
             <img
               src="/images/trade-account-hero.webp"
               alt="Trade Account Background"
-              className="h-full w-full object-cover opacity-40"
+              className="h-full w-full object-cover opacity-60"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/55 via-slate-950/32 to-slate-950/15" />
           </div>
 
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">

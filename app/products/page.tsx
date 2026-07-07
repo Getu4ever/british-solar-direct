@@ -11,10 +11,10 @@ export default function ProductsPage() {
           <div className="absolute inset-0">
             <img
               src="/images/products-hero.webp"
-              alt="Solar Panel Background"
-              className="h-full w-full object-cover opacity-50"
+              alt="Solar panel inventory and trade supply background"
+              className="h-full w-full object-cover opacity-60"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/55 via-slate-950/32 to-slate-950/15" />
           </div>
 
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">

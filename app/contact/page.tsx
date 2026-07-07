@@ -42,8 +42,8 @@ export default function ContactPage() {
       <div className="flex-1">
         <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
           <div className="absolute inset-0">
-            <img src="/images/contact-hero.webp" alt="Contact Team Background" className="h-full w-full object-cover opacity-40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/30" />
+            <img src="/images/contact-hero.webp" alt="Contact Team Background" className="h-full w-full object-cover opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/55 via-slate-950/32 to-slate-950/15" />
           </div>
 
           <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">

@@ -57,12 +57,12 @@ export default function HomePage() {
             loop
             muted
             playsInline
-            className="absolute inset-0 h-full w-full object-cover brightness-[0.55]"
+            className="absolute inset-0 h-full w-full object-cover brightness-[0.78]"
           >
             <source src="/solar-panel-installation-video.mp4" type="video/mp4" />
           </video>
 
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/55 to-slate-950/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/22 to-slate-950/8" />
 
           <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
             <HeroSlideIn className="max-w-3xl">

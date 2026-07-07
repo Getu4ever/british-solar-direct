@@ -47,9 +47,9 @@ export default function ProjectQuotePage() {
     <img
       src="/images/project-hero.webp"
       alt="Solar Panel Background"
-      className="h-full w-full object-cover opacity-50"
+      className="h-full w-full object-cover opacity-60"
     />
-    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40" />
+    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/55 via-slate-950/32 to-slate-950/15" />
   </div>
 
   {/* Content */}
