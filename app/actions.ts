@@ -1,5 +1,6 @@
 'use server';
 
+import type { QuoteRequest } from '@prisma/client';
 import { prisma } from './lib/prisma';
 import {
   sendQuoteNotification,
@@ -121,7 +122,7 @@ export async function getWholesaleLeads() {
 
     return {
       success: true,
-      data: leads.map((lead) => ({
+      data: leads.map((lead: QuoteRequest) => ({
         id: lead.id,
         company: lead.companyName,
         email: lead.contactEmail,
