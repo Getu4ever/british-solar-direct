@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ClipboardList, FileCheck2, Landmark, Truck } from 'lucide-react';
 
 const steps = [
   {
@@ -33,6 +34,7 @@ export default function HowOrderingWorks({
   showCta = true,
 }: HowOrderingWorksProps) {
   const isDark = variant === 'dark';
+  const stepIcons = [ClipboardList, FileCheck2, Landmark, Truck];
 
   return (
     <section
@@ -69,28 +71,39 @@ export default function HowOrderingWorks({
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <div
-              key={step.title}
-              className={`rounded-2xl border p-6 ${
-                isDark
-                  ? 'border-slate-800 bg-slate-900/50'
-                  : 'border-slate-200 bg-slate-50'
-              }`}
-            >
-              <p
-                className={`mb-2 text-xs font-bold uppercase tracking-wider ${
-                  isDark ? 'text-amber-400' : 'text-amber-600'
+          {steps.map((step, index) => {
+            const StepIcon = stepIcons[index];
+
+            return (
+              <div
+                key={step.title}
+                className={`rounded-2xl border p-6 shadow-sm ring-1 transition hover:-translate-y-1 hover:shadow-lg ${
+                  isDark
+                    ? 'border-slate-800 bg-slate-900/55 ring-slate-800/80 hover:border-amber-400/40'
+                    : 'border-slate-200 bg-slate-50/95 ring-slate-100 hover:border-amber-300'
                 }`}
               >
-                Step {index + 1}
-              </p>
-              <h3 className="mb-2 text-lg font-bold">{step.title}</h3>
-              <p className={`text-sm leading-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                {step.description}
-              </p>
-            </div>
-          ))}
+                <div
+                  className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl shadow-sm ${
+                    isDark ? 'bg-slate-800 text-amber-400' : 'bg-slate-900 text-amber-400'
+                  }`}
+                >
+                  <StepIcon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <p
+                  className={`mb-2 text-xs font-bold uppercase tracking-wider ${
+                    isDark ? 'text-amber-400' : 'text-amber-600'
+                  }`}
+                >
+                  Step {index + 1}
+                </p>
+                <h3 className="mb-2 text-lg font-bold">{step.title}</h3>
+                <p className={`text-sm leading-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                  {step.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

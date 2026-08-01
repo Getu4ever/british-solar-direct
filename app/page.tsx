@@ -4,12 +4,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { submitQuoteRequest } from './actions';
 import Footer from '../components/Footer';
-import Calculator from '../components/Calculator';
 import HeroSlideIn from '../components/HeroSlideIn';
 import HowOrderingWorks from '../components/HowOrderingWorks';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
 import { Home, Wrench, Building2 } from 'lucide-react';
+
+const guideSystemPriceBySlug: Record<string, string> = {
+  'cottage-setup-4kw': 'Complete Package Guide Price: From £5,500 (0% VAT)',
+  'family-homestead-8kw': 'Complete Package Guide Price: From £9,750 (0% VAT)',
+  'estate-powerhouse-12kw': 'Complete Package Guide Price: Custom Quote Required',
+};
 
 export default function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,7 +102,7 @@ export default function HomePage() {
                   href="/products"
                   className="rounded-lg border border-slate-500 bg-slate-900/50 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-slate-800/80"
                 >
-                  Browse 6 Core Modules
+                  View System Options
                 </Link>
               </div>
             </HeroSlideIn>
@@ -192,6 +197,10 @@ export default function HomePage() {
                 <p className="mb-4 flex-1 text-sm text-slate-500">{product.description}</p>
 
                 <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
+                  <p>
+                    <span className="font-semibold text-slate-900">Guide System Price:</span>{' '}
+                    {guideSystemPriceBySlug[product.slug] ?? 'Complete Package Guide Price: Custom Quote Required'}
+                  </p>
                   <p>
                     <span className="font-semibold text-slate-900">Power:</span> {product.power}
                   </p>
@@ -336,11 +345,11 @@ export default function HomePage() {
 
               <div className="flex flex-wrap gap-4 text-sm text-slate-300">
                 <label className="flex cursor-pointer items-center gap-2">
-                  <input type="radio" name="needsInstallation" value="yes" className="accent-amber-500" />
+                  <input type="radio" name="needsInstallation" value="yes" defaultChecked className="accent-amber-500" />
                   Need installation
                 </label>
                 <label className="flex cursor-pointer items-center gap-2">
-                  <input type="radio" name="needsInstallation" value="no" defaultChecked className="accent-amber-500" />
+                  <input type="radio" name="needsInstallation" value="no" className="accent-amber-500" />
                   Supply only
                 </label>
               </div>
@@ -376,7 +385,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <Calculator />
       </div>
 
       <Footer />

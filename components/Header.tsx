@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from "next/image";
 import { 
   ShoppingBagIcon, 
+  WrenchScrewdriverIcon,
   TagIcon, 
   TruckIcon, 
   BriefcaseIcon, 
@@ -19,6 +20,7 @@ export default function Header() {
 
   const menuItems = [
     { name: 'Products', href: '/products', icon: ShoppingBagIcon },
+    { name: 'Installation', href: '/installation', icon: WrenchScrewdriverIcon },
     { name: 'Brands', href: '/brands', icon: TagIcon },
     { name: 'Delivery', href: '/delivery-logistics', icon: TruckIcon },
     { name: 'Trade Account', href: '/trade-account', icon: BriefcaseIcon },

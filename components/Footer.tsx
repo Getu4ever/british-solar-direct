@@ -56,6 +56,7 @@ export default function Footer() {
           </p>
           <div className="space-y-2">
             <Link href="/products" className="block transition hover:text-white">Products</Link>
+            <Link href="/installation" className="block transition hover:text-white">Installation</Link>
             <Link href="/brands" className="block transition hover:text-white">Brands</Link>
             <Link href="/delivery-logistics" className="block transition hover:text-white">Delivery & Logistics</Link>
             <Link href="/project-quote" className="block transition hover:text-white">Request Quote</Link>
