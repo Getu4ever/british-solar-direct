@@ -191,14 +191,13 @@ function ProjectQuoteInner() {
 
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">
-                    Delivery postcode *
+                    Installation location
                   </label>
                   <input
                     name="deliveryPostcode"
-                    required
                     type="text"
                     className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm uppercase text-slate-900 outline-none transition focus:border-amber-500"
-                    placeholder="e.g. NG17 8EY"
+                    placeholder="e.g. Nottingham, NG17 8EY"
                   />
                 </div>
 

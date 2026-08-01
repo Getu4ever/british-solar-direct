@@ -44,10 +44,10 @@ export async function submitQuoteRequest(formData: FormData) {
     }
   }
 
-  if (!companyName || !contactEmail || !contactPhone || !quantity || !deliveryPostcode) {
+  if (!companyName || !contactEmail || !contactPhone || !quantity) {
     return {
       success: false,
-      error: 'Please provide your name, email, phone number, estimated quantity, and delivery postcode.',
+      error: 'Please provide your name, email, phone number, and estimated quantity.',
     };
   }
 
@@ -87,26 +87,25 @@ export async function submitQuoteRequest(formData: FormData) {
         propertyImages: propertyImagesJson,
       },
     });
+  } catch (dbError) {
+    console.error('Quote request save failed; continuing with email delivery:', dbError);
+  }
 
-    try {
-      await sendQuoteNotification({
-        companyName,
-        contactEmail,
-        contactPhone,
-        deliveryPostcode,
-        productInterest,
-        quantity,
-        projectNotes: notesWithUploads,
-        needsInstallation,
-        uploadedImages,
-      });
-    } catch (emailError) {
-      console.error('Quote saved but email notification failed:', emailError);
-    }
-
+  try {
+    await sendQuoteNotification({
+      companyName,
+      contactEmail,
+      contactPhone,
+      deliveryPostcode,
+      productInterest,
+      quantity,
+      projectNotes: notesWithUploads,
+      needsInstallation,
+      uploadedImages,
+    });
     return { success: true };
-  } catch (error) {
-    console.error('Quote submission error:', error);
+  } catch (emailError) {
+    console.error('Quote submission email failed:', emailError);
     return { success: false, error: 'Failed to submit your request. Please try again.' };
   }
 }
@@ -125,16 +124,15 @@ export async function submitContactEnquiry(formData: FormData) {
     await prisma.contactEnquiry.create({
       data: { name, companyName, email, message },
     });
+  } catch (dbError) {
+    console.error('Contact enquiry save failed; continuing with email delivery:', dbError);
+  }
 
-    try {
-      await sendContactNotification({ name, companyName, email, message });
-    } catch (emailError) {
-      console.error('Enquiry saved but email notification failed:', emailError);
-    }
-
+  try {
+    await sendContactNotification({ name, companyName, email, message });
     return { success: true };
-  } catch (error) {
-    console.error('Contact submission error:', error);
+  } catch (emailError) {
+    console.error('Contact submission email failed:', emailError);
     return { success: false, error: 'Failed to send your enquiry. Please try again.' };
   }
 }
