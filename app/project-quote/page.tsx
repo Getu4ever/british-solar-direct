@@ -61,7 +61,7 @@ function ProjectQuoteInner() {
     if (result.success) {
       setSubmissionStatus({
         success: true,
-        msg: `Thank you. ${COMPANY.director} will review your request and email your quote ${COMPANY.responseTime}.`,
+        msg: `Thank you. ${COMPANY.director} will review your request and contact you ${COMPANY.responseTime}.`,
       });
       formElement.reset();
     } else {
@@ -177,10 +177,11 @@ function ProjectQuoteInner() {
                   </div>
                   <div>
                     <label className="mb-1 block text-sm font-semibold text-slate-900">
-                      Phone number
+                      Phone number *
                     </label>
                     <input
                       name="contactPhone"
+                      required
                       type="tel"
                       className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
                       placeholder="07xxx xxxxxx"
@@ -262,6 +263,22 @@ function ProjectQuoteInner() {
                     className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
                     placeholder="Roof type, timeline, access notes, or any other requirements."
                   />
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <label className="mb-2 block text-sm font-semibold text-slate-900">
+                    Upload property images (optional)
+                  </label>
+                  <input
+                    name="propertyImages"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="block w-full rounded-lg border border-slate-300 bg-white p-2 text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-800"
+                  />
+                  <p className="mt-2 text-xs leading-5 text-slate-500">
+                    Add up to 4 images (max 2MB each), such as roof angles, meter location, consumer unit, or access route.
+                  </p>
                 </div>
 
                 <button

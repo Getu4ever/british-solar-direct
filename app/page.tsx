@@ -35,7 +35,7 @@ export default function HomePage() {
     if (result.success) {
       setSubmissionStatus({
         success: true,
-        msg: `Thank you. ${COMPANY.director} will email your quote and pro-forma ${COMPANY.responseTime}.`,
+        msg: `Thank you. ${COMPANY.director} will review your request and contact you ${COMPANY.responseTime}.`,
       });
       formElement.reset();
     } else {
@@ -362,10 +362,11 @@ export default function HomePage() {
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Phone
+                    Phone *
                   </label>
                   <input
                     name="contactPhone"
+                    required
                     type="tel"
                     className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
                     placeholder="07xxx xxxxxx"

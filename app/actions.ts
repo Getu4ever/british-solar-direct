@@ -1,34 +1,78 @@
 'use server';
 
-import type { QuoteRequest, ContactEnquiry, TradeApplication } from '@prisma/client';
+import type { QuoteRequest, ContactEnquiry } from '@prisma/client';
 import { prisma } from './lib/prisma';
 import {
   sendQuoteNotification,
   sendContactNotification,
-  sendTradeApplicationNotification,
 } from './lib/email-service';
 import { isAdminAuthenticated } from './lib/admin-auth';
 
 export async function submitQuoteRequest(formData: FormData) {
   const companyName = (formData.get('companyName') as string)?.trim();
   const contactEmail = (formData.get('contactEmail') as string)?.trim().toLowerCase();
-  const contactPhone = (formData.get('contactPhone') as string)?.trim() || null;
+  const contactPhone = (formData.get('contactPhone') as string)?.trim();
   const deliveryPostcode = (formData.get('deliveryPostcode') as string)?.trim().toUpperCase() || null;
   const productInterest = (formData.get('productInterest') as string)?.trim() || null;
   const quantity = (formData.get('quantity') as string)?.trim() || null;
   const projectNotes = (formData.get('projectNotes') as string)?.trim() || null;
   const needsInstallation = formData.get('needsInstallation') === 'yes';
+  const propertyImages = formData
+    .getAll('propertyImages')
+    .filter((file): file is File => file instanceof File && file.size > 0);
 
-  if (!companyName || !contactEmail || !quantity || !deliveryPostcode) {
+  if (propertyImages.length > 4) {
     return {
       success: false,
-      error: 'Please provide your name, email, estimated quantity, and delivery postcode.',
+      error: 'Please upload up to 4 images per quote request.',
+    };
+  }
+
+  for (const image of propertyImages) {
+    if (!image.type.startsWith('image/')) {
+      return {
+        success: false,
+        error: 'Only image files are allowed for property uploads.',
+      };
+    }
+
+    if (image.size > 2 * 1024 * 1024) {
+      return {
+        success: false,
+        error: 'Each image must be 2MB or smaller.',
+      };
+    }
+  }
+
+  if (!companyName || !contactEmail || !contactPhone || !quantity || !deliveryPostcode) {
+    return {
+      success: false,
+      error: 'Please provide your name, email, phone number, estimated quantity, and delivery postcode.',
     };
   }
 
   const notesWithInstall = needsInstallation
     ? `[Installation requested] ${projectNotes ?? ''}`.trim()
     : projectNotes;
+  const imageSummary = propertyImages.length
+    ? `Property images attached: ${propertyImages.map((image) => image.name).join(', ')}`
+    : null;
+  const notesWithUploads = [notesWithInstall, imageSummary].filter(Boolean).join('\n\n') || null;
+  const uploadedImages = await Promise.all(
+    propertyImages.map(async (image) => ({
+      filename: image.name,
+      type: image.type,
+      content: Buffer.from(await image.arrayBuffer()),
+    }))
+  );
+  const propertyImagesForStorage = uploadedImages.map((image) => ({
+    filename: image.filename,
+    type: image.type,
+    dataUrl: `data:${image.type};base64,${image.content.toString('base64')}`,
+  }));
+  const propertyImagesJson = propertyImagesForStorage.length
+    ? JSON.stringify(propertyImagesForStorage)
+    : null;
 
   try {
     await prisma.quoteRequest.create({
@@ -39,7 +83,8 @@ export async function submitQuoteRequest(formData: FormData) {
         deliveryPostcode,
         productInterest,
         quantity,
-        projectNotes: notesWithInstall,
+        projectNotes: notesWithUploads,
+        propertyImages: propertyImagesJson,
       },
     });
 
@@ -51,8 +96,9 @@ export async function submitQuoteRequest(formData: FormData) {
         deliveryPostcode,
         productInterest,
         quantity,
-        projectNotes: notesWithInstall,
+        projectNotes: notesWithUploads,
         needsInstallation,
+        uploadedImages,
       });
     } catch (emailError) {
       console.error('Quote saved but email notification failed:', emailError);
@@ -93,43 +139,6 @@ export async function submitContactEnquiry(formData: FormData) {
   }
 }
 
-export async function submitTradeApplication(formData: FormData) {
-  const companyName = (formData.get('companyName') as string)?.trim();
-  const contactName = (formData.get('contactName') as string)?.trim();
-  const email = (formData.get('email') as string)?.trim().toLowerCase();
-  const phone = (formData.get('phone') as string)?.trim() || null;
-  const businessType = (formData.get('businessType') as string)?.trim();
-  const notes = (formData.get('notes') as string)?.trim() || null;
-
-  if (!companyName || !contactName || !email || !businessType) {
-    return { success: false, error: 'Please fill in all required fields.' };
-  }
-
-  try {
-    await prisma.tradeApplication.create({
-      data: { companyName, contactName, email, phone, businessType, notes },
-    });
-
-    try {
-      await sendTradeApplicationNotification({
-        companyName,
-        contactName,
-        email,
-        phone,
-        businessType,
-        notes,
-      });
-    } catch (emailError) {
-      console.error('Application saved but email notification failed:', emailError);
-    }
-
-    return { success: true };
-  } catch (error) {
-    console.error('Trade application error:', error);
-    return { success: false, error: 'Failed to submit your application. Please try again.' };
-  }
-}
-
 export async function getAdminDashboard() {
   const authenticated = await isAdminAuthenticated();
   if (!authenticated) {
@@ -137,10 +146,9 @@ export async function getAdminDashboard() {
   }
 
   try {
-    const [quotes, contacts, tradeApps] = await Promise.all([
+    const [quotes, contacts] = await Promise.all([
       prisma.quoteRequest.findMany({ orderBy: { createdAt: 'desc' } }),
       prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' } }),
-      prisma.tradeApplication.findMany({ orderBy: { createdAt: 'desc' } }),
     ]);
 
     return {
@@ -155,6 +163,7 @@ export async function getAdminDashboard() {
           productInterest: lead.productInterest,
           quantity: lead.quantity,
           notes: lead.projectNotes,
+          propertyImages: lead.propertyImages,
           date: lead.createdAt.toLocaleString('en-GB'),
         })),
         contacts: contacts.map((item: ContactEnquiry) => ({
@@ -165,16 +174,6 @@ export async function getAdminDashboard() {
           message: item.message,
           date: item.createdAt.toLocaleString('en-GB'),
         })),
-        tradeApps: tradeApps.map((item: TradeApplication) => ({
-          id: item.id,
-          company: item.companyName,
-          contact: item.contactName,
-          email: item.email,
-          phone: item.phone,
-          businessType: item.businessType,
-          notes: item.notes,
-          date: item.createdAt.toLocaleString('en-GB'),
-        })),
       },
     };
   } catch (error) {
@@ -183,13 +182,110 @@ export async function getAdminDashboard() {
   }
 }
 
-/** @deprecated Use getAdminDashboard */
-export async function getWholesaleLeads() {
-  const result = await getAdminDashboard();
-  if (!result.success || !result.data) {
-    return { success: false, data: [], error: result.error };
+export async function updateQuoteRequest(input: {
+  id: string;
+  companyName: string;
+  contactEmail: string;
+  deliveryPostcode: string;
+  quantity: string;
+  productInterest?: string;
+  projectNotes?: string;
+}) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false, error: 'Unauthorized' };
   }
-  return { success: true, data: result.data.quotes };
+
+  const companyName = input.companyName.trim();
+  const contactEmail = input.contactEmail.trim().toLowerCase();
+  const deliveryPostcode = input.deliveryPostcode.trim().toUpperCase();
+  const quantity = input.quantity.trim();
+  const productInterest = input.productInterest?.trim() || null;
+  const projectNotes = input.projectNotes?.trim() || null;
+
+  if (!companyName || !contactEmail || !deliveryPostcode || !quantity) {
+    return { success: false, error: 'Please complete all required fields.' };
+  }
+
+  try {
+    await prisma.quoteRequest.update({
+      where: { id: input.id },
+      data: {
+        companyName,
+        contactEmail,
+        deliveryPostcode,
+        quantity,
+        productInterest,
+        projectNotes,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Quote update error:', error);
+    return { success: false, error: 'Failed to update quote request.' };
+  }
+}
+
+export async function deleteQuoteRequest(id: string) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  try {
+    await prisma.quoteRequest.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    console.error('Quote delete error:', error);
+    return { success: false, error: 'Failed to delete quote request.' };
+  }
+}
+
+export async function updateContactEnquiry(input: {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+}) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  const name = input.name.trim();
+  const email = input.email.trim().toLowerCase();
+  const message = input.message.trim();
+
+  if (!name || !email || !message) {
+    return { success: false, error: 'Please complete all required fields.' };
+  }
+
+  try {
+    await prisma.contactEnquiry.update({
+      where: { id: input.id },
+      data: { name, email, message },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Contact update error:', error);
+    return { success: false, error: 'Failed to update contact enquiry.' };
+  }
+}
+
+export async function deleteContactEnquiry(id: string) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  try {
+    await prisma.contactEnquiry.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    console.error('Contact delete error:', error);
+    return { success: false, error: 'Failed to delete contact enquiry.' };
+  }
 }
 
 export async function adminLogin(password: string) {

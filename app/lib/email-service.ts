@@ -15,6 +15,7 @@ export async function sendQuoteNotification({
   quantity,
   projectNotes,
   needsInstallation,
+  uploadedImages,
 }: {
   companyName: string;
   contactEmail: string;
@@ -24,6 +25,11 @@ export async function sendQuoteNotification({
   quantity?: string | null;
   projectNotes?: string | null;
   needsInstallation?: boolean;
+  uploadedImages?: Array<{
+    filename: string;
+    type: string;
+    content: Buffer;
+  }>;
 }) {
   const details = [
     contactPhone && `<p><strong>Phone:</strong> ${contactPhone}</p>`,
@@ -31,6 +37,7 @@ export async function sendQuoteNotification({
     productInterest && `<p><strong>Product interest:</strong> ${productInterest}</p>`,
     quantity && `<p><strong>Quantity:</strong> ${quantity}</p>`,
     needsInstallation && `<p><strong>Installation:</strong> Requested</p>`,
+    uploadedImages?.length && `<p><strong>Property images:</strong> ${uploadedImages.length} file(s) attached</p>`,
     projectNotes && `<p><strong>Notes:</strong> ${projectNotes}</p>`,
   ]
     .filter(Boolean)
@@ -40,6 +47,7 @@ export async function sendQuoteNotification({
     from: FROM_EMAIL,
     to: ADMIN_EMAIL,
     subject: `New Quote Request - ${companyName}`,
+    attachments: uploadedImages,
     html: `
       <h2>New Quote Request — respond within 24 business hours</h2>
       <p><strong>Name / company:</strong> ${companyName}</p>
@@ -55,6 +63,7 @@ export async function sendQuoteNotification({
     html: `
       <h2>Thank you, ${companyName}</h2>
       <p>We have received your solar panel quote request.</p>
+      ${uploadedImages?.length ? '<p>Your property images were received successfully and have been shared with our installation team.</p>' : ''}
       <p><strong>Juma Mohammedi</strong> or a member of the British Solar Direct team will review your requirements and send pricing, lead time, and a pro-forma invoice <strong>within 24 business hours</strong>.</p>
       <p>We can also arrange delivery and professional installation across Nottingham and surrounding areas.</p>
       <p>Questions? Call <strong>0115 671 2424</strong> or reply to this email.</p>
@@ -95,48 +104,6 @@ export async function sendContactNotification({
     html: `
       <h2>Thank you, ${name}</h2>
       <p>We have received your enquiry and will respond as soon as possible.</p>
-      <p>— British Solar Direct</p>
-    `,
-  });
-}
-
-export async function sendTradeApplicationNotification({
-  companyName,
-  contactName,
-  email,
-  phone,
-  businessType,
-  notes,
-}: {
-  companyName: string;
-  contactName: string;
-  email: string;
-  phone?: string | null;
-  businessType: string;
-  notes?: string | null;
-}) {
-  await resend.emails.send({
-    from: FROM_EMAIL,
-    to: ADMIN_EMAIL,
-    subject: `New Trade Account Application - ${companyName}`,
-    html: `
-      <h2>New Trade Account Application</h2>
-      <p><strong>Company:</strong> ${companyName}</p>
-      <p><strong>Contact:</strong> ${contactName}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
-      <p><strong>Business type:</strong> ${businessType}</p>
-      ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ''}
-    `,
-  });
-
-  await resend.emails.send({
-    from: FROM_EMAIL,
-    to: email,
-    subject: 'Trade Account Application Received - British Solar Direct',
-    html: `
-      <h2>Thank you, ${contactName}</h2>
-      <p>We have received your trade account application for ${companyName} and will review it shortly.</p>
       <p>— British Solar Direct</p>
     `,
   });

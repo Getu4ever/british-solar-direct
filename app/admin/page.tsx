@@ -1,34 +1,216 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getAdminDashboard, adminLogout } from '../actions';
+import {
+  getAdminDashboard,
+  adminLogout,
+  updateQuoteRequest,
+  deleteQuoteRequest,
+  updateContactEnquiry,
+  deleteContactEnquiry,
+} from '../actions';
 import { useRouter } from 'next/navigation';
 
-type Tab = 'quotes' | 'contacts' | 'trade';
+type Tab = 'quotes' | 'contacts';
+type QuoteLead = {
+  id?: string | null;
+  company?: string | null;
+  email?: string | null;
+  postcode?: string | null;
+  quantity?: string | null;
+  productInterest?: string | null;
+  notes?: string | null;
+  propertyImages?: string | null;
+  date?: string | null;
+};
+type ContactLead = {
+  id?: string | null;
+  name?: string | null;
+  email?: string | null;
+  message?: string | null;
+  date?: string | null;
+};
+type StoredPropertyImage = {
+  filename: string;
+  type: string;
+  dataUrl: string;
+};
+
+function parsePropertyImages(value: string | null | undefined): StoredPropertyImage[] {
+  if (!value) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .filter(
+        (item): item is StoredPropertyImage =>
+          typeof item?.filename === 'string' &&
+          typeof item?.type === 'string' &&
+          typeof item?.dataUrl === 'string' &&
+          item.dataUrl.startsWith('data:image/')
+      )
+      .slice(0, 4);
+  } catch {
+    return [];
+  }
+}
 
 export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>('quotes');
   const [data, setData] = useState<{
-    quotes: Array<Record<string, string | null | undefined>>;
-    contacts: Array<Record<string, string | null | undefined>>;
-    tradeApps: Array<Record<string, string | null | undefined>>;
-  }>({ quotes: [], contacts: [], tradeApps: [] });
+    quotes: QuoteLead[];
+    contacts: ContactLead[];
+  }>({ quotes: [], contacts: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const [editingQuoteId, setEditingQuoteId] = useState<string | null>(null);
+  const [editingContactId, setEditingContactId] = useState<string | null>(null);
+  const [quoteDraft, setQuoteDraft] = useState<{
+    companyName: string;
+    contactEmail: string;
+    deliveryPostcode: string;
+    quantity: string;
+    productInterest: string;
+    projectNotes: string;
+  }>({
+    companyName: '',
+    contactEmail: '',
+    deliveryPostcode: '',
+    quantity: '',
+    productInterest: '',
+    projectNotes: '',
+  });
+  const [contactDraft, setContactDraft] = useState<{
+    name: string;
+    email: string;
+    message: string;
+  }>({
+    name: '',
+    email: '',
+    message: '',
+  });
   const router = useRouter();
 
-  useEffect(() => {
-    async function loadDashboardData() {
-      const response = await getAdminDashboard();
-      if (response.success && response.data) {
-        setData(response.data);
-      } else {
-        setError(response.error ?? 'Unable to load dashboard');
-      }
-      setLoading(false);
+  async function loadDashboardData() {
+    const response = await getAdminDashboard();
+    if (response.success && response.data) {
+      setData(response.data);
+      setError(null);
+    } else {
+      setError(response.error ?? 'Unable to load dashboard');
     }
+    setLoading(false);
+  }
+
+  useEffect(() => {
     loadDashboardData();
   }, []);
+
+  async function refreshDashboard() {
+    setLoading(true);
+    await loadDashboardData();
+  }
+
+  function startQuoteEdit(lead: QuoteLead) {
+    if (!lead.id) return;
+    setEditingQuoteId(lead.id);
+    setEditingContactId(null);
+    setQuoteDraft({
+      companyName: lead.company ?? '',
+      contactEmail: lead.email ?? '',
+      deliveryPostcode: lead.postcode ?? '',
+      quantity: lead.quantity ?? '',
+      productInterest: lead.productInterest ?? '',
+      projectNotes: lead.notes ?? '',
+    });
+  }
+
+  async function saveQuoteEdit() {
+    if (!editingQuoteId) return;
+    const result = await updateQuoteRequest({
+      id: editingQuoteId,
+      companyName: quoteDraft.companyName,
+      contactEmail: quoteDraft.contactEmail,
+      deliveryPostcode: quoteDraft.deliveryPostcode,
+      quantity: quoteDraft.quantity,
+      productInterest: quoteDraft.productInterest,
+      projectNotes: quoteDraft.projectNotes,
+    });
+
+    if (!result.success) {
+      setStatus(result.error ?? 'Failed to save quote request.');
+      return;
+    }
+
+    setEditingQuoteId(null);
+    setStatus('Quote request updated.');
+    await refreshDashboard();
+  }
+
+  async function removeQuote(id: string) {
+    const confirmed = window.confirm('Delete this quote request? This action cannot be undone.');
+    if (!confirmed) return;
+
+    const result = await deleteQuoteRequest(id);
+    if (!result.success) {
+      setStatus(result.error ?? 'Failed to delete quote request.');
+      return;
+    }
+
+    setStatus('Quote request deleted.');
+    await refreshDashboard();
+  }
+
+  function startContactEdit(lead: ContactLead) {
+    if (!lead.id) return;
+    setEditingContactId(lead.id);
+    setEditingQuoteId(null);
+    setContactDraft({
+      name: lead.name ?? '',
+      email: lead.email ?? '',
+      message: lead.message ?? '',
+    });
+  }
+
+  async function saveContactEdit() {
+    if (!editingContactId) return;
+    const result = await updateContactEnquiry({
+      id: editingContactId,
+      name: contactDraft.name,
+      email: contactDraft.email,
+      message: contactDraft.message,
+    });
+
+    if (!result.success) {
+      setStatus(result.error ?? 'Failed to save contact enquiry.');
+      return;
+    }
+
+    setEditingContactId(null);
+    setStatus('Contact enquiry updated.');
+    await refreshDashboard();
+  }
+
+  async function removeContact(id: string) {
+    const confirmed = window.confirm('Delete this contact enquiry? This action cannot be undone.');
+    if (!confirmed) return;
+
+    const result = await deleteContactEnquiry(id);
+    if (!result.success) {
+      setStatus(result.error ?? 'Failed to delete contact enquiry.');
+      return;
+    }
+
+    setStatus('Contact enquiry deleted.');
+    await refreshDashboard();
+  }
 
   async function handleLogout() {
     await adminLogout();
@@ -38,7 +220,6 @@ export default function AdminDashboard() {
   const tabs: { id: Tab; label: string; count: number }[] = [
     { id: 'quotes', label: 'Quote requests', count: data.quotes.length },
     { id: 'contacts', label: 'Contact enquiries', count: data.contacts.length },
-    { id: 'trade', label: 'Trade applications', count: data.tradeApps.length },
   ];
 
   return (
@@ -73,6 +254,12 @@ export default function AdminDashboard() {
           ))}
         </div>
 
+        {status && (
+          <div className="mb-6 rounded-lg border border-sky-700 bg-sky-950/40 p-3 text-sm text-sky-200">
+            {status}
+          </div>
+        )}
+
         {loading ? (
           <p className="text-slate-400 text-sm">Loading leads...</p>
         ) : error ? (
@@ -80,40 +267,26 @@ export default function AdminDashboard() {
             {error}
           </div>
         ) : tab === 'quotes' ? (
-          <LeadTable
-            empty="No quote requests yet."
-            headers={['Name / company', 'Email', 'Postcode', 'Quantity', 'Product', 'Submitted']}
-            rows={data.quotes.map((lead) => [
-              lead.company,
-              lead.email,
-              lead.postcode,
-              lead.quantity,
-              lead.productInterest,
-              lead.date,
-            ])}
-          />
-        ) : tab === 'contacts' ? (
-          <LeadTable
-            empty="No contact enquiries yet."
-            headers={['Name', 'Email', 'Message', 'Submitted']}
-            rows={data.contacts.map((item) => [
-              item.name,
-              item.email,
-              item.message?.slice(0, 80),
-              item.date,
-            ])}
+          <QuoteTable
+            leads={data.quotes}
+            editingId={editingQuoteId}
+            draft={quoteDraft}
+            setDraft={setQuoteDraft}
+            onStartEdit={startQuoteEdit}
+            onCancelEdit={() => setEditingQuoteId(null)}
+            onSaveEdit={saveQuoteEdit}
+            onDelete={removeQuote}
           />
         ) : (
-          <LeadTable
-            empty="No trade applications yet."
-            headers={['Company', 'Contact', 'Email', 'Type', 'Submitted']}
-            rows={data.tradeApps.map((item) => [
-              item.company,
-              item.contact,
-              item.email,
-              item.businessType,
-              item.date,
-            ])}
+          <ContactTable
+            leads={data.contacts}
+            editingId={editingContactId}
+            draft={contactDraft}
+            setDraft={setContactDraft}
+            onStartEdit={startContactEdit}
+            onCancelEdit={() => setEditingContactId(null)}
+            onSaveEdit={saveContactEdit}
+            onDelete={removeContact}
           />
         )}
       </div>
@@ -121,19 +294,43 @@ export default function AdminDashboard() {
   );
 }
 
-function LeadTable({
-  headers,
-  rows,
-  empty,
+function QuoteTable({
+  leads,
+  editingId,
+  draft,
+  setDraft,
+  onStartEdit,
+  onCancelEdit,
+  onSaveEdit,
+  onDelete,
 }: {
-  headers: string[];
-  rows: (string | null | undefined)[][];
-  empty: string;
+  leads: QuoteLead[];
+  editingId: string | null;
+  draft: {
+    companyName: string;
+    contactEmail: string;
+    deliveryPostcode: string;
+    quantity: string;
+    productInterest: string;
+    projectNotes: string;
+  };
+  setDraft: React.Dispatch<React.SetStateAction<{
+    companyName: string;
+    contactEmail: string;
+    deliveryPostcode: string;
+    quantity: string;
+    productInterest: string;
+    projectNotes: string;
+  }>>;
+  onStartEdit: (lead: QuoteLead) => void;
+  onCancelEdit: () => void;
+  onSaveEdit: () => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
-  if (rows.length === 0) {
+  if (leads.length === 0) {
     return (
       <div className="bg-slate-950 border border-slate-800 rounded-xl p-12 text-center text-slate-500 text-sm">
-        {empty}
+        No quote requests yet.
       </div>
     );
   }
@@ -143,23 +340,280 @@ function LeadTable({
       <table className="w-full text-left text-sm">
         <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
           <tr>
-            {headers.map((header) => (
-              <th key={header} className="p-4">
-                {header}
-              </th>
-            ))}
+            <th className="p-4">Name / company</th>
+            <th className="p-4">Email</th>
+            <th className="p-4">Postcode</th>
+            <th className="p-4">Quantity</th>
+            <th className="p-4">Product</th>
+            <th className="p-4">Images</th>
+            <th className="p-4">Submitted</th>
+            <th className="p-4">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-800">
-          {rows.map((row, index) => (
-            <tr key={index} className="hover:bg-slate-900/50 transition">
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="p-4 text-slate-300">
-                  {cell ?? '—'}
+          {leads.map((lead) => {
+            const isEditing = editingId === lead.id;
+            const images = parsePropertyImages(lead.propertyImages);
+            return (
+              <tr key={lead.id ?? lead.email ?? Math.random()} className="hover:bg-slate-900/50 transition align-top">
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.companyName}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, companyName: e.target.value }))}
+                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.company ?? '—'
+                  )}
                 </td>
-              ))}
-            </tr>
-          ))}
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.contactEmail}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, contactEmail: e.target.value }))}
+                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.email ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.deliveryPostcode}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, deliveryPostcode: e.target.value }))}
+                      className="w-36 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm uppercase"
+                    />
+                  ) : (
+                    lead.postcode ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.quantity}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, quantity: e.target.value }))}
+                      className="w-44 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.quantity ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.productInterest}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, productInterest: e.target.value }))}
+                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.productInterest ?? '—'
+                  )}
+                  {isEditing && (
+                    <textarea
+                      value={draft.projectNotes}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, projectNotes: e.target.value }))}
+                      rows={3}
+                      className="mt-2 w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      placeholder="Internal notes"
+                    />
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {images.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {images.map((image, index) => (
+                        <a
+                          key={`${image.filename}-${index}`}
+                          href={image.dataUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block"
+                          title={image.filename}
+                        >
+                          <img
+                            src={image.dataUrl}
+                            alt={image.filename}
+                            className="h-14 w-14 rounded-md border border-slate-700 object-cover"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">{lead.date ?? '—'}</td>
+                <td className="p-4 text-slate-300">
+                  {lead.id ? (
+                    <div className="flex flex-wrap gap-2">
+                      {isEditing ? (
+                        <>
+                          <button
+                            onClick={() => void onSaveEdit()}
+                            className="rounded bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-500"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={onCancelEdit}
+                            className="rounded bg-slate-700 px-3 py-1 text-xs font-semibold text-white hover:bg-slate-600"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => onStartEdit(lead)}
+                            className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => void onDelete(lead.id as string)}
+                            className="rounded bg-rose-700 px-3 py-1 text-xs font-semibold text-white hover:bg-rose-600"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function ContactTable({
+  leads,
+  editingId,
+  draft,
+  setDraft,
+  onStartEdit,
+  onCancelEdit,
+  onSaveEdit,
+  onDelete,
+}: {
+  leads: ContactLead[];
+  editingId: string | null;
+  draft: { name: string; email: string; message: string };
+  setDraft: React.Dispatch<React.SetStateAction<{ name: string; email: string; message: string }>>;
+  onStartEdit: (lead: ContactLead) => void;
+  onCancelEdit: () => void;
+  onSaveEdit: () => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+}) {
+  if (leads.length === 0) {
+    return (
+      <div className="bg-slate-950 border border-slate-800 rounded-xl p-12 text-center text-slate-500 text-sm">
+        No contact enquiries yet.
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-xl overflow-x-auto">
+      <table className="w-full text-left text-sm">
+        <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
+          <tr>
+            <th className="p-4">Name</th>
+            <th className="p-4">Email</th>
+            <th className="p-4">Message</th>
+            <th className="p-4">Submitted</th>
+            <th className="p-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-800">
+          {leads.map((lead) => {
+            const isEditing = editingId === lead.id;
+            return (
+              <tr key={lead.id ?? lead.email ?? Math.random()} className="hover:bg-slate-900/50 transition align-top">
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.name}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, name: e.target.value }))}
+                      className="w-44 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.name ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <input
+                      value={draft.email}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, email: e.target.value }))}
+                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.email ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
+                    <textarea
+                      value={draft.message}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, message: e.target.value }))}
+                      rows={4}
+                      className="w-80 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                    />
+                  ) : (
+                    lead.message?.slice(0, 160) ?? '—'
+                  )}
+                </td>
+                <td className="p-4 text-slate-300">{lead.date ?? '—'}</td>
+                <td className="p-4 text-slate-300">
+                  {lead.id ? (
+                    <div className="flex flex-wrap gap-2">
+                      {isEditing ? (
+                        <>
+                          <button
+                            onClick={() => void onSaveEdit()}
+                            className="rounded bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-500"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={onCancelEdit}
+                            className="rounded bg-slate-700 px-3 py-1 text-xs font-semibold text-white hover:bg-slate-600"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => onStartEdit(lead)}
+                            className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => void onDelete(lead.id as string)}
+                            className="rounded bg-rose-700 px-3 py-1 text-xs font-semibold text-white hover:bg-rose-600"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
