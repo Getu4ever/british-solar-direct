@@ -1,12 +1,20 @@
 'use server';
 
 import type { QuoteRequest, ContactEnquiry } from '@prisma/client';
-import { prisma } from './lib/prisma';
 import {
   sendQuoteNotification,
   sendContactNotification,
 } from './lib/email-service';
 import { isAdminAuthenticated } from './lib/admin-auth';
+import {
+  createQuoteLead,
+  createContactLead,
+  getDashboardLeads,
+  updateQuoteLead,
+  deleteQuoteLead,
+  updateContactLead,
+  deleteContactLead,
+} from './lib/leads-store';
 
 export async function submitQuoteRequest(formData: FormData) {
   const companyName = (formData.get('companyName') as string)?.trim();
@@ -75,17 +83,15 @@ export async function submitQuoteRequest(formData: FormData) {
     : null;
 
   try {
-    await prisma.quoteRequest.create({
-      data: {
-        companyName,
-        contactEmail,
-        contactPhone,
-        deliveryPostcode,
-        productInterest,
-        quantity,
-        projectNotes: notesWithUploads,
-        propertyImages: propertyImagesJson,
-      },
+    await createQuoteLead({
+      companyName,
+      contactEmail,
+      contactPhone,
+      deliveryPostcode,
+      productInterest,
+      quantity,
+      projectNotes: notesWithUploads,
+      propertyImages: propertyImagesJson,
     });
   } catch (dbError) {
     console.error('Quote request save failed; continuing with email delivery:', dbError);
@@ -121,9 +127,7 @@ export async function submitContactEnquiry(formData: FormData) {
   }
 
   try {
-    await prisma.contactEnquiry.create({
-      data: { name, companyName, email, message },
-    });
+    await createContactLead({ name, companyName, email, message });
   } catch (dbError) {
     console.error('Contact enquiry save failed; continuing with email delivery:', dbError);
   }
@@ -144,10 +148,7 @@ export async function getAdminDashboard() {
   }
 
   try {
-    const [quotes, contacts] = await Promise.all([
-      prisma.quoteRequest.findMany({ orderBy: { createdAt: 'desc' } }),
-      prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' } }),
-    ]);
+    const { quotes, contacts } = await getDashboardLeads();
 
     return {
       success: true,
@@ -176,7 +177,14 @@ export async function getAdminDashboard() {
     };
   } catch (error) {
     console.error('Failed to fetch admin dashboard:', error);
-    return { success: false, error: 'Failed to load dashboard data.' };
+    return {
+      success: true,
+      warning: 'Dashboard loaded in fallback mode. Lead storage is currently unavailable on this deployment.',
+      data: {
+        quotes: [],
+        contacts: [],
+      },
+    };
   }
 }
 
@@ -206,16 +214,14 @@ export async function updateQuoteRequest(input: {
   }
 
   try {
-    await prisma.quoteRequest.update({
-      where: { id: input.id },
-      data: {
-        companyName,
-        contactEmail,
-        deliveryPostcode,
-        quantity,
-        productInterest,
-        projectNotes,
-      },
+    await updateQuoteLead({
+      id: input.id,
+      companyName,
+      contactEmail,
+      deliveryPostcode,
+      quantity,
+      productInterest,
+      projectNotes,
     });
 
     return { success: true };
@@ -232,7 +238,7 @@ export async function deleteQuoteRequest(id: string) {
   }
 
   try {
-    await prisma.quoteRequest.delete({ where: { id } });
+    await deleteQuoteLead(id);
     return { success: true };
   } catch (error) {
     console.error('Quote delete error:', error);
@@ -260,10 +266,7 @@ export async function updateContactEnquiry(input: {
   }
 
   try {
-    await prisma.contactEnquiry.update({
-      where: { id: input.id },
-      data: { name, email, message },
-    });
+    await updateContactLead({ id: input.id, name, email, message });
     return { success: true };
   } catch (error) {
     console.error('Contact update error:', error);
@@ -278,7 +281,7 @@ export async function deleteContactEnquiry(id: string) {
   }
 
   try {
-    await prisma.contactEnquiry.delete({ where: { id } });
+    await deleteContactLead(id);
     return { success: true };
   } catch (error) {
     console.error('Contact delete error:', error);

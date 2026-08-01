@@ -1,14 +1,93 @@
 import path from 'path';
+import fs from 'fs';
+import Database from 'better-sqlite3';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { PrismaClient } from '@prisma/client';
+import { getRuntimeDatabaseUrl, isPostgresDatabaseUrl } from './runtime-database';
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
 
+function resolveSqliteUrl(configuredDatabaseUrl?: string | null) {
+  const fallbackUrl = process.env.NODE_ENV === 'production' ? 'file:/tmp/dev.db' : 'file:./dev.db';
+  const databaseUrl = configuredDatabaseUrl || fallbackUrl;
+
+  if (!databaseUrl.startsWith('file:')) {
+    return { databaseUrl, filePath: null as string | null };
+  }
+
+  const rawPath = databaseUrl.slice('file:'.length);
+  const absolutePath = path.isAbsolute(rawPath)
+    ? rawPath
+    : path.resolve(process.cwd(), rawPath);
+
+  const writablePath =
+    process.env.NODE_ENV === 'production' && !absolutePath.startsWith('/tmp/')
+      ? path.join('/tmp', path.basename(absolutePath) || 'dev.db')
+      : absolutePath;
+
+  return {
+    databaseUrl: `file:${writablePath}`,
+    filePath: writablePath,
+  };
+}
+
+function ensureSqliteSchema(filePath: string) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+  const db = new Database(filePath);
+
+  try {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS "QuoteRequest" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "companyName" TEXT NOT NULL,
+        "contactEmail" TEXT NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS "ContactEnquiry" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "companyName" TEXT,
+        "email" TEXT NOT NULL,
+        "message" TEXT NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    const quoteColumns = db
+      .prepare('PRAGMA table_info("QuoteRequest")')
+      .all() as Array<{ name: string }>;
+    const requiredQuoteColumns = [
+      'contactPhone',
+      'deliveryPostcode',
+      'productInterest',
+      'quantity',
+      'projectNotes',
+      'propertyImages',
+    ];
+
+    for (const column of requiredQuoteColumns) {
+      if (!quoteColumns.some((entry) => entry.name === column)) {
+        db.exec(`ALTER TABLE "QuoteRequest" ADD COLUMN "${column}" TEXT;`);
+      }
+    }
+  } finally {
+    db.close();
+  }
+}
+
 function createPrismaClient() {
-  const configuredDatabaseUrl = process.env.DATABASE_URL?.trim();
-  const databaseUrl =
-    configuredDatabaseUrl ||
-    (process.env.NODE_ENV === 'production' ? 'file:/tmp/dev.db' : 'file:./dev.db');
+  const configuredDatabaseUrl = getRuntimeDatabaseUrl();
+  const { databaseUrl, filePath } = resolveSqliteUrl(configuredDatabaseUrl);
+
+  if (isPostgresDatabaseUrl(configuredDatabaseUrl)) {
+    throw new Error('Postgres runtime is handled by the production lead store');
+  }
+
+  if (filePath) {
+    ensureSqliteSchema(filePath);
+  }
 
   const adapter = new PrismaBetterSqlite3({ url: databaseUrl });
 

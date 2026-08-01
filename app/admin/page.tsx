@@ -16,6 +16,7 @@ type QuoteLead = {
   id?: string | null;
   company?: string | null;
   email?: string | null;
+  phone?: string | null;
   postcode?: string | null;
   quantity?: string | null;
   productInterest?: string | null;
@@ -103,6 +104,9 @@ export default function AdminDashboard() {
     if (response.success && response.data) {
       setData(response.data);
       setError(null);
+      if ('warning' in response && response.warning) {
+        setStatus(response.warning);
+      }
     } else {
       setError(response.error ?? 'Unable to load dashboard');
     }
@@ -342,9 +346,11 @@ function QuoteTable({
           <tr>
             <th className="p-4">Name / company</th>
             <th className="p-4">Email</th>
+            <th className="p-4">Phone</th>
             <th className="p-4">Postcode</th>
             <th className="p-4">Quantity</th>
             <th className="p-4">Product</th>
+            <th className="p-4">Notes</th>
             <th className="p-4">Images</th>
             <th className="p-4">Submitted</th>
             <th className="p-4">Actions</th>
@@ -378,6 +384,7 @@ function QuoteTable({
                     lead.email ?? '—'
                   )}
                 </td>
+                <td className="p-4 text-slate-300">{lead.phone ?? '—'}</td>
                 <td className="p-4 text-slate-300">
                   {isEditing ? (
                     <input
@@ -410,14 +417,18 @@ function QuoteTable({
                   ) : (
                     lead.productInterest ?? '—'
                   )}
-                  {isEditing && (
+                </td>
+                <td className="p-4 text-slate-300">
+                  {isEditing ? (
                     <textarea
                       value={draft.projectNotes}
                       onChange={(e) => setDraft((prev) => ({ ...prev, projectNotes: e.target.value }))}
                       rows={3}
-                      className="mt-2 w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      className="w-64 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
                       placeholder="Internal notes"
                     />
+                  ) : (
+                    <span className="whitespace-pre-wrap">{lead.notes ?? '—'}</span>
                   )}
                 </td>
                 <td className="p-4 text-slate-300">
