@@ -47,7 +47,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col gap-4 border-b border-slate-800 pb-6 mb-8 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-white">British Solar Direct</h1>
-            <p className="text-slate-400 text-sm mt-1">Lead management — respond within 4 business hours</p>
+            <p className="text-slate-400 text-sm mt-1">Lead management — respond within 24 business hours</p>
           </div>
           <button
             onClick={handleLogout}

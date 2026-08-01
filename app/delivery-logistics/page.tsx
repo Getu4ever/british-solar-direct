@@ -2,12 +2,12 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
+import { HardHat, HousePlus, Truck } from 'lucide-react';
 import {
   COMPANY,
   DELIVERY_AREAS,
   DELIVERY_EXCLUSIONS,
   PAYMENT_NOTE,
-  SUPPLY_CHAIN,
 } from '../lib/company';
 
 export default function DeliveryLogisticsPage() {
@@ -33,7 +33,7 @@ export default function DeliveryLogisticsPage() {
                 Delivery and installation coordinated by a trusted local builder
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                {COMPANY.director} personally manages pallet delivery, site access, and professional
+                {COMPANY.director} personally manages site delivery, access planning, and professional
                 installation across Nottingham and surrounding areas — so you deal with one reliable
                 contact from quote to completion.
               </p>
@@ -42,55 +42,58 @@ export default function DeliveryLogisticsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mb-10">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+              Installation Workflow
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+              End-to-end delivery and on-site execution
+            </h2>
+          </div>
+
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold text-slate-900">Homeowner delivery</h2>
+              <div className="mb-3 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-amber-400">
+                  <HardHat className="h-5 w-5" aria-hidden="true" />
+                </div>
+              </div>
+              <h2 className="mb-4 text-xl font-bold text-slate-900">Structural Site Prep</h2>
               <p className="text-sm leading-6 text-slate-600">
-                Pallet or panel delivery to residential addresses across Nottinghamshire and the
-                East Midlands. Lead times confirmed at quote stage — typically 2–4 working days on
-                stocked lines.
+                We arrange local safety scaffolding tailored to your home layout. Deliveries of
+                racking and hardware are safely timed to drop exactly when our team arrives.
               </p>
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold text-slate-900">Professional installation</h2>
+              <div className="mb-3 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-amber-400">
+                  <HousePlus className="h-5 w-5" aria-hidden="true" />
+                </div>
+              </div>
+              <h2 className="mb-4 text-xl font-bold text-slate-900">Professional Handover</h2>
               <p className="text-sm leading-6 text-slate-600">
-                Juma&apos;s building team can arrange roof mounting and system installation where
-                required. Tick &ldquo;installation&rdquo; on your quote request and we will include
-                options in your pro-forma.
+                Juma Mohammedi&apos;s electrical and roofing network manages the entire physical
+                mounting, wiring, and panel alignment process on your roof.
               </p>
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold text-slate-900">Trade &amp; container loads</h2>
+              <div className="mb-3 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-amber-400">
+                  <Truck className="h-5 w-5" aria-hidden="true" />
+                </div>
+              </div>
+              <h2 className="mb-4 text-xl font-bold text-slate-900">Nottingham &amp; Midlands Coverage</h2>
               <p className="text-sm leading-6 text-slate-600">
-                Wholesale supply for installers, construction firms, and resellers — from single
-                pallets through to full 20ft and 40ft HQ container loads. Import from China with
-                shipping documentation and customs paperwork handled.
+                We coordinate direct-to-site transit of your premium LONGi EcoLife panels and
+                battery racks across Nottinghamshire, ensuring all parts land cleanly and securely.
               </p>
             </div>
           </div>
         </section>
 
         <HowOrderingWorks showCta={false} />
-
-        <section className="border-y border-slate-200 bg-slate-50">
-          <div className="mx-auto max-w-7xl px-4 py-16">
-            <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
-              Import &amp; wholesale logistics
-            </h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {SUPPLY_CHAIN.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-6 text-slate-600 shadow-sm"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         <section className="border-y border-slate-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-16">
@@ -131,7 +134,7 @@ export default function DeliveryLogisticsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-16">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-900">
                 Delivery FAQ
@@ -140,15 +143,16 @@ export default function DeliveryLogisticsPage() {
                 <div>
                   <p className="font-semibold text-slate-900">Can you deliver to my home?</p>
                   <p className="mt-1">
-                    Yes — most of our customers are local homeowners. Confirm your postcode in the
-                    quote form and we will verify access and delivery options.
+                    Yes. Confirm your postcode and basic driveway or frontage access details in
+                    your quote form, and we will schedule suitable delivery van access directly to
+                    your home site.
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Do I need a forklift or unloading equipment?</p>
+                  <p className="font-semibold text-slate-900">How long does a standard installation take?</p>
                   <p className="mt-1">
-                    Pallet deliveries typically require safe ground-level access. Tell us about your
-                    driveway, lane width, or any access restrictions in your project notes.
+                    Most typical residential arrays take 1 to 2 days to fully mount, wire, and
+                    connect to your home grid once scaffolding is live.
                   </p>
                 </div>
                 <div>
@@ -159,11 +163,10 @@ export default function DeliveryLogisticsPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Do you handle full container orders?</p>
+                  <p className="font-semibold text-slate-900">Are grid approvals handled?</p>
                   <p className="mt-1">
-                    Yes. We import directly from China and can fulfil 20ft and 40ft HQ container
-                    loads for trade buyers. Shipping documentation and customs clearance are
-                    coordinated as part of your order.
+                    Yes. We manage your full DNO grid notification paperwork and arrange final MCS
+                    certification handover end-to-end.
                   </p>
                 </div>
                 <div>
@@ -179,6 +182,30 @@ export default function DeliveryLogisticsPage() {
                 Include your postcode, quantity, and whether you need installation. We respond{' '}
                 {COMPANY.responseTime}.
               </p>
+
+              <ul className="mb-6 space-y-2 text-sm text-slate-300">
+                <li className="flex items-start gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  Site access and delivery timing confirmed in advance.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  Installation options included in your quote by default.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                  DNO paperwork and final MCS handover fully managed.
+                </li>
+              </ul>
+
+              <p className="mb-6 text-sm text-slate-400">
+                Prefer to speak directly? Call{' '}
+                <a href={`tel:${COMPANY.phone}`} className="font-semibold text-amber-400 hover:text-amber-300">
+                  {COMPANY.phoneDisplay}
+                </a>
+                .
+              </p>
+
               <Link
                 href="/project-quote"
                 className="inline-flex rounded-lg bg-amber-500 px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-amber-600"

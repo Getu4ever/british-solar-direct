@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-import { COMPANY } from '../app/lib/company';
+import { COMPANY, MANAGEMENT_STATEMENT } from '../app/lib/company';
 
 const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
@@ -45,9 +45,6 @@ export default function Footer() {
             Tier-1 solar panel supply for Nottingham homeowners and trade buyers. Delivery and
             installation coordinated by {COMPANY.director}.
           </p>
-          <p className="mt-3 text-xs text-slate-500">
-            Director: {COMPANY.director} · {COMPANY.city}
-          </p>
         </div>
 
         <div>
@@ -55,9 +52,9 @@ export default function Footer() {
             Navigation
           </p>
           <div className="space-y-2">
-            <Link href="/products" className="block transition hover:text-white">Products</Link>
+            <Link href="/products" className="block transition hover:text-white">Our Packages</Link>
             <Link href="/installation" className="block transition hover:text-white">Installation</Link>
-            <Link href="/brands" className="block transition hover:text-white">Brands</Link>
+            <Link href="/brands" className="block transition hover:text-white">Why LONGi Tech</Link>
             <Link href="/delivery-logistics" className="block transition hover:text-white">Delivery & Logistics</Link>
             <Link href="/project-quote" className="block transition hover:text-white">Request Quote</Link>
           </div>
@@ -68,7 +65,6 @@ export default function Footer() {
             Company
           </p>
           <div className="space-y-2">
-            <Link href="/trade-account" className="block transition hover:text-white">Trade Account</Link>
             <Link href="/contact" className="block transition hover:text-white">Contact</Link>
             <Link href="/about" className="block transition hover:text-white">About</Link>
             <Link href="/certifications-datasheets" className="block transition hover:text-white">Certifications & Datasheets</Link>
@@ -125,17 +121,7 @@ export default function Footer() {
 
       <div className="border-t border-slate-800">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-3 px-6 py-6 text-xs text-slate-500 md:grid-cols-3 md:px-10 lg:px-16">
-          <p className="text-center md:text-left">
-            Website by{' '}
-            <a
-              href="https://www.karoldigital.co.uk/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-slate-400 transition hover:text-amber-500"
-            >
-              Karol Digital
-            </a>
-          </p>
+          <p className="text-center md:text-left">{MANAGEMENT_STATEMENT}</p>
           <p className="text-center">
             © {new Date().getFullYear()} British Solar Direct. All rights reserved.
           </p>

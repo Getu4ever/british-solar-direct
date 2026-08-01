@@ -27,6 +27,19 @@ export default function ProjectQuotePage() {
 function ProjectQuoteInner() {
   const searchParams = useSearchParams();
   const preselectedProduct = searchParams.get('product') ?? '';
+  const preselectedTier = searchParams.get('tier') ?? '';
+  const preselectedProfile = searchParams.get('profile') ?? '';
+  const preselectedMonthlyBill = searchParams.get('monthlyBill') ?? '';
+
+  const preselectedPackage = products.find((p) => p.slug === preselectedProduct);
+  const defaultQuantity = preselectedPackage ? '1 full turnkey installation package' : '';
+  const defaultProjectNotes = [
+    preselectedProfile ? `Property profile: ${preselectedProfile}` : '',
+    preselectedMonthlyBill ? `Current monthly electricity bill: £${preselectedMonthlyBill}` : '',
+    preselectedTier ? `Estimator tier: ${preselectedTier}` : '',
+  ]
+    .filter(Boolean)
+    .join(' | ');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<{
@@ -78,11 +91,11 @@ function ProjectQuoteInner() {
                 Free Quote
               </p>
               <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Request pricing for your solar panel order
+                Request your fixed solar installation quote
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                Tell us what you need and {COMPANY.director} will confirm stock, guide pricing,
-                delivery timing, and installation options — typically {COMPANY.responseTime}.
+                Tell us about your home, roof layout, and preferred LONGi package. {COMPANY.director}
+                will confirm guide pricing, installation scope, and next steps — typically {COMPANY.responseTime}.
               </p>
             </HeroSlideIn>
           </div>
@@ -121,8 +134,19 @@ function ProjectQuoteInner() {
                 Quote request form
               </h2>
               <p className="mb-6 text-sm text-slate-500">
-                Fields marked with * are required. Most homeowners receive a response the same day.
+                Fields marked with * are required. Your quote includes the full turnkey scope, including scaffolding, labor, DNO paperwork, and certification handover.
               </p>
+
+              {preselectedPackage && (
+                <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-slate-700">
+                  <p className="font-semibold text-slate-900">Estimator or package preselected</p>
+                  <p className="mt-2">
+                    We will build your quote around <span className="font-semibold">{preselectedPackage.name}</span>
+                    {preselectedProfile ? ` for a ${preselectedProfile.toLowerCase()}` : ''}
+                    {preselectedMonthlyBill ? ` with a current monthly bill of £${preselectedMonthlyBill}` : ''}.
+                  </p>
+                </div>
+              )}
 
               <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div>
@@ -205,8 +229,9 @@ function ProjectQuoteInner() {
                     name="quantity"
                     required
                     type="text"
+                    defaultValue={defaultQuantity}
                     className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
-                    placeholder="e.g. 12 panels / 1 pallet / full roof"
+                    placeholder="e.g. 1 full turnkey installation package"
                   />
                 </div>
 
@@ -216,11 +241,11 @@ function ProjectQuoteInner() {
                   </p>
                   <div className="flex flex-wrap gap-4 text-sm">
                     <label className="flex cursor-pointer items-center gap-2">
-                      <input type="radio" name="needsInstallation" value="yes" className="accent-amber-500" />
+                      <input type="radio" name="needsInstallation" value="yes" defaultChecked className="accent-amber-500" />
                       Yes — arrange installation with Juma
                     </label>
                     <label className="flex cursor-pointer items-center gap-2">
-                      <input type="radio" name="needsInstallation" value="no" defaultChecked className="accent-amber-500" />
+                      <input type="radio" name="needsInstallation" value="no" className="accent-amber-500" />
                       No — supply and delivery only
                     </label>
                   </div>
@@ -233,6 +258,7 @@ function ProjectQuoteInner() {
                   <textarea
                     name="projectNotes"
                     rows={5}
+                    defaultValue={defaultProjectNotes}
                     className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
                     placeholder="Roof type, timeline, access notes, or any other requirements."
                   />
@@ -243,7 +269,7 @@ function ProjectQuoteInner() {
                   type="submit"
                   className="w-full rounded-lg bg-amber-500 py-3.5 text-base font-bold text-slate-950 transition hover:bg-amber-600 disabled:bg-slate-300"
                 >
-                  {isSubmitting ? 'Submitting quote request...' : 'Request Free Quote'}
+                  {isSubmitting ? 'Submitting quote request...' : 'Request Fixed Quote'}
                 </button>
               </form>
 
@@ -265,16 +291,16 @@ function ProjectQuoteInner() {
                 <h2 className="mb-4 text-xl font-bold text-slate-900">What happens next</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-600">
                   <p>
-                    <span className="font-semibold text-slate-900">1. Review:</span> We check stock,
-                    delivery postcode, and installation requirements.
+                    <span className="font-semibold text-slate-900">1. Review:</span> We assess your
+                    home profile, roof layout, access notes, and installation scope.
                   </p>
                   <p>
                     <span className="font-semibold text-slate-900">2. Pro-forma:</span> You receive
-                    confirmed pricing and payment details by email.
+                    guide pricing, system scope, and next-step confirmation by email.
                   </p>
                   <p>
-                    <span className="font-semibold text-slate-900">3. Delivery:</span> Juma coordinates
-                    pallet delivery and installation scheduling.
+                    <span className="font-semibold text-slate-900">3. Installation Plan:</span> Juma
+                    coordinates delivery timing, scaffolding, and installation scheduling.
                   </p>
                 </div>
               </div>
@@ -288,9 +314,9 @@ function ProjectQuoteInner() {
                       {COMPANY.phoneDisplay}
                     </a>
                   </p>
-                  <p>Or browse the catalogue first:</p>
+                  <p>Or compare the three installation packages first:</p>
                   <Link href="/products" className="inline-block font-semibold text-amber-400 hover:text-amber-300">
-                    View 6 core Tier-1 modules →
+                    View installation packages →
                   </Link>
                 </div>
               </div>

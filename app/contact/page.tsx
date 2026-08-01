@@ -54,8 +54,8 @@ export default function ContactPage() {
                 Speak with {COMPANY.director}
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                For product advice, quote discussions, delivery planning, or installation enquiries —
-                contact Juma directly or send a message below.
+                For package advice, installation planning, roof suitability questions, or fixed quote
+                discussions, contact Juma directly or send a message below.
               </p>
             </HeroSlideIn>
           </div>
@@ -65,6 +65,10 @@ export default function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">Send an enquiry</h2>
+              <p className="mb-6 text-sm leading-6 text-slate-500">
+                Use this form for general homeowner questions. If you already know your preferred
+                package size, the dedicated quote page will help us respond faster.
+              </p>
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">Name</label>
@@ -112,6 +116,10 @@ export default function ContactPage() {
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Response time</p>
                     <p className="text-sm text-slate-700">Typically {COMPANY.responseTime}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-slate-500">Best for</p>
+                    <p className="text-sm text-slate-700">Homeowner installation enquiries, package questions, and roof-planning discussions</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Address</p>

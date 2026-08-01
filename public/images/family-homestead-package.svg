@@ -1,0 +1,45 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Family Homestead residential solar package</title>
+  <desc id="desc">Illustration of a family home with a larger LONGi solar array and battery-backed turnkey installation.</desc>
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#DBEAFE"/>
+      <stop offset="0.5" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E0F2FE"/>
+    </linearGradient>
+    <linearGradient id="lawn" x1="800" y1="840" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#DCFCE7"/>
+      <stop offset="1" stop-color="#86EFAC"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="265" y1="380" x2="990" y2="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" rx="42" fill="url(#sky)"/>
+  <rect y="850" width="1600" height="350" fill="url(#lawn)"/>
+  <circle cx="1280" cy="215" r="96" fill="#FDE68A"/>
+  <rect x="220" y="560" width="760" height="340" rx="34" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M170 595L585 310L1035 595H170Z" fill="url(#roof)"/>
+  <g fill="#0F172A" stroke="#64748B" stroke-width="4">
+    <rect x="330" y="410" width="100" height="110" rx="10"/>
+    <rect x="445" y="410" width="100" height="110" rx="10"/>
+    <rect x="560" y="410" width="100" height="110" rx="10"/>
+    <rect x="675" y="410" width="100" height="110" rx="10"/>
+    <rect x="790" y="410" width="100" height="110" rx="10"/>
+    <rect x="295" y="530" width="100" height="110" rx="10"/>
+    <rect x="410" y="530" width="100" height="110" rx="10"/>
+    <rect x="525" y="530" width="100" height="110" rx="10"/>
+    <rect x="640" y="530" width="100" height="110" rx="10"/>
+    <rect x="755" y="530" width="100" height="110" rx="10"/>
+  </g>
+  <rect x="1028" y="345" width="330" height="512" rx="30" fill="#FFFBEB" stroke="#FCD34D" stroke-width="4"/>
+  <text x="1068" y="430" fill="#0F172A" font-family="Arial, sans-serif" font-size="44" font-weight="700">Family</text>
+  <text x="1068" y="484" fill="#0F172A" font-family="Arial, sans-serif" font-size="44" font-weight="700">Homestead</text>
+  <rect x="1068" y="550" width="228" height="24" rx="12" fill="#10B981" opacity="0.18"/>
+  <text x="1068" y="628" fill="#0F172A" font-family="Arial, sans-serif" font-size="30" font-weight="700">18 Panels • 8.64kW</text>
+  <text x="1068" y="675" fill="#475569" font-family="Arial, sans-serif" font-size="24">10kWh storage stack</text>
+  <text x="1068" y="718" fill="#475569" font-family="Arial, sans-serif" font-size="24">Most popular family fit</text>
+  <rect x="1068" y="760" width="190" height="56" rx="18" fill="#111827"/>
+  <text x="1100" y="797" fill="#FBBF24" font-family="Arial, sans-serif" font-size="24" font-weight="700">Turnkey Install</text>
+</svg>

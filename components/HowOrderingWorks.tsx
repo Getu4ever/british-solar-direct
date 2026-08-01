@@ -10,7 +10,7 @@ const steps = [
   {
     title: 'Receive your pro-forma',
     description:
-      'We confirm stock, guide pricing, delivery timing, and installation options within 4 business hours.',
+      'We confirm stock, guide pricing, delivery timing, and installation options within 24 business hours.',
   },
   {
     title: 'Confirm & pay',

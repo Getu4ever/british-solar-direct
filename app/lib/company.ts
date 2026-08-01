@@ -7,11 +7,14 @@ export const COMPANY = {
   phone: '+441156712424',
   phoneDisplay: '0115 671 2424',
   email: 'juma@britishsolardirect.co.uk',
-  responseTime: 'within 4 business hours',
+  responseTime: 'within 24 business hours',
 } as const;
 
 export const DIRECTOR_BIO =
   'Juma Mohammedi is a highly sought-after builder in Nottingham with over 20 years in the construction industry. He personally coordinates delivery and professional installation for the majority of our residential customers — around 90% of whom are local homeowners.';
+
+export const MANAGEMENT_STATEMENT =
+  'British Solar Direct is jointly managed and operated by Juma Mohammedi (Construction & Field Operations) & Karol Digital (Digital Infrastructure & Systems).';
 
 export const DELIVERY_AREAS = [
   'Nottingham & Nottinghamshire',

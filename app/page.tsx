@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { submitQuoteRequest } from './actions';
+import Calculator from '../components/Calculator';
 import Footer from '../components/Footer';
 import HeroSlideIn from '../components/HeroSlideIn';
 import HowOrderingWorks from '../components/HowOrderingWorks';
@@ -96,7 +97,7 @@ export default function HomePage() {
                   href="/project-quote"
                   className="rounded-lg bg-amber-500 px-6 py-3 text-base font-bold text-slate-950 transition hover:bg-amber-600"
                 >
-                  Request Free Quote
+                  Request Fixed Quote
                 </Link>
                 <Link
                   href="/products"
@@ -118,22 +119,21 @@ export default function HomePage() {
               </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Director-led quality</p>
+              <p className="font-semibold text-slate-900">0% VAT eligible packages</p>
               <p className="mt-1 text-slate-500">
-                {COMPANY.director} is trusted across Nottingham for 20+ years of premium build work.
+                Our guide prices are structured around full turnkey installations qualifying for green-energy VAT relief.
               </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Supply &amp; install in one plan</p>
+              <p className="font-semibold text-slate-900">MCS and DNO handled</p>
               <p className="mt-1 text-slate-500">
-                Tier-1 panel supply, roof installation, and electrical handover without multiple
-                contractors.
+                We manage the paperwork, electrical coordination, and certification handover without extra admin for you.
               </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Local response times</p>
+              <p className="font-semibold text-slate-900">24 business hour response</p>
               <p className="mt-1 text-slate-500">
-                Free quote, clear timescales, and responsive support from a Nottingham-based team.
+                Clear timescales, fixed quote guidance, and responsive support from a Nottingham-based team.
               </p>
             </div>
           </div>
@@ -145,11 +145,11 @@ export default function HomePage() {
           <div className="mb-12 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
               <h2 className="mb-3 text-3xl font-bold tracking-tight text-slate-900">
-                Six core Tier-1 modules
+                Three Flagship Installation Packages
               </h2>
               <p className="max-w-2xl text-slate-500">
-                A focused catalogue of premium panels for residential rooftops, premium all-black
-                installs, and commercial projects.
+                A focused selection of complete solar setups using premium all-black LONGi EcoLife
+                technology, tailored directly to standard UK home footprints.
               </p>
             </div>
 
@@ -157,16 +157,16 @@ export default function HomePage() {
               href="/products"
               className="text-sm font-semibold text-amber-600 transition hover:text-amber-700"
             >
-              View full catalogue
+              Compare all package options
             </Link>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
+            {products.map((product, index) => (
               <Link
                 key={product.slug}
                 href={`/products/${product.slug}`}
-                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:border-amber-500 hover:shadow-md"
+                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-amber-500 hover:shadow-lg"
               >
                 <div className="mb-5 flex h-64 items-center justify-center rounded-xl bg-slate-100 p-4">
                   <img
@@ -185,34 +185,88 @@ export default function HomePage() {
                   </div>
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      product.availability?.includes('stock')
-                        ? 'bg-emerald-50 text-emerald-700'
-                        : 'bg-amber-50 text-amber-700'
+                      index === 1 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
                     }`}
                   >
-                    {product.availability?.includes('stock') ? 'In stock' : 'Forward order'}
+                    {index === 1 ? 'Most Popular' : 'Turnkey Package'}
                   </span>
                 </div>
 
-                <p className="mb-4 flex-1 text-sm text-slate-500">{product.description}</p>
+                <p className="mb-4 flex-1 text-sm leading-6 text-slate-500">{product.description}</p>
 
                 <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
                   <p>
                     <span className="font-semibold text-slate-900">Guide System Price:</span>{' '}
-                    {guideSystemPriceBySlug[product.slug] ?? 'Complete Package Guide Price: Custom Quote Required'}
+                    {guideSystemPriceBySlug[product.slug] ??
+                      'Complete Package Guide Price: Custom Quote Required'}
                   </p>
-                  <p>
-                    <span className="font-semibold text-slate-900">Power:</span> {product.power}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-slate-900">Category:</span> {product.category}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-slate-900">Lead time:</span> {product.leadTime}
-                  </p>
+                </div>
+
+                <div className="mt-5 text-sm font-semibold text-amber-600">
+                  View package details →
                 </div>
               </Link>
             ))}
+          </div>
+        </section>
+
+        <section className="bg-slate-50 py-6">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                Estimate Your System Size
+              </h2>
+              <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+                Select your property profile below to see a custom turnkey configuration framework
+                using our premium LONGi EcoLife technology.
+              </p>
+            </div>
+
+            <Calculator />
+          </div>
+        </section>
+
+        <section className="bg-white py-16">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-10 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+                  Local Proof
+                </p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                  Why Nottingham homeowners trust our installation process
+                </h2>
+              </div>
+              <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                Homeowners want clear scope, clean workmanship, and one accountable team. That is exactly how our fixed-quote installation model is structured.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                <p className="text-sm leading-7 text-slate-600">
+                  “The quoting process felt far more structured than the usual solar sales approach. Everything from scaffolding to final sign-off was explained clearly before work started.”
+                </p>
+                <p className="mt-5 text-sm font-semibold text-slate-900">Nottingham homeowner brief</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-amber-600">Fixed-scope installation</p>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                <p className="text-sm leading-7 text-slate-600">
+                  “We wanted one team to manage the roof works, electrical handover, and the paperwork. British Solar Direct made it feel like a complete home upgrade rather than a fragmented contractor process.”
+                </p>
+                <p className="mt-5 text-sm font-semibold text-slate-900">East Midlands homeowner brief</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-amber-600">Turnkey delivery</p>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                <p className="text-sm leading-7 text-slate-600">
+                  “The package format made the decision simple. We knew exactly what was included, what our output would be, and what the next steps looked like before committing.”
+                </p>
+                <p className="mt-5 text-sm font-semibold text-slate-900">Family home package brief</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-amber-600">Clear guide pricing</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -223,7 +277,7 @@ export default function HomePage() {
                 <Building2 className="h-7 w-7" />
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                Trust, compliance, and fully protected project delivery
+                Fully Compliant &amp; Certified
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
                 Our turnkey model is built for Nottingham homeowners who want complete peace of
@@ -247,7 +301,7 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Wrench className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">Part P &amp; DNO Approved</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">Part P Approved</h3>
                 <p className="text-sm leading-6 text-slate-600">
                   Full electrical self-certification and official Distribution Network Operator grid
                   notifications handled entirely by our team.
@@ -270,23 +324,26 @@ export default function HomePage() {
 
         <section className="border-t border-slate-800 bg-slate-950 px-4 py-16 text-white">
           <div className="mx-auto max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
-            <h2 className="mb-2 text-center text-2xl font-bold">Request a free quote</h2>
+            <h2 className="mb-2 text-center text-2xl font-bold">Request Your Fixed Quote</h2>
             <p className="mb-6 text-center text-sm text-slate-400">
-              {COMPANY.director} will confirm pricing, stock, delivery, and installation options —{' '}
+              {COMPANY.director} will confirm pricing, system scope, installation timing, and next steps —{' '}
               {COMPANY.responseTime}.
             </p>
 
             <form onSubmit={handleFormSubmit} className="mx-auto max-w-xl space-y-4">
+              <input type="hidden" name="quantity" value="Full home installation system" />
+              <input type="hidden" name="needsInstallation" value="yes" />
+
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Your name or company *
+                  Name *
                 </label>
                 <input
                   name="companyName"
                   required
                   type="text"
                   className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
-                  placeholder="e.g. Your name"
+                  placeholder="e.g. Your full name"
                 />
               </div>
 
@@ -316,42 +373,29 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Delivery postcode *
-                  </label>
-                  <input
-                    name="deliveryPostcode"
-                    required
-                    type="text"
-                    className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm uppercase text-white focus:border-amber-500 focus:outline-none"
-                    placeholder="NG17 8EY"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Estimated quantity *
-                  </label>
-                  <input
-                    name="quantity"
-                    required
-                    type="text"
-                    className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
-                    placeholder="e.g. 12 panels"
-                  />
-                </div>
+              <div>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Address / Postcode *
+                </label>
+                <input
+                  name="deliveryPostcode"
+                  required
+                  type="text"
+                  className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+                  placeholder="House number, street, town, postcode"
+                />
               </div>
 
-              <div className="flex flex-wrap gap-4 text-sm text-slate-300">
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input type="radio" name="needsInstallation" value="yes" defaultChecked className="accent-amber-500" />
-                  Need installation
+              <div>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Project Notes
                 </label>
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input type="radio" name="needsInstallation" value="no" className="accent-amber-500" />
-                  Supply only
-                </label>
+                <textarea
+                  name="projectNotes"
+                  rows={5}
+                  className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
+                  placeholder="Tell us about your roof layout, current electricity use, access constraints, or any installation goals."
+                />
               </div>
 
               <button
@@ -359,7 +403,7 @@ export default function HomePage() {
                 type="submit"
                 className="w-full rounded-lg bg-amber-500 py-3.5 text-base font-bold text-slate-950 transition hover:bg-amber-600 disabled:bg-slate-700"
               >
-                {isSubmitting ? 'Submitting...' : 'Request Free Quote'}
+                {isSubmitting ? 'Submitting...' : 'Request Your Fixed Quote'}
               </button>
 
               <p className="text-center text-xs text-slate-500">

@@ -2,7 +2,21 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
-import { COMPANY, DIRECTOR_BIO, SUPPLY_CHAIN, TARGET_CUSTOMERS } from '../lib/company';
+import { COMPANY, DIRECTOR_BIO } from '../lib/company';
+
+const homeownerProfiles = [
+  '1-2 bedroom homes seeking a compact solar and battery upgrade',
+  '3-4 bedroom family homes targeting stronger daytime bill reduction',
+  'Large detached homes needing higher output and battery resilience',
+  'Homeowners who want one accountable team for quote, install, and compliance',
+];
+
+const servicePillars = [
+  'Fixed-scope turnkey package guidance built around LONGi EcoLife technology',
+  'Professional scaffolding, installation labor, DNO paperwork, and MCS handover managed for you',
+  'Cleaner quoting with battery-backed system tiers matched to real UK home footprints',
+  'Director-led coordination from initial enquiry through to final installation planning',
+];
 
 export default function AboutPage() {
   return (
@@ -24,12 +38,13 @@ export default function AboutPage() {
                 About British Solar Direct
               </p>
               <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Tier-1 solar supply, backed by a trusted Nottingham builder
+                A Nottingham turnkey solar partner built for homeowners
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                We supply premium solar modules to homeowners and trade buyers across Nottingham
-                and the East Midlands — with delivery and installation coordinated by{' '}
-                {COMPANY.director}, a builder trusted by local families for over two decades.
+                British Solar Direct is focused on premium residential solar installation packages
+                for Nottingham and the East Midlands. We build every quote around clear system
+                scope, LONGi EcoLife technology, and trusted local project coordination from{' '}
+                {COMPANY.director}.
               </p>
             </HeroSlideIn>
           </div>
@@ -48,15 +63,15 @@ export default function AboutPage() {
               <div className="space-y-5 text-sm leading-7 text-slate-600">
                 <p>{DIRECTOR_BIO}</p>
                 <p>
-                  Juma handles delivery logistics and on-site installation where required, so
-                  customers deal with one trusted local contact from quote through to completion.
-                  His reputation in the Nottingham building community is built on quality workmanship,
-                  clear communication, and reliable project delivery.
+                  Juma coordinates the physical installation path, site preparation, and on-the-ground
+                  project execution, so homeowners deal with one trusted local contact from quote
+                  through to completion. His reputation in the Nottingham building community is built
+                  on quality workmanship, clear communication, and reliable delivery.
                 </p>
                 <p>
-                  British Solar Direct brings that same standard to solar panel supply — a focused
-                  catalogue of six core Tier-1 modules, transparent quoting, and professional order
-                  coordination for both residential and commercial buyers.
+                  British Solar Direct brings that same standard to residential solar: three flagship
+                  LONGi EcoLife system packages, transparent guide pricing, and a turnkey workflow
+                  that already includes scaffolding, labor, DNO handling, and certification handover.
                 </p>
               </div>
             </div>
@@ -65,7 +80,7 @@ export default function AboutPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
                 <h2 className="mb-4 text-xl font-bold text-slate-900">Who we serve</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-600">
-                  {TARGET_CUSTOMERS.map((customer) => (
+                  {homeownerProfiles.map((customer) => (
                     <p key={customer}>{customer}</p>
                   ))}
                 </div>
@@ -75,16 +90,16 @@ export default function AboutPage() {
                 <h2 className="mb-4 text-xl font-bold">How we work together</h2>
                 <div className="space-y-3 text-sm leading-6 text-slate-300">
                   <p>
-                    <span className="font-semibold text-white">Online:</span> Product catalogue,
-                    quoting, and order coordination through this website.
+                    <span className="font-semibold text-white">Online:</span> Package comparison,
+                    estimator guidance, and fixed-quote enquiries through this website.
                   </p>
                   <p>
                     <span className="font-semibold text-white">On the ground:</span> Juma manages
-                    delivery, site access, and installation scheduling.
+                    delivery timing, site access, and installation scheduling.
                   </p>
                   <p>
-                    <span className="font-semibold text-white">Your quote:</span> Confirmed pricing,
-                    stock, and lead times — typically {COMPANY.responseTime}.
+                    <span className="font-semibold text-white">Your quote:</span> Confirmed system
+                    scope, guide pricing, and next steps — typically {COMPANY.responseTime}.
                   </p>
                 </div>
               </div>
@@ -93,7 +108,7 @@ export default function AboutPage() {
                 href="/project-quote"
                 className="flex items-center justify-center rounded-xl bg-amber-500 py-4 text-base font-bold text-slate-950 transition hover:bg-amber-600"
               >
-                Request a free quote
+                Request a fixed quote
               </Link>
             </div>
           </div>
@@ -103,7 +118,7 @@ export default function AboutPage() {
           <div className="mx-auto max-w-7xl px-4 py-16">
             <h2 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">What we do</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {SUPPLY_CHAIN.map((item) => (
+              {servicePillars.map((item) => (
                 <div
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-sm leading-6 text-slate-600"
@@ -113,9 +128,8 @@ export default function AboutPage() {
               ))}
             </div>
             <p className="mt-6 text-sm leading-6 text-slate-500">
-              For homeowners, Juma coordinates local delivery and installation. For trade buyers, we
-              supply wholesale pallet and full-container orders with import logistics handled end to
-              end.
+              Our model is intentionally narrow: clear residential system packages, local installation
+              coordination, and one accountable route from survey-stage enquiry to installation handover.
             </p>
           </div>
         </section>

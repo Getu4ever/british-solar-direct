@@ -1,0 +1,40 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Cottage Setup residential solar package</title>
+  <desc id="desc">Illustration of a compact cottage home with a small all-black solar array and battery-ready installation styling.</desc>
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E0F2FE"/>
+      <stop offset="0.55" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="800" y1="820" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D1FAE5"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="345" y1="420" x2="900" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="430" y1="430" x2="790" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" rx="42" fill="url(#sky)"/>
+  <rect y="835" width="1600" height="365" fill="url(#ground)"/>
+  <circle cx="1250" cy="220" r="108" fill="#FCD34D" opacity="0.85"/>
+  <rect x="290" y="585" width="650" height="315" rx="32" fill="#FFF7ED" stroke="#FDBA74" stroke-width="6"/>
+  <path d="M230 610L610 340L1000 610H230Z" fill="url(#roof)"/>
+  <rect x="396" y="432" width="118" height="140" rx="10" fill="url(#panel)" stroke="#64748B" stroke-width="4"/>
+  <rect x="530" y="432" width="118" height="140" rx="10" fill="url(#panel)" stroke="#64748B" stroke-width="4"/>
+  <rect x="664" y="432" width="118" height="140" rx="10" fill="url(#panel)" stroke="#64748B" stroke-width="4"/>
+  <rect x="460" y="618" width="150" height="130" rx="18" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+  <rect x="650" y="618" width="180" height="220" rx="22" fill="#E2E8F0"/>
+  <rect x="1065" y="640" width="210" height="165" rx="24" fill="#0F172A"/>
+  <rect x="1090" y="675" width="160" height="18" rx="9" fill="#FBBF24"/>
+  <rect x="1090" y="716" width="115" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="1090" y="744" width="140" height="12" rx="6" fill="#94A3B8"/>
+  <text x="1090" y="622" fill="#0F172A" font-family="Arial, sans-serif" font-size="42" font-weight="700">Cottage Setup</text>
+  <text x="1090" y="880" fill="#0F172A" font-family="Arial, sans-serif" font-size="30" font-weight="700">9 Panels • 4.32kW</text>
+  <text x="1090" y="922" fill="#475569" font-family="Arial, sans-serif" font-size="24">Compact home footprint</text>
+</svg>

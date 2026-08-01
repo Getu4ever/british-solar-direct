@@ -41,7 +41,7 @@ export async function sendQuoteNotification({
     to: ADMIN_EMAIL,
     subject: `New Quote Request - ${companyName}`,
     html: `
-      <h2>New Quote Request — respond within 4 business hours</h2>
+      <h2>New Quote Request — respond within 24 business hours</h2>
       <p><strong>Name / company:</strong> ${companyName}</p>
       <p><strong>Email:</strong> ${contactEmail}</p>
       ${details}
@@ -55,7 +55,7 @@ export async function sendQuoteNotification({
     html: `
       <h2>Thank you, ${companyName}</h2>
       <p>We have received your solar panel quote request.</p>
-      <p><strong>Juma Mohammedi</strong> or a member of the British Solar Direct team will review your requirements and send pricing, lead time, and a pro-forma invoice <strong>within 4 business hours</strong>.</p>
+      <p><strong>Juma Mohammedi</strong> or a member of the British Solar Direct team will review your requirements and send pricing, lead time, and a pro-forma invoice <strong>within 24 business hours</strong>.</p>
       <p>We can also arrange delivery and professional installation across Nottingham and surrounding areas.</p>
       <p>Questions? Call <strong>0115 671 2424</strong> or reply to this email.</p>
       <p>— British Solar Direct</p>

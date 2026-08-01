@@ -15,7 +15,8 @@ export default function PrivacyPage() {
             </h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
               This page explains, in general terms, how British Solar Direct may collect and use
-              information submitted through the website.
+              information submitted by homeowners through quote forms, contact enquiries, and package
+              comparison journeys on the website.
             </p>
           </div>
         </section>
@@ -27,7 +28,8 @@ export default function PrivacyPage() {
                 <h2 className="mb-3 text-xl font-bold text-slate-900">Information you provide</h2>
                 <p>
                   We may collect information you submit through forms on this website, such as your
-                  name, company details, email address, order interest, and message content.
+                  name, address or postcode, email address, package interest, installation preferences,
+                  and message content.
                 </p>
               </div>
 
@@ -35,8 +37,8 @@ export default function PrivacyPage() {
                 <h2 className="mb-3 text-xl font-bold text-slate-900">How information is used</h2>
                 <p>
                   Information submitted through the website may be used to respond to enquiries,
-                  prepare quotes, discuss products, support delivery planning, and improve the
-                  commercial buying experience.
+                  prepare fixed quotes, discuss installation packages, support survey or delivery
+                  planning, and improve the residential homeowner experience.
                 </p>
               </div>
 
@@ -44,7 +46,7 @@ export default function PrivacyPage() {
                 <h2 className="mb-3 text-xl font-bold text-slate-900">Data handling</h2>
                 <p>
                   Information is handled for operational, communication, and customer support
-                  purposes in connection with trade enquiries and commercial requests.
+                  purposes in connection with homeowner installation enquiries and residential quote requests.
                 </p>
               </div>
 
@@ -52,8 +54,7 @@ export default function PrivacyPage() {
                 <h2 className="mb-3 text-xl font-bold text-slate-900">Third-party services</h2>
                 <p>
                   The website may rely on external service providers or technical platforms to
-                  support hosting, communications, analytics, payments, or form handling as the
-                  platform develops.
+                  support hosting, communications, analytics, or form handling as the platform develops.
                 </p>
               </div>
 
