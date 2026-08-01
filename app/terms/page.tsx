@@ -35,8 +35,7 @@ export default function TermsPage() {
                 <h2 className="mb-3 text-xl font-bold text-slate-900">Quotes &amp; pro-forma invoices</h2>
                 <p>
                   Submitting a quote request does not create a binding contract. A supply agreement
-                  is formed only when you approve a pro-forma invoice or complete a confirmed online
-                  checkout. {PAYMENT_NOTE}
+                  is formed only when you approve a pro-forma invoice in writing. {PAYMENT_NOTE}
                 </p>
               </div>
 

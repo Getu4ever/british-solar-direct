@@ -14,7 +14,7 @@ const steps = [
   {
     title: 'Confirm & pay',
     description:
-      'Approve your quote and pay by BACS (pro-forma) or secure card checkout for confirmed orders.',
+      'Approve your quote and pay by BACS using the pro-forma invoice we send over.',
   },
   {
     title: 'Delivery & install',

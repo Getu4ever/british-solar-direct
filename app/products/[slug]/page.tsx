@@ -1,17 +1,14 @@
 'use client';
 
-import { useCart } from '../../../components/CartContext';
-import React, { useState } from 'react';
+import Link from 'next/link';
+import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import { productBySlug, formatPrice } from '../../lib/products';
 import GuidePriceLabel from '../../../components/GuidePriceLabel';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { addToCart } = useCart();
-  const [animatingImage, setAnimatingImage] = useState<string | null>(null);
   const slug = params?.slug as string;
   const product = productBySlug[slug];
 
@@ -52,15 +49,20 @@ export default function ProductDetailPage() {
           <div className="flex flex-col justify-between">
             <div>
               <h1 className="text-3xl font-extrabold tracking-tight mb-2">{product.name}</h1>
-              <p className="text-amber-600 font-bold text-2xl mb-1">
-                {formatPrice(product.priceInPence)}{' '}
-                <span className="text-xs font-normal text-slate-500">/ unit</span>
-              </p>
+              <p className="text-amber-600 font-bold text-2xl mb-2">{formatPrice(product.priceInPence)}</p>
+              <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
+                0% VAT Incentive Applies — Valid when bundled as a full turnkey
+                supply-and-installation package.
+              </div>
               <GuidePriceLabel className="mb-4" />
               <p className="text-slate-600 text-sm leading-relaxed mb-6">{product.description}</p>
             </div>
 
             <div className="border-t border-slate-100 pt-6 space-y-3 text-sm">
+              <div className="flex justify-between border-b border-slate-50 pb-2">
+                <span className="text-slate-500 font-medium">Power:</span>
+                <span className="font-semibold text-slate-800">{product.power}</span>
+              </div>
               <div className="flex justify-between border-b border-slate-50 pb-2">
                 <span className="text-slate-500 font-medium">Module Technology:</span>
                 <span className="font-semibold text-slate-800 text-right">{product.type}</span>
@@ -70,6 +72,14 @@ export default function ProductDetailPage() {
                 <span className="font-semibold text-slate-800">{product.efficiency}</span>
               </div>
               <div className="flex justify-between border-b border-slate-50 pb-2">
+                <span className="text-slate-500 font-medium">Product Warranty:</span>
+                <span className="font-semibold text-slate-800">{product.productWarranty ?? '—'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-50 pb-2">
+                <span className="text-slate-500 font-medium">Linear Performance Warranty:</span>
+                <span className="font-semibold text-slate-800">{product.linearPerformanceWarranty ?? '—'}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-50 pb-2">
                 <span className="text-slate-500 font-medium">Dimensions:</span>
                 <span className="font-semibold text-slate-800 font-mono text-xs">{product.dimensions}</span>
               </div>
@@ -77,62 +87,39 @@ export default function ProductDetailPage() {
                 <span className="text-slate-500 font-medium">Unit Weight:</span>
                 <span className="font-semibold text-slate-800">{product.weight}</span>
               </div>
-              <div className="flex justify-between border-b border-slate-50 pb-2">
-                <span className="text-slate-500 font-medium">Pallet Packaging:</span>
-                <span className="font-semibold text-slate-800">{product.palletQty}</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-50 pb-2">
-                <span className="text-slate-500 font-medium">40ft HQ Container Capacity:</span>
-                <span className="font-semibold text-slate-800">{product.containerQty}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Minimum Order Quantity:</span>
-                <span className="font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-xs">{product.moq}</span>
-              </div>
+            </div>
+
+            <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <h2 className="text-sm font-bold uppercase tracking-wide text-slate-900">
+                Residential layout benefits
+              </h2>
+              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                <li>
+                  Premium sleek all-black aesthetics support cleaner roof integration and stronger
+                  kerb appeal on modern residential properties.
+                </li>
+                <li>
+                  Higher-efficiency cell architecture helps maximize usable generation from limited
+                  home roof area.
+                </li>
+                <li>
+                  Long-term product and performance warranties are designed for predictable household
+                  energy planning and installation confidence.
+                </li>
+                <li>
+                  Optimized dimensions and weight support practical handling, mounting, and array
+                  planning for typical domestic roof structures.
+                </li>
+              </ul>
             </div>
 
             <div className="mt-8 space-y-3">
-              <button
-                onClick={() => {
-                  setAnimatingImage(product.image);
-                  addToCart({
-                    slug,
-                    name: product.name,
-                    price: product.priceInPence,
-                    image: product.image,
-                  });
-                  setTimeout(() => setAnimatingImage(null), 800);
-                }}
-                className="w-full rounded-xl bg-amber-500 py-3.5 text-base font-bold tracking-wide text-slate-950 shadow-sm transition hover:bg-amber-600"
+              <Link
+                href={'/project-quote?product=' + slug}
+                className="block w-full rounded-xl bg-amber-500 py-4 text-center text-base font-extrabold tracking-wide text-slate-950 shadow-sm transition hover:bg-amber-600"
               >
-                Add to Basket
-              </button>
-
-              <button
-                onClick={() => router.push(`/project-quote?product=${slug}`)}
-                className="w-full rounded-xl bg-slate-900 py-3.5 text-base font-bold tracking-wide text-white shadow-sm transition hover:bg-slate-800"
-              >
-                Request Free Quote
-              </button>
-
-              <AnimatePresence>
-                {animatingImage && (
-                  <motion.img
-                    src={animatingImage}
-                    initial={{ position: 'fixed', top: '40%', left: '40%', width: 200, opacity: 1 }}
-                    animate={{
-                      top: 'calc(100vh - 80px)',
-                      left: 'calc(100vw - 80px)',
-                      width: 40,
-                      opacity: 0,
-                      scale: 0.2,
-                    }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    className="fixed z-[99999] pointer-events-none mix-blend-multiply"
-                    alt=""
-                  />
-                )}
-              </AnimatePresence>
+                Request Free Installation Quote
+              </Link>
             </div>
           </div>
         </div>

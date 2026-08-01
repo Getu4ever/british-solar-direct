@@ -123,7 +123,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Phone</p>
-                    <a href="tel:07544414241" className="text-sm text-amber-600 hover:text-amber-700 font-semibold">07544414241</a>
+                    <a href="tel:+441156712424" className="text-sm text-amber-600 hover:text-amber-700 font-semibold">0115 671 2424</a>
                   </div>
                 </div>
               </div>

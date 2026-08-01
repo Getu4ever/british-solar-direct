@@ -43,15 +43,14 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-slate-50 text-slate-900">
       <div className="border-b border-slate-800 bg-slate-950 px-4 py-2.5 text-xs text-slate-300">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 md:flex-row md:items-center">
-          <div>
-            Tier-1 solar panels for Nottingham homeowners &amp; trade buyers — delivery &amp; install
-            by {COMPANY.director}
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 sm:flex-row sm:items-center">
+          <div className="font-medium">
+            Nottingham&apos;s Turnkey Residential Solar Partner — Managed by Juma Mohammedi
           </div>
-          <div className="flex gap-4 text-slate-400">
-            <span>6 core modules</span>
-            <span>Free quotes</span>
-            <span>Local installation</span>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400">
+            <span className="flex items-center gap-1">✨ 20+ Years Excellence</span>
+            <span className="flex items-center gap-1">📋 Free Home Quotes</span>
+            <span className="flex items-center gap-1">🛡️ MCS-Compliant</span>
           </div>
         </div>
       </div>
@@ -73,17 +72,18 @@ export default function HomePage() {
           <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
             <HeroSlideIn className="max-w-3xl">
               <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
-                Nottingham&apos;s trusted solar supply partner
+                Nottingham&apos;s trusted residential supply &amp; install partner
               </span>
 
               <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-6xl">
-                Tier-1 solar panels with local delivery &amp; installation
+                Turnkey home solar installations, managed from first quote to final sign-off
               </h1>
 
               <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-200">
-                British Solar Direct supplies six core Tier-1 modules to homeowners and trade buyers
-                across Nottingham. {COMPANY.director} — a highly sought-after builder with 20+ years
-                of experience — coordinates delivery and professional installation for you.
+                British Solar Direct helps Nottingham homeowners secure premium Tier-1 systems with
+                one accountable team. Led by {COMPANY.director}, a respected local director with over
+                20 years of proven building excellence, we handle supply, installation, electrical
+                compliance, and project completion for you.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -107,22 +107,29 @@ export default function HomePage() {
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 text-sm md:grid-cols-4">
             <div>
-              <p className="font-semibold text-slate-900">Trusted local builder</p>
+              <p className="font-semibold text-slate-900">Turnkey residential service</p>
               <p className="mt-1 text-slate-500">
-                {COMPANY.director} — 20+ years in Nottingham construction.
+                From design-ready quote to commissioning, one local team manages everything.
               </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Tier-1 modules</p>
-              <p className="mt-1 text-slate-500">Six core lines from Trina, LONGi, JA, Jinko &amp; Qcells.</p>
+              <p className="font-semibold text-slate-900">Director-led quality</p>
+              <p className="mt-1 text-slate-500">
+                {COMPANY.director} is trusted across Nottingham for 20+ years of premium build work.
+              </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Delivery &amp; install</p>
-              <p className="mt-1 text-slate-500">One contact from quote through to panels on your roof.</p>
+              <p className="font-semibold text-slate-900">Supply &amp; install in one plan</p>
+              <p className="mt-1 text-slate-500">
+                Tier-1 panel supply, roof installation, and electrical handover without multiple
+                contractors.
+              </p>
             </div>
             <div>
-              <p className="font-semibold text-slate-900">Fast quotes</p>
-              <p className="mt-1 text-slate-500">Pro-forma pricing confirmed {COMPANY.responseTime}.</p>
+              <p className="font-semibold text-slate-900">Local response times</p>
+              <p className="mt-1 text-slate-500">
+                Free quote, clear timescales, and responsive support from a Nottingham-based team.
+              </p>
             </div>
           </div>
         </section>
@@ -204,14 +211,14 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-12 text-center">
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
-                <Home className="h-7 w-7" />
+                <Building2 className="h-7 w-7" />
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                Built for homeowners and trade buyers
+                Trust, compliance, and fully protected project delivery
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Around 90% of our customers are local homeowners. We also import and supply wholesale
-                to installers, construction firms, self-builders, and trade resellers.
+                Our turnkey model is built for Nottingham homeowners who want complete peace of
+                mind, verified compliance, and director-led accountability from start to finish.
               </p>
             </div>
 
@@ -220,10 +227,10 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Home className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">For homeowners</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">MCS Certified Work</h3>
                 <p className="text-sm leading-6 text-slate-600">
-                  Premium Tier-1 panels with delivery and optional installation by a builder trusted
-                  by Nottingham families for over 20 years.
+                  All physical installations are signed off by fully vetted, MCS-registered
+                  engineers, enabling your Smart Export Guarantee (SEG) payments.
                 </p>
               </div>
 
@@ -231,10 +238,10 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Wrench className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">For installers &amp; trade</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">Part P &amp; DNO Approved</h3>
                 <p className="text-sm leading-6 text-slate-600">
-                  Wholesale pallet and container supply — direct China import with customs and
-                  shipping documentation handled. Inverters and mounting kits available on quote.
+                  Full electrical self-certification and official Distribution Network Operator grid
+                  notifications handled entirely by our team.
                 </p>
               </div>
 
@@ -242,17 +249,15 @@ export default function HomePage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
                   <Building2 className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">For construction &amp; projects</h3>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">£5M Public Liability</h3>
                 <p className="text-sm leading-6 text-slate-600">
-                  Full 20ft and 40ft container loads for commercial rooftops, self-build projects,
-                  and larger procurement requirements.
+                  Comprehensive insurance coverage on every project, backed by over 20 years of
+                  premier local construction experience.
                 </p>
               </div>
             </div>
           </div>
         </section>
-
-        <Calculator />
 
         <section className="border-t border-slate-800 bg-slate-950 px-4 py-16 text-white">
           <div className="mx-auto max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
@@ -370,6 +375,8 @@ export default function HomePage() {
             )}
           </div>
         </section>
+
+        <Calculator />
       </div>
 
       <Footer />

@@ -4,8 +4,8 @@ export const COMPANY = {
   directorTitle: 'Company Director & Lead Installer',
   address: 'Southwell Lane, Kirkby-in-Ashfield, Nottingham NG17 8EY',
   city: 'Nottingham',
-  phone: '07544414241',
-  phoneDisplay: '07544 14241',
+  phone: '+441156712424',
+  phoneDisplay: '0115 671 2424',
   email: 'juma@britishsolardirect.co.uk',
   responseTime: 'within 4 business hours',
 } as const;
@@ -32,7 +32,7 @@ export const GUIDE_PRICE_NOTE =
   'Guide price (ex. VAT). Your final quote confirms exact pricing, stock, and delivery.';
 
 export const PAYMENT_NOTE =
-  'New customers: pro-forma invoice and BACS payment after quote approval. Online card checkout available for confirmed orders.';
+  'New customers: pro-forma invoice and BACS payment after quote approval.';
 
 export const SUPPLY_CHAIN = [
   'Import solar panels directly from China to the UK',
@@ -52,28 +52,26 @@ export const TARGET_CUSTOMERS = [
 export type ProductRangeItem = {
   title: string;
   description: string;
-  status: 'in-catalogue' | 'on-request';
+  badge: 'in-catalogue' | 'most-popular' | 'on-request';
 };
 
 export const PRODUCT_RANGE: ProductRangeItem[] = [
   {
-    title: 'Monocrystalline panels (400W–650W)',
-    description: 'Six core Tier-1 lines in our online catalogue — guide prices and UK stock shown below.',
-    status: 'in-catalogue',
+    title: 'The Cottage Setup (4.3kW System)',
+    description:
+      '9 x LONGi 480W All-Black panels paired with a compact 5kWh hybrid battery system. Perfect for smaller 1-2 bedroom homes and tight roof layouts.',
+    badge: 'in-catalogue',
   },
   {
-    title: 'Bifacial panels',
-    description: 'Double-sided modules for higher yield — DeepBlue 650W in catalogue; other lines on request.',
-    status: 'in-catalogue',
+    title: 'The Family Homestead (8.6kW System)',
+    description:
+      '18 x LONGi 480W All-Black panels paired with a premium 10kWh home battery backup. Engineered to completely wipe out daytime electricity bills for standard 3-4 bedroom detached/semi properties.',
+    badge: 'most-popular',
   },
   {
-    title: 'Polycrystalline panels (330W–450W)',
-    description: 'Budget-friendly options for trade and project buyers — available on quote.',
-    status: 'on-request',
-  },
-  {
-    title: 'Inverters, mounting kits, cables & connectors',
-    description: 'Complete system accessories sourced with your panel order — confirm requirements in your quote.',
-    status: 'on-request',
+    title: 'The Estate Powerhouse (12.4kW System)',
+    description:
+      '26 x LONGi 480W All-Black panels paired with a high-capacity 15kWh multi-stack battery bank. Designed for large detached properties, home businesses, and electric vehicle (EV) fast charging integration.',
+    badge: 'on-request',
   },
 ];

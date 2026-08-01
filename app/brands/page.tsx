@@ -16,8 +16,8 @@ const brands = [
     slug: 'longi',
     description:
       'Established solar brand focused on high-performance monocrystalline technology for commercial and large-scale deployment.',
-    featuredProduct: 'Hi-MO 6 Commercial 580W',
-    href: '/products/himo-6-580w',
+    featuredProduct: 'LONGi EcoLife LR7-54HVB-480W',
+    href: '/products/ecolife-lr7-54hvb-480w',
   },
   {
     name: 'JA Solar',

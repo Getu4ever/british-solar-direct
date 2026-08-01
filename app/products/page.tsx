@@ -26,12 +26,13 @@ export default function ProductsPage() {
                 Products
               </p>
               <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Six core Tier-1 modules for homeowners &amp; trade
+                Premium Tier-1 Solar Packages for Homeowners
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                Tier-1 monocrystalline and bifacial modules for homeowners and trade buyers — plus
-                polycrystalline panels and system accessories available on quote. Guide prices shown
-                for in-stock catalogue lines.
+                These six core modules are engineered for residential roof optimization and long-term
+                household performance. Pricing shown reflects estimated full-system supply and
+                professional installation bundles, including scaffolding, DNO approval, and MCS
+                certification sign-off.
               </p>
             </HeroSlideIn>
           </div>
@@ -46,14 +47,12 @@ export default function ProductsPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-900">Supply Model</p>
-                <p className="mt-1 text-sm text-slate-500">
-                  UK stock lines and project-based forward orders
-                </p>
+                <p className="mt-1 text-sm text-slate-500">Complete Turnkey Packages</p>
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-900">Order Support</p>
                 <p className="mt-1 text-sm text-slate-500">
-                  Trade pricing, project quotes, and delivery coordination
+                  Full project management, DNO grid notifications, and MCS handover certificates
                 </p>
               </div>
             </div>
@@ -64,8 +63,8 @@ export default function ProductsPage() {
           <div className="mx-auto max-w-7xl px-4 py-12">
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">Product range</h2>
             <p className="mb-8 max-w-2xl text-sm text-slate-500">
-              Panels listed below are available to browse and quote now. Additional lines and
-              accessories are sourced on request.
+              Turnkey homeowner installation packages built around our flagship LONGi EcoLife
+              480W panel. Complete system delivery, installation, and handover managed by Juma.
             </p>
             <div className="grid gap-6 md:grid-cols-2">
               {PRODUCT_RANGE.map((item) => (
@@ -77,12 +76,16 @@ export default function ProductsPage() {
                     <h3 className="font-bold text-slate-900">{item.title}</h3>
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                        item.status === 'in-catalogue'
-                          ? 'bg-emerald-100 text-emerald-700'
-                          : 'bg-amber-100 text-amber-700'
+                        item.badge === 'on-request'
+                          ? 'bg-amber-100 text-amber-700'
+                          : 'bg-emerald-100 text-emerald-700'
                       }`}
                     >
-                      {item.status === 'in-catalogue' ? 'In catalogue' : 'On request'}
+                      {item.badge === 'in-catalogue'
+                        ? 'IN CATALOGUE'
+                        : item.badge === 'most-popular'
+                          ? 'MOST POPULAR'
+                          : 'ON REQUEST'}
                     </span>
                   </div>
                   <p className="text-sm leading-6 text-slate-600">{item.description}</p>
@@ -133,8 +136,9 @@ export default function ProductsPage() {
 
                 <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
                   <p>
-                    <span className="font-semibold text-slate-900">Guide price:</span>{' '}
-                    {formatPrice(product.priceInPence)} / unit (ex. VAT)
+                    <span className="font-semibold text-slate-900">Estimated System Cost:</span>{' '}
+                    Personalized full-installation pricing is generated via our custom quote engine
+                    form.
                   </p>
                   <p>
                     <span className="font-semibold text-slate-900">Category:</span>{' '}

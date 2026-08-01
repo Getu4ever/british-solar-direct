@@ -37,8 +37,3 @@ model TradeApplication {
   notes        String?
   createdAt    DateTime @default(now())
 }
-
-model ProcessedWebhook {
-  eventId   String   @id
-  createdAt DateTime @default(now())
-}

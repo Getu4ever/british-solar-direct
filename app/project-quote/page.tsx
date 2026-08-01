@@ -91,6 +91,32 @@ function ProjectQuoteInner() {
         <section className="mx-auto max-w-7xl px-4 py-16">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <h2 className="mb-4 text-xl font-bold tracking-tight text-slate-900">
+                  Trust &amp; Compliance
+                </h2>
+                <div className="grid gap-3 md:grid-cols-3">
+                  <div className="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
+                    <p className="mb-2 text-sm font-semibold text-slate-900">MCS Certified Work</p>
+                    <p className="text-sm leading-6 text-slate-600">
+                      All physical installations are signed off by fully vetted, MCS-registered engineers, enabling your Smart Export Guarantee (SEG) payments.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-sky-200 bg-white p-4 shadow-sm">
+                    <p className="mb-2 text-sm font-semibold text-slate-900">Part P &amp; DNO Approved</p>
+                    <p className="text-sm leading-6 text-slate-600">
+                      Full electrical self-certification and official Distribution Network Operator grid notifications handled entirely by our team.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-amber-200 bg-white p-4 shadow-sm">
+                    <p className="mb-2 text-sm font-semibold text-slate-900">£5M Public Liability</p>
+                    <p className="text-sm leading-6 text-slate-600">
+                      Comprehensive insurance coverage on every project, backed by over 20 years of premier local construction experience.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">
                 Quote request form
               </h2>
