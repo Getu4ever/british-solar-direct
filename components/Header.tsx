@@ -28,7 +28,7 @@ export default function Header() {
     { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'Our Packages', href: '/products', icon: ShoppingBagIcon },
     { name: 'Installation', href: '/installation', icon: WrenchScrewdriverIcon },
-    { name: 'Why LONGi Tech', href: '/brands', icon: TagIcon },
+    { name: 'LONGi Tech', href: '/brands', icon: TagIcon },
     { name: 'Delivery', href: '/delivery-logistics', icon: TruckIcon },
     { name: 'Contact', href: '/contact', icon: EnvelopeIcon },
   ];
@@ -69,7 +69,7 @@ export default function Header() {
         {/* Actions */}
         <div className="flex items-center gap-4">
           <Link href="/project-quote" className="hidden md:flex rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-sm transition hover:bg-amber-600">
-            Request a Quote
+            Book a free quote
           </Link>
 
           <button className="md:hidden p-2 text-slate-900" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -98,7 +98,7 @@ export default function Header() {
             )
           ))}
           <Link href="/project-quote" onClick={() => setIsMenuOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-amber-500 py-4 text-slate-950 font-bold text-lg">
-            Request a Quote
+            Book a free quote
           </Link>
         </div>
       )}

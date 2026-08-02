@@ -73,10 +73,10 @@ export default function HomePage() {
               </h1>
 
               <p className="mb-8 max-w-2xl text-lg leading-8 text-slate-200">
-                British Solar Direct helps Nottingham homeowners secure premium Tier-1 systems with
-                one accountable team. Led by {COMPANY.director}, a respected local director with over
-                20 years of proven building excellence, we handle supply, installation, electrical
-                compliance, and project completion for you.
+                British Solar Direct manages turnkey home solar installations from first quote to
+                final sign-off for Nottingham homeowners. Led by {COMPANY.director}, a respected
+                local director with over 20 years of proven building excellence, we handle supply,
+                installation, electrical compliance, and project completion for you.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -84,13 +84,13 @@ export default function HomePage() {
                   href="/project-quote"
                   className="rounded-lg bg-amber-500 px-6 py-3 text-base font-bold text-slate-950 transition hover:bg-amber-600"
                 >
-                  Request Fixed Quote
+                  Get your fixed quote
                 </Link>
                 <Link
                   href="/products"
                   className="rounded-lg border border-slate-500 bg-slate-900/50 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-slate-800/80"
                 >
-                  View System Options
+                  Browse installation packages
                 </Link>
               </div>
             </HeroSlideIn>
@@ -150,9 +150,8 @@ export default function HomePage() {
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {products.map((product, index) => (
-              <Link
+              <article
                 key={product.slug}
-                href={`/products/${product.slug}`}
                 className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-amber-500 hover:shadow-lg"
               >
                 <div className="mb-5 flex h-64 items-center justify-center rounded-xl bg-slate-100 p-4">
@@ -189,10 +188,13 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="mt-5 text-sm font-semibold text-amber-600">
-                  View package details →
-                </div>
-              </Link>
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="mt-5 text-sm font-semibold text-amber-600 transition hover:text-amber-700"
+                >
+                  View {product.name} details →
+                </Link>
+              </article>
             ))}
           </div>
         </section>
@@ -397,9 +399,9 @@ export default function HomePage() {
               <p className="text-center text-xs text-slate-500">
                 Or use the{' '}
                 <Link href="/project-quote" className="text-amber-400 hover:text-amber-300">
-                  full quote form
+                  detailed project quote form
                 </Link>{' '}
-                for product selection and project notes.
+                for package selection and project notes.
               </p>
             </form>
 

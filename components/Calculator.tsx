@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -71,6 +72,7 @@ const tiers = {
 } as const;
 
 export default function Calculator() {
+  const router = useRouter();
   const [selectedProfile, setSelectedProfile] = useState<TierKey>('medium');
   const [monthlyBill, setMonthlyBill] = useState<number>(profileOptions.medium.presetBill);
 
@@ -99,12 +101,23 @@ export default function Calculator() {
   const activeTier = tiers[recommendedTier];
   const ActiveProfileIcon = profileOptions[recommendedTier].icon;
 
-  const quoteParams = new URLSearchParams({
-    product: activeTier.quoteParam,
-    tier: recommendedTier,
-    profile: profileOptions[selectedProfile].description,
-    monthlyBill: String(monthlyBill),
-  }).toString();
+  function persistEstimateAndGo(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    try {
+      sessionStorage.setItem(
+        'bsdQuoteEstimate',
+        JSON.stringify({
+          product: activeTier.quoteParam,
+          tier: recommendedTier,
+          profile: profileOptions[selectedProfile].description,
+          monthlyBill: String(monthlyBill),
+        })
+      );
+    } catch {
+      // Ignore storage failures and continue to the clean quote URL.
+    }
+    router.push('/project-quote');
+  }
 
   const monthlyBillDisplay = monthlyBill >= sliderMax ? '£500+' : `£${monthlyBill}`;
 
@@ -367,10 +380,11 @@ export default function Calculator() {
                 </div>
 
                 <Link
-                  href={`/project-quote?${quoteParams}`}
+                  href="/project-quote"
+                  onClick={persistEstimateAndGo}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 px-6 py-4 text-base font-bold text-slate-950 shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:from-amber-400 hover:to-orange-300 hover:shadow-xl"
                 >
-                  Lock In This Estimate &amp; Request Quote
+                  Request this package quote
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </Link>
               </div>

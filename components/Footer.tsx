@@ -55,8 +55,8 @@ export default function Footer() {
             <a href="/" className="block transition hover:text-white">Home</a>
             <Link href="/products" className="block transition hover:text-white">Our Packages</Link>
             <Link href="/installation" className="block transition hover:text-white">Installation</Link>
-            <Link href="/brands" className="block transition hover:text-white">Why LONGi Tech</Link>
-            <Link href="/delivery-logistics" className="block transition hover:text-white">Delivery & Logistics</Link>
+            <Link href="/brands" className="block transition hover:text-white">LONGi Tech</Link>
+            <Link href="/delivery-logistics" className="block transition hover:text-white">Delivery</Link>
             <Link href="/project-quote" className="block transition hover:text-white">Request Quote</Link>
           </div>
         </div>
@@ -68,7 +68,25 @@ export default function Footer() {
           <div className="space-y-2">
             <Link href="/contact" className="block transition hover:text-white">Contact</Link>
             <Link href="/about" className="block transition hover:text-white">About</Link>
-            <Link href="/certifications-datasheets" className="block transition hover:text-white">Certifications & Datasheets</Link>
+            <Link href="/certifications-datasheets" className="block transition hover:text-white">
+              Certifications
+            </Link>
+            <a
+              href="https://www.longi.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block transition hover:text-white"
+            >
+              LONGi Solar
+            </a>
+            <a
+              href="https://mcscertified.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block transition hover:text-white"
+            >
+              MCS Certified
+            </a>
           </div>
         </div>
 
@@ -129,7 +147,6 @@ export default function Footer() {
           <div className="flex flex-wrap justify-center gap-4 md:justify-end">
             <Link href="/privacy" className="transition hover:text-white">Privacy</Link>
             <Link href="/terms" className="transition hover:text-white">Terms</Link>
-            <Link href="/delivery-logistics" className="transition hover:text-white">Shipping</Link>
           </div>
         </div>
       </div>

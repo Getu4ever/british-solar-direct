@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '../../components/Footer';
@@ -24,12 +24,34 @@ export default function ProjectQuotePage() {
   );
 }
 
+type StoredEstimate = {
+  product?: string;
+  tier?: string;
+  profile?: string;
+  monthlyBill?: string;
+};
+
 function ProjectQuoteInner() {
   const searchParams = useSearchParams();
-  const preselectedProduct = searchParams.get('product') ?? '';
-  const preselectedTier = searchParams.get('tier') ?? '';
-  const preselectedProfile = searchParams.get('profile') ?? '';
-  const preselectedMonthlyBill = searchParams.get('monthlyBill') ?? '';
+  const [storedEstimate, setStoredEstimate] = useState<StoredEstimate | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('bsdQuoteEstimate');
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoredEstimate;
+      sessionStorage.removeItem('bsdQuoteEstimate');
+      setStoredEstimate(parsed);
+    } catch {
+      // Ignore invalid stored estimates.
+    }
+  }, []);
+
+  const preselectedProduct = searchParams.get('product') || storedEstimate?.product || '';
+  const preselectedTier = searchParams.get('tier') || storedEstimate?.tier || '';
+  const preselectedProfile = searchParams.get('profile') || storedEstimate?.profile || '';
+  const preselectedMonthlyBill =
+    searchParams.get('monthlyBill') || storedEstimate?.monthlyBill || '';
 
   const preselectedPackage = products.find((p) => p.slug === preselectedProduct);
   const defaultQuantity = preselectedPackage ? '1 full turnkey installation package' : '';
@@ -148,7 +170,11 @@ function ProjectQuoteInner() {
                 </div>
               )}
 
-              <form onSubmit={handleFormSubmit} className="space-y-5">
+              <form
+                key={`${preselectedProduct}-${preselectedTier}-${preselectedMonthlyBill}`}
+                onSubmit={handleFormSubmit}
+                className="space-y-5"
+              >
                 <input
                   type="hidden"
                   name="quantity"

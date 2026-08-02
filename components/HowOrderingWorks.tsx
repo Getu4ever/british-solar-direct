@@ -65,7 +65,7 @@ export default function HowOrderingWorks({
               href="/project-quote"
               className="inline-flex rounded-lg bg-amber-500 px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
             >
-              Request a free quote
+              Request your free quote
             </Link>
           )}
         </div>
