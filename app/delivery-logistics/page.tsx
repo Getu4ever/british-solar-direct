@@ -41,7 +41,7 @@ export default function DeliveryLogisticsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="mb-10">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
               Installation Workflow
@@ -96,7 +96,7 @@ export default function DeliveryLogisticsPage() {
         <HowOrderingWorks showCta={false} />
 
         <section className="border-y border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
             <div className="grid gap-10 lg:grid-cols-2">
               <div>
                 <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
@@ -133,7 +133,7 @@ export default function DeliveryLogisticsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="grid items-start gap-8 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-900">

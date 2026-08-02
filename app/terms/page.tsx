@@ -6,7 +6,7 @@ export default function TermsPage() {
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
       <div className="flex-1">
         <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
               Terms
             </p>
@@ -18,7 +18,7 @@ export default function TermsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-4xl px-4 py-16">
+        <section className="mx-auto max-w-4xl px-5 py-16 sm:px-6">
           <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
             <div className="space-y-8 text-sm leading-7 text-slate-600">
               <div>

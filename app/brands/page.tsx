@@ -66,7 +66,7 @@ export default function BrandsPage() {
           </div>
         </section>
 
-        <section className="relative mx-auto max-w-7xl px-4 py-16">
+        <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="pointer-events-none absolute inset-x-0 top-10 h-40 bg-gradient-to-b from-amber-50/70 to-transparent" />
           <div className="mb-10 max-w-3xl">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">

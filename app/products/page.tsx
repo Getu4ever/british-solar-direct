@@ -51,7 +51,7 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-8">
+        <section className="mx-auto max-w-7xl px-5 py-8 sm:px-6">
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ring-1 ring-slate-100">
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-2xl bg-slate-50 p-5 transition hover:-translate-y-1 hover:bg-white hover:shadow-md">
@@ -91,7 +91,7 @@ export default function ProductsPage() {
         </section>
 
         <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-12">
+          <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6">
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">Three flagship residential packages</h2>
             <p className="mb-8 max-w-2xl text-sm text-slate-500">
               Turnkey homeowner installation packages built around our flagship LONGi EcoLife
@@ -142,7 +142,7 @@ export default function ProductsPage() {
         </section>
 
         <section className="border-b border-slate-200 bg-slate-50">
-          <div className="mx-auto max-w-7xl px-4 py-14">
+          <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6">
             <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
@@ -276,7 +276,7 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pb-20 pt-4">
+        <section className="mx-auto max-w-7xl px-5 pb-20 pt-4 sm:px-6">
           <div className="mb-8 flex items-center justify-between">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               Package breakdowns

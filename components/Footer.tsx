@@ -52,6 +52,7 @@ export default function Footer() {
             Navigation
           </p>
           <div className="space-y-2">
+            <a href="/" className="block transition hover:text-white">Home</a>
             <Link href="/products" className="block transition hover:text-white">Our Packages</Link>
             <Link href="/installation" className="block transition hover:text-white">Installation</Link>
             <Link href="/brands" className="block transition hover:text-white">Why LONGi Tech</Link>

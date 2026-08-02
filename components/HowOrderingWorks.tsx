@@ -44,7 +44,7 @@ export default function HowOrderingWorks({
           : 'border-y border-slate-200 bg-white py-16'
       }
     >
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p

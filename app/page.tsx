@@ -48,21 +48,8 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-slate-50 text-slate-900">
-      <div className="border-b border-slate-800 bg-slate-950 px-4 py-2.5 text-xs text-slate-300">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 sm:flex-row sm:items-center">
-          <div className="font-medium">
-            Nottingham&apos;s Turnkey Residential Solar Partner — Managed by Juma Mohammedi
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400">
-            <span className="flex items-center gap-1">✨ 20+ Years Excellence</span>
-            <span className="flex items-center gap-1">📋 Free Home Quotes</span>
-            <span className="flex items-center gap-1">🛡️ MCS-Compliant</span>
-          </div>
-        </div>
-      </div>
-
       <div>
-        <section className="relative -mx-6 -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 py-20 text-white shadow-xl lg:-mx-8">
+        <section className="relative -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 py-20 text-white shadow-xl">
           <video
             autoPlay
             loop
@@ -75,7 +62,7 @@ export default function HomePage() {
 
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/22 to-slate-950/8" />
 
-          <div className="relative mx-auto w-full max-w-7xl px-10 md:px-12 lg:px-16">
+          <div className="relative mx-auto w-full max-w-7xl px-8">
             <HeroSlideIn className="max-w-3xl">
               <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
                 Nottingham&apos;s trusted residential supply &amp; install partner
@@ -111,7 +98,7 @@ export default function HomePage() {
         </section>
 
         <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 text-sm md:grid-cols-4">
+          <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 text-sm sm:px-6 md:grid-cols-4">
             <div>
               <p className="font-semibold text-slate-900">Turnkey residential service</p>
               <p className="mt-1 text-slate-500">
@@ -141,7 +128,7 @@ export default function HomePage() {
 
         <HowOrderingWorks />
 
-        <section className="mx-auto w-full max-w-7xl px-4 py-20">
+        <section className="mx-auto w-full max-w-7xl px-5 py-20 sm:px-6">
           <div className="mb-12 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
               <h2 className="mb-3 text-3xl font-bold tracking-tight text-slate-900">
@@ -211,7 +198,7 @@ export default function HomePage() {
         </section>
 
         <section className="bg-slate-50 py-6">
-          <div className="mx-auto max-w-7xl px-4">
+          <div className="mx-auto max-w-7xl px-5 sm:px-6">
             <div className="mb-8 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">
                 Estimate Your System Size
@@ -227,7 +214,7 @@ export default function HomePage() {
         </section>
 
         <section className="bg-white py-16">
-          <div className="mx-auto max-w-7xl px-4">
+          <div className="mx-auto max-w-7xl px-5 sm:px-6">
             <div className="mb-10 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
@@ -271,7 +258,7 @@ export default function HomePage() {
         </section>
 
         <section className="bg-white py-20">
-          <div className="mx-auto max-w-7xl px-4">
+          <div className="mx-auto max-w-7xl px-5 sm:px-6">
             <div className="mb-12 text-center">
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
                 <Building2 className="h-7 w-7" />
@@ -322,7 +309,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="border-t border-slate-800 bg-slate-950 px-4 py-16 text-white">
+        <section className="border-t border-slate-800 bg-slate-950 px-5 py-16 text-white sm:px-6">
           <div className="mx-auto max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
             <h2 className="mb-2 text-center text-2xl font-bold">Request Your Fixed Quote</h2>
             <p className="mb-6 text-center text-sm text-slate-400">

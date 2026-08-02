@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from "next/image";
 import { 
+  HomeIcon,
   ShoppingBagIcon, 
   WrenchScrewdriverIcon,
   TagIcon, 
@@ -24,6 +25,7 @@ export default function Header() {
   }, [pathname]);
 
   const menuItems = [
+    { name: 'Home', href: '/', icon: HomeIcon },
     { name: 'Our Packages', href: '/products', icon: ShoppingBagIcon },
     { name: 'Installation', href: '/installation', icon: WrenchScrewdriverIcon },
     { name: 'Why LONGi Tech', href: '/brands', icon: TagIcon },
@@ -50,10 +52,17 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex">
           {menuItems.map((item) => (
-            <Link key={item.name} href={item.href} className="flex items-center gap-2 hover:text-amber-500 transition">
-              <item.icon className="w-4 h-4" />
-              {item.name}
-            </Link>
+            item.href === '/' ? (
+              <a key={item.name} href={item.href} className="flex items-center gap-2 hover:text-amber-500 transition">
+                <item.icon className="w-4 h-4" />
+                {item.name}
+              </a>
+            ) : (
+              <Link key={item.name} href={item.href} className="flex items-center gap-2 hover:text-amber-500 transition">
+                <item.icon className="w-4 h-4" />
+                {item.name}
+              </Link>
+            )
           ))}
         </nav>
 
@@ -76,10 +85,17 @@ export default function Header() {
             <PhoneIcon className="w-6 h-6" /> 0115 671 2424
           </a>
           {menuItems.map((item) => (
-            <Link key={item.name} href={item.href} onClick={() => setIsMenuOpen(false)} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition">
-              <item.icon className="w-6 h-6 text-amber-500" />
-              {item.name}
-            </Link>
+            item.href === '/' ? (
+              <a key={item.name} href={item.href} onClick={() => setIsMenuOpen(false)} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition">
+                <item.icon className="w-6 h-6 text-amber-500" />
+                {item.name}
+              </a>
+            ) : (
+              <Link key={item.name} href={item.href} onClick={() => setIsMenuOpen(false)} className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition">
+                <item.icon className="w-6 h-6 text-amber-500" />
+                {item.name}
+              </Link>
+            )
           ))}
           <Link href="/project-quote" onClick={() => setIsMenuOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-amber-500 py-4 text-slate-950 font-bold text-lg">
             Request a Quote

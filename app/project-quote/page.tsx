@@ -101,7 +101,7 @@ function ProjectQuoteInner() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
               <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">

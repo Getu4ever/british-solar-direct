@@ -35,7 +35,7 @@ export default function CertificationsDatasheetsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="mb-10">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               Per-product documentation
@@ -82,7 +82,7 @@ export default function CertificationsDatasheetsPage() {
         </section>
 
         <section className="border-y border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
             <div className="grid gap-8 md:grid-cols-3">
               {complianceNotes.map((note) => (
                 <div key={note.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
@@ -94,7 +94,7 @@ export default function CertificationsDatasheetsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16">
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="rounded-2xl border border-slate-200 bg-slate-900 p-8 text-white shadow-sm">
             <h2 className="mb-4 text-xl font-bold">Need help choosing a module?</h2>
             <p className="mb-6 text-sm leading-6 text-slate-300">
