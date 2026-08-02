@@ -31,7 +31,7 @@ function resolveSqliteUrl(configuredDatabaseUrl?: string | null) {
   };
 }
 
-function migrateSqliteColumnRenames(db: Database) {
+function migrateSqliteColumnRenames(db: InstanceType<typeof Database>) {
   const quoteColumns = db
     .prepare('PRAGMA table_info("QuoteRequest")')
     .all() as Array<{ name: string }>;
