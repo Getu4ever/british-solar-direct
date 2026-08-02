@@ -42,7 +42,7 @@ export default function Footer() {
           </Link>
 
           <p className="max-w-sm text-sm leading-6 text-slate-400">
-            Tier-1 solar panel supply for Nottingham homeowners and trade buyers. Delivery and
+            Premium LONGi EcoLife installations for Nottingham homeowners. Delivery and
             installation coordinated by {COMPANY.director}.
           </p>
         </div>

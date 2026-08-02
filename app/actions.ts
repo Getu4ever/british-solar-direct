@@ -17,12 +17,13 @@ import {
 } from './lib/leads-store';
 
 export async function submitQuoteRequest(formData: FormData) {
-  const companyName = (formData.get('companyName') as string)?.trim();
+  const customerName = (formData.get('customerName') as string)?.trim();
   const contactEmail = (formData.get('contactEmail') as string)?.trim().toLowerCase();
   const contactPhone = (formData.get('contactPhone') as string)?.trim();
   const deliveryPostcode = (formData.get('deliveryPostcode') as string)?.trim().toUpperCase() || null;
   const productInterest = (formData.get('productInterest') as string)?.trim() || null;
-  const quantity = (formData.get('quantity') as string)?.trim() || null;
+  const quantity =
+    (formData.get('quantity') as string)?.trim() || '1 full turnkey installation package';
   const projectNotes = (formData.get('projectNotes') as string)?.trim() || null;
   const needsInstallation = formData.get('needsInstallation') === 'yes';
   const propertyImages = formData
@@ -52,10 +53,10 @@ export async function submitQuoteRequest(formData: FormData) {
     }
   }
 
-  if (!companyName || !contactEmail || !contactPhone || !quantity) {
+  if (!customerName || !contactEmail || !contactPhone) {
     return {
       success: false,
-      error: 'Please provide your name, email, phone number, and estimated quantity.',
+      error: 'Please provide your name, email, and phone number.',
     };
   }
 
@@ -84,7 +85,7 @@ export async function submitQuoteRequest(formData: FormData) {
 
   try {
     await createQuoteLead({
-      companyName,
+      customerName,
       contactEmail,
       contactPhone,
       deliveryPostcode,
@@ -99,7 +100,7 @@ export async function submitQuoteRequest(formData: FormData) {
 
   try {
     await sendQuoteNotification({
-      companyName,
+      customerName,
       contactEmail,
       contactPhone,
       deliveryPostcode,
@@ -118,7 +119,7 @@ export async function submitQuoteRequest(formData: FormData) {
 
 export async function submitContactEnquiry(formData: FormData) {
   const name = (formData.get('name') as string)?.trim();
-  const companyName = (formData.get('companyName') as string)?.trim() || null;
+  const propertyName = (formData.get('propertyName') as string)?.trim() || null;
   const email = (formData.get('email') as string)?.trim().toLowerCase();
   const message = (formData.get('message') as string)?.trim();
 
@@ -127,13 +128,13 @@ export async function submitContactEnquiry(formData: FormData) {
   }
 
   try {
-    await createContactLead({ name, companyName, email, message });
+    await createContactLead({ name, propertyName, email, message });
   } catch (dbError) {
     console.error('Contact enquiry save failed; continuing with email delivery:', dbError);
   }
 
   try {
-    await sendContactNotification({ name, companyName, email, message });
+    await sendContactNotification({ name, propertyName, email, message });
     return { success: true };
   } catch (emailError) {
     console.error('Contact submission email failed:', emailError);
@@ -155,7 +156,7 @@ export async function getAdminDashboard() {
       data: {
         quotes: quotes.map((lead: QuoteRequest) => ({
           id: lead.id,
-          company: lead.companyName,
+          customer: lead.customerName,
           email: lead.contactEmail,
           phone: lead.contactPhone,
           postcode: lead.deliveryPostcode,
@@ -168,7 +169,7 @@ export async function getAdminDashboard() {
         contacts: contacts.map((item: ContactEnquiry) => ({
           id: item.id,
           name: item.name,
-          company: item.companyName,
+          property: item.propertyName,
           email: item.email,
           message: item.message,
           date: item.createdAt.toLocaleString('en-GB'),
@@ -190,7 +191,7 @@ export async function getAdminDashboard() {
 
 export async function updateQuoteRequest(input: {
   id: string;
-  companyName: string;
+  customerName: string;
   contactEmail: string;
   deliveryPostcode: string;
   quantity: string;
@@ -202,21 +203,21 @@ export async function updateQuoteRequest(input: {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const companyName = input.companyName.trim();
+  const customerName = input.customerName.trim();
   const contactEmail = input.contactEmail.trim().toLowerCase();
   const deliveryPostcode = input.deliveryPostcode.trim().toUpperCase();
   const quantity = input.quantity.trim();
   const productInterest = input.productInterest?.trim() || null;
   const projectNotes = input.projectNotes?.trim() || null;
 
-  if (!companyName || !contactEmail || !deliveryPostcode || !quantity) {
+  if (!customerName || !contactEmail || !deliveryPostcode || !quantity) {
     return { success: false, error: 'Please complete all required fields.' };
   }
 
   try {
     await updateQuoteLead({
       id: input.id,
-      companyName,
+      customerName,
       contactEmail,
       deliveryPostcode,
       quantity,

@@ -7,24 +7,23 @@ generator client {
 }
 
 model QuoteRequest {
-  id              String   @id @default(uuid())
-  companyName     String
-  contactEmail    String
-  contactPhone    String?
+  id               String   @id @default(uuid())
+  customerName     String
+  contactEmail     String
+  contactPhone     String?
   deliveryPostcode String?
-  productInterest String?
-  quantity        String?
-  projectNotes    String?
-  propertyImages  String?
-  createdAt       DateTime @default(now())
+  productInterest  String?
+  quantity         String?
+  projectNotes     String?
+  propertyImages   String?
+  createdAt        DateTime @default(now())
 }
 
 model ContactEnquiry {
-  id          String   @id @default(uuid())
-  name        String
-  companyName String?
-  email       String
-  message     String
-  createdAt   DateTime @default(now())
+  id           String   @id @default(uuid())
+  name         String
+  propertyName String?
+  email        String
+  message      String
+  createdAt    DateTime @default(now())
 }
-

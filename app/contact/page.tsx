@@ -75,12 +75,12 @@ export default function ContactPage() {
                   <input name="name" required type="text" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="Your name" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-semibold text-slate-900">Company name</label>
-                  <input name="companyName" type="text" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="Company name" />
+                  <label className="mb-1 block text-sm font-semibold text-slate-900">Property name (optional)</label>
+                  <input name="propertyName" type="text" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="e.g. 14 Oak Avenue" />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">Email</label>
-                  <input name="email" required type="email" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="name@company.co.uk" />
+                  <input name="email" required type="email" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="you@email.co.uk" />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">Message</label>

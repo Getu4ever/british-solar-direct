@@ -39,10 +39,10 @@ export const complianceNotes = [
   },
   {
     title: 'Documentation on request',
-    body: 'Full PDF packs are issued with your quote for the specific module line and order volume.',
+    body: 'Full PDF packs are issued with your quote for your chosen LONGi EcoLife installation package.',
   },
   {
     title: 'Installation support',
-    body: 'Juma Mohammedi and the British Solar Direct team can advise on product selection for residential and commercial roofs.',
+    body: 'Juma Mohammedi and the British Solar Direct team can advise on the right LONGi EcoLife package for your home and roof layout.',
   },
 ];

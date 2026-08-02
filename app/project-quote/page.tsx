@@ -149,16 +149,22 @@ function ProjectQuoteInner() {
               )}
 
               <form onSubmit={handleFormSubmit} className="space-y-5">
+                <input
+                  type="hidden"
+                  name="quantity"
+                  value={defaultQuantity || '1 full turnkey installation package'}
+                />
+
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">
-                    Your name or company *
+                    Your name *
                   </label>
                   <input
-                    name="companyName"
+                    name="customerName"
                     required
                     type="text"
                     className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
-                    placeholder="e.g. Ahmed Khan / ABC Electrical Ltd"
+                    placeholder="e.g. John Smith"
                   />
                 </div>
 
@@ -203,7 +209,7 @@ function ProjectQuoteInner() {
 
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">
-                    Product interest
+                    Installation package
                   </label>
                   <select
                     name="productInterest"
@@ -219,20 +225,6 @@ function ProjectQuoteInner() {
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-semibold text-slate-900">
-                    Estimated quantity *
-                  </label>
-                  <input
-                    name="quantity"
-                    required
-                    type="text"
-                    defaultValue={defaultQuantity}
-                    className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-900 outline-none transition focus:border-amber-500"
-                    placeholder="e.g. 1 full turnkey installation package"
-                  />
                 </div>
 
                 <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">

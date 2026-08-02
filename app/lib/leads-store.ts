@@ -19,7 +19,7 @@ async function getLocalPrisma() {
 
 export type QuoteLeadRecord = {
   id: string;
-  companyName: string;
+  customerName: string;
   contactEmail: string;
   contactPhone: string | null;
   deliveryPostcode: string | null;
@@ -33,7 +33,7 @@ export type QuoteLeadRecord = {
 export type ContactLeadRecord = {
   id: string;
   name: string;
-  companyName: string | null;
+  propertyName: string | null;
   email: string;
   message: string;
   createdAt: Date;
@@ -50,6 +50,26 @@ function getPgPool() {
   return globalWithPg.bsdPgPool;
 }
 
+async function migratePgColumnRenames(pool: Pool) {
+  const quoteColumns = await pool.query<{ column_name: string }>(
+    `SELECT column_name FROM information_schema.columns WHERE table_name = 'QuoteRequest'`
+  );
+  const quoteColNames = quoteColumns.rows.map((row) => row.column_name);
+
+  if (quoteColNames.includes('companyName') && !quoteColNames.includes('customerName')) {
+    await pool.query(`ALTER TABLE "QuoteRequest" RENAME COLUMN "companyName" TO "customerName"`);
+  }
+
+  const contactColumns = await pool.query<{ column_name: string }>(
+    `SELECT column_name FROM information_schema.columns WHERE table_name = 'ContactEnquiry'`
+  );
+  const contactColNames = contactColumns.rows.map((row) => row.column_name);
+
+  if (contactColNames.includes('companyName') && !contactColNames.includes('propertyName')) {
+    await pool.query(`ALTER TABLE "ContactEnquiry" RENAME COLUMN "companyName" TO "propertyName"`);
+  }
+}
+
 async function ensurePgSchema() {
   if (!globalWithPg.bsdPgSchemaReady) {
     globalWithPg.bsdPgSchemaReady = (async () => {
@@ -57,7 +77,7 @@ async function ensurePgSchema() {
       await pool.query(`
         CREATE TABLE IF NOT EXISTS "QuoteRequest" (
           "id" TEXT PRIMARY KEY,
-          "companyName" TEXT NOT NULL,
+          "customerName" TEXT NOT NULL,
           "contactEmail" TEXT NOT NULL,
           "contactPhone" TEXT,
           "deliveryPostcode" TEXT,
@@ -71,12 +91,13 @@ async function ensurePgSchema() {
         CREATE TABLE IF NOT EXISTS "ContactEnquiry" (
           "id" TEXT PRIMARY KEY,
           "name" TEXT NOT NULL,
-          "companyName" TEXT,
+          "propertyName" TEXT,
           "email" TEXT NOT NULL,
           "message" TEXT NOT NULL,
           "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
       `);
+      await migratePgColumnRenames(pool);
     })();
   }
 
@@ -89,11 +110,11 @@ export async function createQuoteLead(input: Omit<QuoteLeadRecord, 'id' | 'creat
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO "QuoteRequest" (
-        "id", "companyName", "contactEmail", "contactPhone", "deliveryPostcode", "productInterest", "quantity", "projectNotes", "propertyImages"
+        "id", "customerName", "contactEmail", "contactPhone", "deliveryPostcode", "productInterest", "quantity", "projectNotes", "propertyImages"
       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
       [
         randomUUID(),
-        input.companyName,
+        input.customerName,
         input.contactEmail,
         input.contactPhone,
         input.deliveryPostcode,
@@ -116,9 +137,9 @@ export async function createContactLead(input: Omit<ContactLeadRecord, 'id' | 'c
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO "ContactEnquiry" (
-        "id", "name", "companyName", "email", "message"
+        "id", "name", "propertyName", "email", "message"
       ) VALUES ($1,$2,$3,$4,$5)`,
-      [randomUUID(), input.name, input.companyName, input.email, input.message]
+      [randomUUID(), input.name, input.propertyName, input.email, input.message]
     );
     return;
   }
@@ -139,7 +160,7 @@ export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; 
     return {
       quotes: quoteRows.rows.map((row) => ({
         id: row.id,
-        companyName: row.companyName,
+        customerName: row.customerName,
         contactEmail: row.contactEmail,
         contactPhone: row.contactPhone,
         deliveryPostcode: row.deliveryPostcode,
@@ -152,7 +173,7 @@ export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; 
       contacts: contactRows.rows.map((row) => ({
         id: row.id,
         name: row.name,
-        companyName: row.companyName,
+        propertyName: row.propertyName,
         email: row.email,
         message: row.message,
         createdAt: new Date(row.createdAt),
@@ -171,7 +192,7 @@ export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; 
 
 export async function updateQuoteLead(input: {
   id: string;
-  companyName: string;
+  customerName: string;
   contactEmail: string;
   deliveryPostcode: string;
   quantity: string;
@@ -183,11 +204,11 @@ export async function updateQuoteLead(input: {
     const pool = getPgPool();
     await pool.query(
       `UPDATE "QuoteRequest"
-       SET "companyName"=$2, "contactEmail"=$3, "deliveryPostcode"=$4, "quantity"=$5, "productInterest"=$6, "projectNotes"=$7
+       SET "customerName"=$2, "contactEmail"=$3, "deliveryPostcode"=$4, "quantity"=$5, "productInterest"=$6, "projectNotes"=$7
        WHERE "id"=$1`,
       [
         input.id,
-        input.companyName,
+        input.customerName,
         input.contactEmail,
         input.deliveryPostcode,
         input.quantity,
@@ -202,7 +223,7 @@ export async function updateQuoteLead(input: {
   await prisma.quoteRequest.update({
     where: { id: input.id },
     data: {
-      companyName: input.companyName,
+      customerName: input.customerName,
       contactEmail: input.contactEmail,
       deliveryPostcode: input.deliveryPostcode,
       quantity: input.quantity,

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 type Tab = 'quotes' | 'contacts';
 type QuoteLead = {
   id?: string | null;
-  company?: string | null;
+  customer?: string | null;
   email?: string | null;
   phone?: string | null;
   postcode?: string | null;
@@ -27,6 +27,7 @@ type QuoteLead = {
 type ContactLead = {
   id?: string | null;
   name?: string | null;
+  property?: string | null;
   email?: string | null;
   message?: string | null;
   date?: string | null;
@@ -74,14 +75,14 @@ export default function AdminDashboard() {
   const [editingQuoteId, setEditingQuoteId] = useState<string | null>(null);
   const [editingContactId, setEditingContactId] = useState<string | null>(null);
   const [quoteDraft, setQuoteDraft] = useState<{
-    companyName: string;
+    customerName: string;
     contactEmail: string;
     deliveryPostcode: string;
     quantity: string;
     productInterest: string;
     projectNotes: string;
   }>({
-    companyName: '',
+    customerName: '',
     contactEmail: '',
     deliveryPostcode: '',
     quantity: '',
@@ -127,7 +128,7 @@ export default function AdminDashboard() {
     setEditingQuoteId(lead.id);
     setEditingContactId(null);
     setQuoteDraft({
-      companyName: lead.company ?? '',
+      customerName: lead.customer ?? '',
       contactEmail: lead.email ?? '',
       deliveryPostcode: lead.postcode ?? '',
       quantity: lead.quantity ?? '',
@@ -140,7 +141,7 @@ export default function AdminDashboard() {
     if (!editingQuoteId) return;
     const result = await updateQuoteRequest({
       id: editingQuoteId,
-      companyName: quoteDraft.companyName,
+      customerName: quoteDraft.customerName,
       contactEmail: quoteDraft.contactEmail,
       deliveryPostcode: quoteDraft.deliveryPostcode,
       quantity: quoteDraft.quantity,
@@ -311,7 +312,7 @@ function QuoteTable({
   leads: QuoteLead[];
   editingId: string | null;
   draft: {
-    companyName: string;
+    customerName: string;
     contactEmail: string;
     deliveryPostcode: string;
     quantity: string;
@@ -319,7 +320,7 @@ function QuoteTable({
     projectNotes: string;
   };
   setDraft: React.Dispatch<React.SetStateAction<{
-    companyName: string;
+    customerName: string;
     contactEmail: string;
     deliveryPostcode: string;
     quantity: string;
@@ -344,12 +345,12 @@ function QuoteTable({
       <table className="w-full text-left text-sm">
         <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
           <tr>
-            <th className="p-4">Name / company</th>
+            <th className="p-4">Customer</th>
             <th className="p-4">Email</th>
             <th className="p-4">Phone</th>
             <th className="p-4">Postcode</th>
-            <th className="p-4">Quantity</th>
-            <th className="p-4">Product</th>
+            <th className="p-4">Package scope</th>
+            <th className="p-4">Installation package</th>
             <th className="p-4">Notes</th>
             <th className="p-4">Images</th>
             <th className="p-4">Submitted</th>
@@ -365,12 +366,12 @@ function QuoteTable({
                 <td className="p-4 text-slate-300">
                   {isEditing ? (
                     <input
-                      value={draft.companyName}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, companyName: e.target.value }))}
+                      value={draft.customerName}
+                      onChange={(e) => setDraft((prev) => ({ ...prev, customerName: e.target.value }))}
                       className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
                     />
                   ) : (
-                    lead.company ?? '—'
+                    lead.customer ?? '—'
                   )}
                 </td>
                 <td className="p-4 text-slate-300">
@@ -537,6 +538,7 @@ function ContactTable({
         <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
           <tr>
             <th className="p-4">Name</th>
+            <th className="p-4">Property</th>
             <th className="p-4">Email</th>
             <th className="p-4">Message</th>
             <th className="p-4">Submitted</th>
@@ -559,6 +561,7 @@ function ContactTable({
                     lead.name ?? '—'
                   )}
                 </td>
+                <td className="p-4 text-slate-300">{lead.property ?? '—'}</td>
                 <td className="p-4 text-slate-300">
                   {isEditing ? (
                     <input

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | British Solar Direct",
   },
   description:
-    "Trade solar panels for UK installers, EPCs, wholesalers, and project buyers. Tier-1 manufacturers, UK delivery, and container-based international supply.",
+    "Turnkey LONGi EcoLife solar installations for Nottingham homeowners. Fixed packages, local delivery, and professional installation coordinated by Juma Mohammedi.",
 };
 
 export default function RootLayout({

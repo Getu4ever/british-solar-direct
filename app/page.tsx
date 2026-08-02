@@ -326,7 +326,7 @@ export default function HomePage() {
                   Name *
                 </label>
                 <input
-                  name="companyName"
+                  name="customerName"
                   required
                   type="text"
                   className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"

@@ -5,7 +5,7 @@ const steps = [
   {
     title: 'Request a quote',
     description:
-      'Tell us the panel type, quantity, delivery postcode, and whether you need installation.',
+      'Tell us your preferred installation package, delivery postcode, and whether you need professional installation.',
   },
   {
     title: 'Receive your pro-forma',

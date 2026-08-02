@@ -8,9 +8,6 @@ export type Product = {
   efficiency: string;
   weight: string;
   dimensions: string;
-  palletQty?: string;
-  containerQty?: string;
-  moq?: string;
   description: string;
   category?: string;
   power?: string;

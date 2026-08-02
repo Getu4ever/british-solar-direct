@@ -37,21 +37,6 @@ export const GUIDE_PRICE_NOTE =
 export const PAYMENT_NOTE =
   'New customers: pro-forma invoice and BACS payment after quote approval.';
 
-export const SUPPLY_CHAIN = [
-  'Import solar panels directly from China to the UK',
-  'Sell wholesale to installers, builders, and trade buyers',
-  'Full container loads — 20ft and 40ft HQ',
-  'Shipping documentation and customs paperwork handled',
-] as const;
-
-export const TARGET_CUSTOMERS = [
-  'Homeowners across Nottingham and the East Midlands',
-  'Solar installation companies',
-  'Construction firms and builders',
-  'Self-builders',
-  'Trade buyers and resellers',
-] as const;
-
 export type ProductRangeItem = {
   title: string;
   description: string;

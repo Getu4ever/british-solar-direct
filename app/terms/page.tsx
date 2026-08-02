@@ -12,8 +12,8 @@ export default function TermsPage() {
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">Terms of supply</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
-              General terms for using the British Solar Direct website and purchasing solar modules
-              for residential or commercial use.
+              General terms for using the British Solar Direct website and requesting turnkey
+              LONGi EcoLife solar installations for your home.
             </p>
           </div>
         </section>
@@ -22,12 +22,12 @@ export default function TermsPage() {
           <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
             <div className="space-y-8 text-sm leading-7 text-slate-600">
               <div>
-                <h2 className="mb-3 text-xl font-bold text-slate-900">Residential &amp; trade supply</h2>
+                <h2 className="mb-3 text-xl font-bold text-slate-900">Residential installations</h2>
                 <p>
-                  British Solar Direct supplies Tier-1 solar modules to homeowners, installers, and
-                  commercial buyers. Product listings show guide prices (ex. VAT). Final pricing,
-                  stock availability, and delivery terms are confirmed in your written quote or
-                  pro-forma invoice.
+                  British Solar Direct supplies and installs premium LONGi EcoLife solar systems for
+                  Nottingham homeowners. Package listings show guide prices (0% VAT where applicable).
+                  Final pricing, installation scope, and delivery terms are confirmed in your written
+                  quote or pro-forma invoice.
                 </p>
               </div>
 
@@ -50,12 +50,11 @@ export default function TermsPage() {
               </div>
 
               <div>
-                <h2 className="mb-3 text-xl font-bold text-slate-900">Returns &amp; bulk orders</h2>
+                <h2 className="mb-3 text-xl font-bold text-slate-900">Returns &amp; cancellations</h2>
                 <p>
-                  Solar modules are bulky commercial goods. Returns are handled on a case-by-case
-                  basis for defective or incorrectly supplied product only. Bulk and pallet orders
-                  are non-returnable once dispatched unless agreed in writing beforehand. Report any
-                  transit damage within 24 hours of delivery with photographic evidence.
+                  Solar installations are bespoke goods and services. Cancellations are handled on a
+                  case-by-case basis before equipment is ordered or dispatched. Report any transit
+                  damage within 24 hours of delivery with photographic evidence.
                 </p>
               </div>
 

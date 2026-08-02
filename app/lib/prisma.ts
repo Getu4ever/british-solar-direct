@@ -31,6 +31,30 @@ function resolveSqliteUrl(configuredDatabaseUrl?: string | null) {
   };
 }
 
+function migrateSqliteColumnRenames(db: Database) {
+  const quoteColumns = db
+    .prepare('PRAGMA table_info("QuoteRequest")')
+    .all() as Array<{ name: string }>;
+
+  if (
+    quoteColumns.some((entry) => entry.name === 'companyName') &&
+    !quoteColumns.some((entry) => entry.name === 'customerName')
+  ) {
+    db.exec(`ALTER TABLE "QuoteRequest" RENAME COLUMN "companyName" TO "customerName"`);
+  }
+
+  const contactColumns = db
+    .prepare('PRAGMA table_info("ContactEnquiry")')
+    .all() as Array<{ name: string }>;
+
+  if (
+    contactColumns.some((entry) => entry.name === 'companyName') &&
+    !contactColumns.some((entry) => entry.name === 'propertyName')
+  ) {
+    db.exec(`ALTER TABLE "ContactEnquiry" RENAME COLUMN "companyName" TO "propertyName"`);
+  }
+}
+
 function ensureSqliteSchema(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
@@ -40,7 +64,7 @@ function ensureSqliteSchema(filePath: string) {
     db.exec(`
       CREATE TABLE IF NOT EXISTS "QuoteRequest" (
         "id" TEXT NOT NULL PRIMARY KEY,
-        "companyName" TEXT NOT NULL,
+        "customerName" TEXT NOT NULL,
         "contactEmail" TEXT NOT NULL,
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
@@ -48,12 +72,14 @@ function ensureSqliteSchema(filePath: string) {
       CREATE TABLE IF NOT EXISTS "ContactEnquiry" (
         "id" TEXT NOT NULL PRIMARY KEY,
         "name" TEXT NOT NULL,
-        "companyName" TEXT,
+        "propertyName" TEXT,
         "email" TEXT NOT NULL,
         "message" TEXT NOT NULL,
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+    migrateSqliteColumnRenames(db);
 
     const quoteColumns = db
       .prepare('PRAGMA table_info("QuoteRequest")')
