@@ -94,8 +94,8 @@ export default function ProductsPage() {
           <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6">
             <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">Three flagship residential packages</h2>
             <p className="mb-8 max-w-2xl text-sm text-slate-500">
-              Turnkey homeowner installation packages built around our flagship LONGi EcoLife
-              480W panel. Every guide price includes scaffolding, installation labor, and final compliance certification.
+                  Turnkey homeowner installation packages built around our flagship LONGi EcoLife
+              LR7-54HVB-480M 480W panel. Every guide price includes scaffolding, installation labor, and final compliance certification.
             </p>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {PRODUCT_RANGE.map((item, index) => {
@@ -182,13 +182,13 @@ export default function ProductsPage() {
                   Panel Layout
                 </div>
                 <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  9 x LONGi 480W all-black panels
+                  9 x LONGi LR7-54HVB-480M all-black panels
                 </div>
                 <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  18 x LONGi 480W all-black panels
+                  18 x LONGi LR7-54HVB-480M all-black panels
                 </div>
                 <div className="px-6 py-4 text-sm text-slate-600">
-                  26 x LONGi 480W all-black panels
+                  26 x LONGi LR7-54HVB-480M all-black panels
                 </div>
               </div>
 

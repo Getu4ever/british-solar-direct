@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { productBySlug, formatPrice } from '../../lib/products';
+import { productBySlug, LONGI_ECOLIFE_MODULE } from '../../lib/products';
 import GuidePriceLabel from '../../../components/GuidePriceLabel';
 
 export default function ProductDetailPage() {
@@ -25,6 +25,8 @@ export default function ProductDetailPage() {
       </div>
     );
   }
+
+  const showModuleNameplate = Boolean(product.moduleModel);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-6 md:p-12">
@@ -60,6 +62,14 @@ export default function ProductDetailPage() {
                 <span className="text-slate-500 font-medium">Power:</span>
                 <span className="font-semibold text-slate-800">{product.power}</span>
               </div>
+              {product.moduleModel && (
+                <div className="flex justify-between border-b border-slate-50 pb-2">
+                  <span className="text-slate-500 font-medium">Module Model:</span>
+                  <span className="font-semibold text-slate-800 font-mono text-xs">
+                    {product.moduleModel}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between border-b border-slate-50 pb-2">
                 <span className="text-slate-500 font-medium">Module Technology:</span>
                 <span className="font-semibold text-slate-800 text-right">{product.type}</span>
@@ -120,6 +130,65 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </div>
+
+        {showModuleNameplate && (
+          <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="mb-6 max-w-3xl">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+                Module Nameplate
+              </p>
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                {LONGI_ECOLIFE_MODULE.brand} {LONGI_ECOLIFE_MODULE.model} electrical data
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                STC electrical and compliance values from the manufacturer nameplate for the panel
+                used in this package.
+              </p>
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div>
+                <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-900">
+                  Electrical specifications
+                </h3>
+                <div className="space-y-3 text-sm">
+                  {LONGI_ECOLIFE_MODULE.electricalSpecs.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex justify-between gap-4 border-b border-slate-100 pb-2"
+                    >
+                      <span className="text-slate-500">{row.label}</span>
+                      <span className="shrink-0 font-semibold text-slate-800">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-900">
+                  Testing & compliance
+                </h3>
+                <div className="space-y-3 text-sm">
+                  {LONGI_ECOLIFE_MODULE.complianceSpecs.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex justify-between gap-4 border-b border-slate-100 pb-2"
+                    >
+                      <span className="text-slate-500">{row.label}</span>
+                      <span className="shrink-0 text-right font-semibold text-slate-800">
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-6 text-xs leading-5 text-slate-500">
+                  Values measured at Standard Test Conditions (STC). Full PDF datasheets are issued
+                  with your fixed quote.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

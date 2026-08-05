@@ -3,6 +3,7 @@ import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import { productDatasheets, complianceNotes } from '../lib/datasheets';
 import { COMPANY } from '../lib/company';
+import { LONGI_ECOLIFE_MODULE } from '../lib/products';
 
 export default function CertificationsDatasheetsPage() {
   return (
@@ -24,24 +25,96 @@ export default function CertificationsDatasheetsPage() {
                 Certifications & Datasheets
               </p>
               <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Technical documents for our 6 core Tier-1 modules
+                Technical documents for our LONGi EcoLife modules
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
                 Review product specifications, warranty summaries, and compliance documentation for
-                each module in the British Solar Direct catalogue. Full PDF packs are issued with
-                your quote.
+                the LONGi EcoLife modules used in British Solar Direct packages. Full PDF packs are
+                issued with your quote.
               </p>
             </HeroSlideIn>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+              Module Nameplate
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              {LONGI_ECOLIFE_MODULE.brand} {LONGI_ECOLIFE_MODULE.model}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Electrical and compliance values from the manufacturer nameplate for the 480W
+              all-black module specified across our residential packages.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-900">
+                Electrical specifications
+              </h3>
+              <div className="space-y-3 text-sm">
+                {LONGI_ECOLIFE_MODULE.electricalSpecs.map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex justify-between gap-4 border-b border-slate-100 pb-2"
+                  >
+                    <span className="text-slate-500">{row.label}</span>
+                    <span className="shrink-0 font-semibold text-slate-800">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-slate-900">
+                Testing & compliance
+              </h3>
+              <div className="space-y-3 text-sm">
+                {LONGI_ECOLIFE_MODULE.complianceSpecs.map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex justify-between gap-4 border-b border-slate-100 pb-2"
+                  >
+                    <span className="text-slate-500">{row.label}</span>
+                    <span className="shrink-0 text-right font-semibold text-slate-800">
+                      {row.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 space-y-2 border-t border-slate-100 pt-6 text-sm text-slate-600">
+                <p>
+                  <span className="font-semibold text-slate-900">Technology:</span>{' '}
+                  {LONGI_ECOLIFE_MODULE.technology}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-900">Module efficiency:</span>{' '}
+                  {LONGI_ECOLIFE_MODULE.efficiency}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-900">Dimensions:</span>{' '}
+                  {LONGI_ECOLIFE_MODULE.dimensions}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-900">Unit weight:</span>{' '}
+                  {LONGI_ECOLIFE_MODULE.weight}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-5 pb-16 sm:px-6">
           <div className="mb-10">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Per-product documentation
+              Per-package documentation
             </h2>
             <p className="mt-2 text-sm text-slate-500">
-              Request a quote to receive the complete datasheet pack for your chosen module line.
+              Request a quote to receive the complete datasheet pack for your chosen installation
+              package.
             </p>
           </div>
 
@@ -56,9 +129,10 @@ export default function CertificationsDatasheetsPage() {
                     {entry.brand}
                   </p>
                   <h3 className="text-lg font-bold text-slate-900">{entry.name}</h3>
-                  {entry.power && (
-                    <p className="mt-1 text-sm text-slate-500">{entry.power} module</p>
-                  )}
+                  {entry.power && <p className="mt-1 text-sm text-slate-500">{entry.power}</p>}
+                  <p className="mt-1 font-mono text-xs text-slate-500">
+                    Module: {LONGI_ECOLIFE_MODULE.model}
+                  </p>
                 </div>
 
                 <ul className="mb-6 flex-1 space-y-3">
@@ -96,9 +170,9 @@ export default function CertificationsDatasheetsPage() {
 
         <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="rounded-2xl border border-slate-200 bg-slate-900 p-8 text-white shadow-sm">
-            <h2 className="mb-4 text-xl font-bold">Need help choosing a module?</h2>
+            <h2 className="mb-4 text-xl font-bold">Need help choosing a package?</h2>
             <p className="mb-6 text-sm leading-6 text-slate-300">
-              {COMPANY.director} can advise on the best panel for your roof type, budget, and
+              {COMPANY.director} can advise on the best system size for your roof type, budget, and
               installation requirements. Request a quote or call{' '}
               <a href={`tel:${COMPANY.phone}`} className="font-semibold text-amber-400">
                 {COMPANY.phoneDisplay}
