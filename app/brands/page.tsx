@@ -56,11 +56,11 @@ export default function BrandsPage() {
                 Our Premium Technology Partner: LONGi Solar
               </h1>
               <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
-                We exclusively design and install premium LONGi EcoLife residential systems for
-                Nottingham homeowners. By focusing our turnkey workflow around one world-class
-                technology partner, we deliver cleaner design consistency, stronger manufacturer
-                confidence, and guide pricing that already includes scaffolding, labor, and final
-                compliance handover.
+                We exclusively specify and install premium LONGi EcoLife modules on Nottingham
+                homes, designing each system layout around your roof. By building our turnkey
+                workflow around one world-class manufacturer, we deliver consistent quality,
+                stronger manufacturer backing, and guide pricing that already includes scaffolding,
+                labor, and final compliance handover.
               </p>
             </HeroSlideIn>
           </div>
