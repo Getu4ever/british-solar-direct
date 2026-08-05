@@ -4,7 +4,7 @@ function getSiteUrl(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL;
   if (fromEnv) return fromEnv.replace(/\/$/, '');
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return 'https://british-solar-direct.vercel.app';
+  return 'https://britishsolardirect.co.uk';
 }
 
 export function buildEmailHtml(content: string): string {

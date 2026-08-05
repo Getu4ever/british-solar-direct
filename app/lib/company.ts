@@ -7,6 +7,7 @@ export const COMPANY = {
   phone: '+441156712424',
   phoneDisplay: '0115 671 2424',
   email: 'juma@britishsolardirect.co.uk',
+  website: 'https://britishsolardirect.co.uk',
   responseTime: 'within 24 business hours',
 } as const;
 
