@@ -199,6 +199,34 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="border-y border-slate-200 bg-white py-16">
+          <div className="mx-auto max-w-4xl px-5 sm:px-6">
+            <div className="mb-8 text-center">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+                LONGi EcoLife
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                See the technology behind our packages
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                A short look at LONGi EcoLife — the next-generation modules we specify for Nottingham
+                homeowners who want premium output and a clean all-black finish.
+              </p>
+            </div>
+
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-200">
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src="https://www.youtube.com/embed/AbVRm_UD5uE"
+                title="LONGi EcoLife: Solar modules of the next generation for homeowners with high demands"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </section>
+
         <section className="bg-slate-50 py-6">
           <div className="mx-auto max-w-7xl px-5 sm:px-6">
             <div className="mb-8 text-center">
@@ -229,6 +257,14 @@ export default function HomePage() {
               <p className="max-w-2xl text-sm leading-6 text-slate-600">
                 Homeowners want clear scope, clean workmanship, and one accountable team. That is exactly how our fixed-quote installation model is structured.
               </p>
+            </div>
+
+            <div className="mb-10 overflow-hidden rounded-2xl">
+              <img
+                src="/images/home-local-install.jpg"
+                alt="Finished residential solar installation on a British family home"
+                className="h-64 w-full object-cover object-center md:h-[28rem] md:object-top"
+              />
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">

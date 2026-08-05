@@ -51,28 +51,38 @@ export default function AboutPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-amber-600">
-                Meet {COMPANY.director}
-              </p>
-              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
-                {COMPANY.directorTitle}
-              </h2>
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+            <div>
+              <div className="mb-8 overflow-hidden rounded-2xl">
+                <img
+                  src="/images/about-director-site.jpg"
+                  alt="Director-led solar installation coordination on a residential site"
+                  className="h-full w-full object-cover"
+                />
+              </div>
 
-              <div className="space-y-5 text-sm leading-7 text-slate-600">
-                <p>{DIRECTOR_BIO}</p>
-                <p>
-                  Juma coordinates the physical installation path, site preparation, and on-the-ground
-                  project execution, so homeowners deal with one trusted local contact from quote
-                  through to completion. His reputation in the Nottingham building community is built
-                  on quality workmanship, clear communication, and reliable delivery.
+              <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-amber-600">
+                  Meet {COMPANY.director}
                 </p>
-                <p>
-                  British Solar Direct brings that same standard to residential solar: three flagship
-                  LONGi EcoLife system packages, transparent guide pricing, and a turnkey workflow
-                  that already includes scaffolding, labor, DNO handling, and certification handover.
-                </p>
+                <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
+                  {COMPANY.directorTitle}
+                </h2>
+
+                <div className="space-y-5 text-sm leading-7 text-slate-600">
+                  <p>{DIRECTOR_BIO}</p>
+                  <p>
+                    Juma coordinates the physical installation path, site preparation, and on-the-ground
+                    project execution, so homeowners deal with one trusted local contact from quote
+                    through to completion. His reputation in the Nottingham building community is built
+                    on quality workmanship, clear communication, and reliable delivery.
+                  </p>
+                  <p>
+                    British Solar Direct brings that same standard to residential solar: three flagship
+                    LONGi EcoLife system packages, transparent guide pricing, and a turnkey workflow
+                    that already includes scaffolding, labor, DNO handling, and certification handover.
+                  </p>
+                </div>
               </div>
             </div>
 

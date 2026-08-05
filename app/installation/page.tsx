@@ -8,21 +8,29 @@ const installationSteps = [
     title: 'Site Survey & DNO Approval',
     description:
       "We assess your property's orientation and secure official approvals from the local Distribution Network Operator (DNO) to safely link your panels to the National Grid.",
+    image: '/images/installation-survey.jpg',
+    imageAlt: 'Solar technician surveying a UK residential roof before installation',
   },
   {
     title: 'Precision Scaffolding & Safety',
     description:
       'Our professional local teams deploy safe structural scaffolding matching your specific roof pitch and building layout.',
+    image: '/images/installation-scaffolding.jpg',
+    imageAlt: 'Professional scaffolding prepared around a British home for solar installation',
   },
   {
     title: 'Certified Electrical Hookup',
     description:
       'Juma Mohammedi coordinates fully Part P qualified electrical engineering teams to hook up your LONGi EcoLife panels, hybrid inverters, and battery banks safely.',
+    image: '/images/installation-roof-work.jpg',
+    imageAlt: 'Installers mounting all-black solar panels on a residential roof',
   },
   {
     title: 'MCS Handover Certificate',
     description:
       'We issue your final MCS compliance certificate, fully registering your system so you can instantly cash in on Smart Export Guarantee (SEG) payments for excess grid energy.',
+    image: '/images/installation-handover.jpg',
+    imageAlt: 'Installer and homeowner reviewing the completed solar system handover',
   },
 ];
 
@@ -78,16 +86,27 @@ export default function InstallationPage() {
               return (
                 <article
                   key={step.title}
-                  className="rounded-2xl border border-slate-200 bg-white/95 p-8 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg"
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white/95 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg"
                 >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-amber-400 shadow-sm">
-                    <StepIcon className="h-6 w-6" aria-hidden="true" />
+                  <div className="aspect-[4/3] overflow-hidden bg-slate-100">
+                    <img
+                      src={step.image}
+                      alt={step.imageAlt}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
-                    Step {index + 1}
-                  </p>
-                  <h3 className="mb-3 text-2xl font-bold tracking-tight text-slate-900">{step.title}</h3>
-                  <p className="text-sm leading-7 text-slate-600">{step.description}</p>
+                  <div className="p-8">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-amber-400 shadow-sm">
+                      <StepIcon className="h-6 w-6" aria-hidden="true" />
+                    </div>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
+                      Step {index + 1}
+                    </p>
+                    <h3 className="mb-3 text-2xl font-bold tracking-tight text-slate-900">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm leading-7 text-slate-600">{step.description}</p>
+                  </div>
                 </article>
               );
             })}

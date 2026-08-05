@@ -42,13 +42,26 @@ export default function DeliveryLogisticsPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
-          <div className="mb-10">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
-              Installation Workflow
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-              End-to-end delivery and on-site execution
-            </h2>
+          <div className="mb-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+            <div>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+                Installation Workflow
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                End-to-end delivery and on-site execution
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                Panels, batteries, and racking arrive when scaffolding and the install team are ready —
+                so your driveway stays organised and your project stays on schedule.
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src="/images/delivery-site-drop.jpg"
+                alt="Solar equipment delivered to a residential site ready for installation"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
