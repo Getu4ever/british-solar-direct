@@ -49,7 +49,7 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-slate-50 text-slate-900">
       <div>
-        <section className="relative -mt-8 overflow-hidden rounded-b-[2rem] bg-slate-950 py-20 text-white shadow-xl">
+        <section className="relative -mt-8 overflow-hidden bg-slate-950 py-20 text-white shadow-xl">
           <video
             autoPlay
             loop
