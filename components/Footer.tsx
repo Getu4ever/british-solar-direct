@@ -105,6 +105,15 @@ export default function Footer() {
                 {COMPANY.phoneDisplay}
               </a>
             </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase text-slate-500">Email</p>
+              <a
+                href={`mailto:${COMPANY.email}`}
+                className="transition hover:text-amber-500"
+              >
+                {COMPANY.email}
+              </a>
+            </div>
             {hasSocialLinks && (
               <div>
                 <p className="mb-2 text-[10px] font-bold uppercase text-slate-500">Follow us</p>
