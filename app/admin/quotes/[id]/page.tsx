@@ -209,7 +209,7 @@ export default function QuoteProjectPage() {
   const showProcurement = showsProcurementTracker(project.status);
 
   return (
-    <div className="min-h-screen max-w-[100vw] overflow-x-hidden bg-slate-900 p-4 font-sans text-slate-100 md:p-6 lg:p-8">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-slate-900 p-4 font-sans text-slate-100 md:p-6 lg:p-8">
       <div className="mx-auto w-full min-w-0 max-w-5xl space-y-6">
         <div className="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-start md:justify-between">
           <div>

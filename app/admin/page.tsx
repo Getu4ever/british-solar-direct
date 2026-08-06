@@ -274,7 +274,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen max-w-[100vw] overflow-x-hidden bg-slate-900 p-4 font-sans text-slate-100 md:p-8">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-slate-900 p-4 font-sans text-slate-100 md:p-8">
       <div className="mx-auto w-full min-w-0 max-w-7xl">
         <div className="mb-8 flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-center md:justify-between">
           <div className="min-w-0">
@@ -295,7 +295,7 @@ export default function AdminDashboard() {
 
         <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 shadow-xl sm:p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
               Gross revenue collected
             </p>
             <p className="mt-2 text-xl font-extrabold text-white sm:text-2xl">
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
             </p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 shadow-xl sm:p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
               Capital reinvested
             </p>
             <p className="mt-2 text-xl font-extrabold text-sky-300 sm:text-2xl">
@@ -318,7 +318,7 @@ export default function AdminDashboard() {
             </p>
           </div>
           <div className="rounded-xl border border-amber-700/40 bg-slate-950 p-4 shadow-xl sm:col-span-2 sm:p-5 md:col-span-1">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-500/80">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500/80">
               50/50 equity drawdown pool
             </p>
             <p className="mt-2 text-xl font-extrabold text-amber-400 sm:text-2xl">
@@ -514,8 +514,8 @@ function QuoteTable({
                     <dt className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
                       Contact
                     </dt>
-                    <dd className="break-words text-slate-300">{lead.email ?? '—'}</dd>
-                    <dd className="text-slate-500">{lead.phone ?? '—'}</dd>
+                    <dd className="break-all text-slate-300">{lead.email ?? '—'}</dd>
+                    <dd className="break-words text-slate-500">{lead.phone ?? '—'}</dd>
                     <dd className="break-words text-xs text-slate-500">{lead.postcode ?? '—'}</dd>
                   </div>
                   <div className="min-w-0">

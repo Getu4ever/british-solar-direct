@@ -30,9 +30,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full max-w-full overflow-x-clip antialiased scroll-smooth`}
     >
-      <body className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 overflow-x-hidden">
+      <body className="relative flex min-h-screen max-w-full flex-col overflow-x-clip overscroll-x-none bg-slate-50 text-slate-900 antialiased">
   <RootClientWrapper>
     {children}
   </RootClientWrapper>
