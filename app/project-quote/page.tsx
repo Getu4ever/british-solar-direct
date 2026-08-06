@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
+import UkAddressLookup from '../../components/UkAddressLookup';
 import { submitQuoteRequest } from '../actions';
 import { products } from '../lib/products';
 import { COMPANY } from '../lib/company';
@@ -221,17 +222,12 @@ function ProjectQuoteInner() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-1 block text-sm font-semibold text-slate-900">
-                    Installation location
-                  </label>
-                  <input
-                    name="deliveryPostcode"
-                    type="text"
-                    className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm uppercase text-slate-900 outline-none transition focus:border-amber-500"
-                    placeholder="e.g. Nottingham, NG17 8EY"
-                  />
-                </div>
+                <UkAddressLookup
+                  name="deliveryPostcode"
+                  label="Installation location"
+                  required
+                  variant="light"
+                />
 
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">

@@ -7,6 +7,7 @@ import Calculator from '../components/Calculator';
 import Footer from '../components/Footer';
 import HeroSlideIn from '../components/HeroSlideIn';
 import HowOrderingWorks from '../components/HowOrderingWorks';
+import UkAddressLookup from '../components/UkAddressLookup';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
 import { Home, Wrench, Building2 } from 'lucide-react';
@@ -399,18 +400,12 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Address / Postcode *
-                </label>
-                <input
-                  name="deliveryPostcode"
-                  required
-                  type="text"
-                  className="w-full rounded-lg border border-slate-800 bg-slate-950 p-3 text-sm text-white focus:border-amber-500 focus:outline-none"
-                  placeholder="House number, street, town, postcode"
-                />
-              </div>
+              <UkAddressLookup
+                name="deliveryPostcode"
+                label="Installation address"
+                required
+                variant="dark"
+              />
 
               <div>
                 <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">

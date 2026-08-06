@@ -28,7 +28,7 @@ export async function submitQuoteRequest(formData: FormData) {
   const customerName = (formData.get('customerName') as string)?.trim();
   const contactEmail = (formData.get('contactEmail') as string)?.trim().toLowerCase();
   const contactPhone = (formData.get('contactPhone') as string)?.trim();
-  const deliveryPostcode = (formData.get('deliveryPostcode') as string)?.trim().toUpperCase() || null;
+  const deliveryPostcode = (formData.get('deliveryPostcode') as string)?.trim() || null;
   const productInterest = (formData.get('productInterest') as string)?.trim() || null;
   const quantity =
     (formData.get('quantity') as string)?.trim() || '1 full turnkey installation package';
@@ -361,7 +361,7 @@ export async function updateQuoteRequest(input: {
 
   const customerName = input.customerName.trim();
   const contactEmail = input.contactEmail.trim().toLowerCase();
-  const deliveryPostcode = input.deliveryPostcode.trim().toUpperCase();
+  const deliveryPostcode = input.deliveryPostcode.trim();
   const quantity = input.quantity.trim();
   const productInterest = input.productInterest?.trim() || null;
   const projectNotes = input.projectNotes?.trim() || null;
