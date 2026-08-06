@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RootClientWrapper from "./RootClientWrapper";
@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,13 +36,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full max-w-full overflow-x-clip antialiased scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full max-w-full overflow-x-hidden antialiased`}
     >
-      <body className="relative flex min-h-screen max-w-full flex-col overflow-x-clip overscroll-x-none bg-slate-50 text-slate-900 antialiased">
-  <RootClientWrapper>
-    {children}
-  </RootClientWrapper>
-</body>
+      <body className="relative flex min-h-screen w-full max-w-full flex-col overflow-x-hidden overscroll-x-none touch-pan-y bg-slate-50 text-slate-900 antialiased">
+        <RootClientWrapper>{children}</RootClientWrapper>
+      </body>
     </html>
   );
 }

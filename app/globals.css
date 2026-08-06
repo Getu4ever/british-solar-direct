@@ -38,15 +38,30 @@
 
 /* Kill iOS sideways rubber-band / wobble */
 html {
-  overflow-x: clip;
-  overscroll-behavior-x: none;
+  width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
 }
 
 body {
   font-feature-settings: "kern" 1, "ss01" 1;
-  overflow-x: clip;
-  overscroll-behavior-x: none;
+  width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
   position: relative;
+}
+
+/* Admin dashboard: force vertical-only gestures on iOS Safari */
+.admin-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
