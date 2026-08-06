@@ -35,6 +35,12 @@ type ProjectData = {
   batteryInverterCostPence: number | null;
   scaffoldingCostPence: number | null;
   contractorLaborCostPence: number | null;
+  rackingCablesCostPence: number | null;
+  otherProjectDirectCostPence: number | null;
+  invoiceSystemScope: string | null;
+  invoiceStage1DepositPence: number | null;
+  invoiceStage2HardwarePence: number | null;
+  invoiceStage3BalancePence: number | null;
   date: string;
 };
 
@@ -64,10 +70,31 @@ export default function QuoteProjectPage() {
 
   const [agreedTotalInput, setAgreedTotalInput] = useState('');
   const [paymentTermsNotes, setPaymentTermsNotes] = useState('');
+  const [invoiceSystemScope, setInvoiceSystemScope] = useState('');
+  const [stage1DepositInput, setStage1DepositInput] = useState('');
+  const [stage2HardwareInput, setStage2HardwareInput] = useState('');
+  const [stage3BalanceInput, setStage3BalanceInput] = useState('');
   const [panelCostInput, setPanelCostInput] = useState('');
   const [batteryCostInput, setBatteryCostInput] = useState('');
   const [scaffoldingCostInput, setScaffoldingCostInput] = useState('');
   const [laborCostInput, setLaborCostInput] = useState('');
+  const [rackingCablesCostInput, setRackingCablesCostInput] = useState('');
+  const [otherProjectDirectCostInput, setOtherProjectDirectCostInput] = useState('');
+
+  function hydrateForm(data: ProjectData) {
+    setAgreedTotalInput(penceInputValue(data.agreedTotalPricePence));
+    setPaymentTermsNotes(data.paymentTermsNotes ?? '');
+    setInvoiceSystemScope(data.invoiceSystemScope ?? '');
+    setStage1DepositInput(penceInputValue(data.invoiceStage1DepositPence));
+    setStage2HardwareInput(penceInputValue(data.invoiceStage2HardwarePence));
+    setStage3BalanceInput(penceInputValue(data.invoiceStage3BalancePence));
+    setPanelCostInput(penceInputValue(data.panelCostPence));
+    setBatteryCostInput(penceInputValue(data.batteryInverterCostPence));
+    setScaffoldingCostInput(penceInputValue(data.scaffoldingCostPence));
+    setLaborCostInput(penceInputValue(data.contractorLaborCostPence));
+    setRackingCablesCostInput(penceInputValue(data.rackingCablesCostPence));
+    setOtherProjectDirectCostInput(penceInputValue(data.otherProjectDirectCostPence));
+  }
 
   async function loadProject() {
     const result = await getQuoteProject(id);
@@ -79,12 +106,7 @@ export default function QuoteProjectPage() {
 
     const data = result.data as ProjectData;
     setProject(data);
-    setAgreedTotalInput(penceInputValue(data.agreedTotalPricePence));
-    setPaymentTermsNotes(data.paymentTermsNotes ?? '');
-    setPanelCostInput(penceInputValue(data.panelCostPence));
-    setBatteryCostInput(penceInputValue(data.batteryInverterCostPence));
-    setScaffoldingCostInput(penceInputValue(data.scaffoldingCostPence));
-    setLaborCostInput(penceInputValue(data.contractorLaborCostPence));
+    hydrateForm(data);
     setError(null);
     setLoading(false);
   }
@@ -103,8 +125,18 @@ export default function QuoteProjectPage() {
         batteryInverterCostPence: parsePoundsInput(batteryCostInput),
         scaffoldingCostPence: parsePoundsInput(scaffoldingCostInput),
         contractorLaborCostPence: parsePoundsInput(laborCostInput),
+        rackingCablesCostPence: parsePoundsInput(rackingCablesCostInput),
+        otherProjectDirectCostPence: parsePoundsInput(otherProjectDirectCostInput),
       }),
-    [agreedTotalInput, panelCostInput, batteryCostInput, scaffoldingCostInput, laborCostInput]
+    [
+      agreedTotalInput,
+      panelCostInput,
+      batteryCostInput,
+      scaffoldingCostInput,
+      laborCostInput,
+      rackingCablesCostInput,
+      otherProjectDirectCostInput,
+    ]
   );
 
   async function applyPatch(
@@ -123,12 +155,7 @@ export default function QuoteProjectPage() {
 
     const data = result.data as ProjectData;
     setProject(data);
-    setAgreedTotalInput(penceInputValue(data.agreedTotalPricePence));
-    setPaymentTermsNotes(data.paymentTermsNotes ?? '');
-    setPanelCostInput(penceInputValue(data.panelCostPence));
-    setBatteryCostInput(penceInputValue(data.batteryInverterCostPence));
-    setScaffoldingCostInput(penceInputValue(data.scaffoldingCostPence));
-    setLaborCostInput(penceInputValue(data.contractorLaborCostPence));
+    hydrateForm(data);
     setError(null);
     setStatusMessage(successMessage);
   }
@@ -138,10 +165,16 @@ export default function QuoteProjectPage() {
       {
         agreedTotalPricePence: parsePoundsInput(agreedTotalInput),
         paymentTermsNotes: paymentTermsNotes.trim() || null,
+        invoiceSystemScope: invoiceSystemScope.trim() || null,
+        invoiceStage1DepositPence: parsePoundsInput(stage1DepositInput),
+        invoiceStage2HardwarePence: parsePoundsInput(stage2HardwareInput),
+        invoiceStage3BalancePence: parsePoundsInput(stage3BalanceInput),
         panelCostPence: parsePoundsInput(panelCostInput),
         batteryInverterCostPence: parsePoundsInput(batteryCostInput),
         scaffoldingCostPence: parsePoundsInput(scaffoldingCostInput),
         contractorLaborCostPence: parsePoundsInput(laborCostInput),
+        rackingCablesCostPence: parsePoundsInput(rackingCablesCostInput),
+        otherProjectDirectCostPence: parsePoundsInput(otherProjectDirectCostInput),
       },
       'Commercial and cost fields saved.'
     );
@@ -274,7 +307,8 @@ export default function QuoteProjectPage() {
             <div>
               <h2 className="text-lg font-bold text-white">Pro-forma &amp; payment terms</h2>
               <p className="mt-1 text-sm text-slate-400">
-                Set the agreed turnkey price and any BACS notes, then generate a printable PDF.
+                Set the agreed turnkey price, system scope, and milestone schedule, then generate a
+                printable PDF.
               </p>
             </div>
             <Link
@@ -299,6 +333,60 @@ export default function QuoteProjectPage() {
                 onChange={(e) => setAgreedTotalInput(e.target.value)}
                 className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
                 placeholder="e.g. 9750.00"
+              />
+            </label>
+            <label className="block text-sm md:col-span-2">
+              <span className="mb-1 block font-semibold text-slate-300">
+                System configuration details
+              </span>
+              <input
+                type="text"
+                value={invoiceSystemScope}
+                onChange={(e) => setInvoiceSystemScope(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+                placeholder="e.g. 18x LONGi EcoLife 480W Panels + 10kWh Battery + SolaX Hybrid Inverter"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block font-semibold text-slate-300">
+                Stage 1: Booking Deposit (£)
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={stage1DepositInput}
+                onChange={(e) => setStage1DepositInput(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+                placeholder="e.g. 975.00"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block font-semibold text-slate-300">
+                Stage 2: Hardware Delivery Allocation (£)
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={stage2HardwareInput}
+                onChange={(e) => setStage2HardwareInput(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+                placeholder="e.g. 5850.00"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block font-semibold text-slate-300">
+                Stage 3: Final Handover Balance (£)
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={stage3BalanceInput}
+                onChange={(e) => setStage3BalanceInput(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+                placeholder="e.g. 2925.00"
               />
             </label>
             <label className="block text-sm md:col-span-2">
@@ -405,6 +493,32 @@ export default function QuoteProjectPage() {
                 step="0.01"
                 value={laborCostInput}
                 onChange={(e) => setLaborCostInput(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block font-semibold text-slate-300">
+                Racking, cables, &amp; isolators cost (£)
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={rackingCablesCostInput}
+                onChange={(e) => setRackingCablesCostInput(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block font-semibold text-slate-300">
+                Other project direct costs (£)
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={otherProjectDirectCostInput}
+                onChange={(e) => setOtherProjectDirectCostInput(e.target.value)}
                 className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white outline-none focus:border-amber-500"
               />
             </label>

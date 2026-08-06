@@ -22,6 +22,15 @@ const PROCUREMENT_STATUSES: PipelineStatus[] = [
   'completed_paid',
 ];
 
+export type ProjectCostFields = {
+  panelCostPence?: number | null;
+  batteryInverterCostPence?: number | null;
+  scaffoldingCostPence?: number | null;
+  contractorLaborCostPence?: number | null;
+  rackingCablesCostPence?: number | null;
+  otherProjectDirectCostPence?: number | null;
+};
+
 export function isPipelineStatus(value: string): value is PipelineStatus {
   return (PIPELINE_STATUSES as readonly string[]).includes(value);
 }
@@ -52,27 +61,22 @@ export function formatGbpFromPence(pence: number | null | undefined): string {
   }).format(penceToPounds(pence));
 }
 
-export function sumProjectExpensesPence(input: {
-  panelCostPence?: number | null;
-  batteryInverterCostPence?: number | null;
-  scaffoldingCostPence?: number | null;
-  contractorLaborCostPence?: number | null;
-}): number {
+export function sumProjectExpensesPence(input: ProjectCostFields): number {
   return (
     (input.panelCostPence ?? 0) +
     (input.batteryInverterCostPence ?? 0) +
     (input.scaffoldingCostPence ?? 0) +
-    (input.contractorLaborCostPence ?? 0)
+    (input.contractorLaborCostPence ?? 0) +
+    (input.rackingCablesCostPence ?? 0) +
+    (input.otherProjectDirectCostPence ?? 0)
   );
 }
 
-export function computeProjectLedger(input: {
-  agreedTotalPricePence?: number | null;
-  panelCostPence?: number | null;
-  batteryInverterCostPence?: number | null;
-  scaffoldingCostPence?: number | null;
-  contractorLaborCostPence?: number | null;
-}) {
+export function computeProjectLedger(
+  input: ProjectCostFields & {
+    agreedTotalPricePence?: number | null;
+  }
+) {
   const agreedTotalPence = input.agreedTotalPricePence ?? 0;
   const totalExpensesPence = sumProjectExpensesPence(input);
   const netProfitPence = agreedTotalPence - totalExpensesPence;
@@ -87,14 +91,12 @@ export function computeProjectLedger(input: {
 }
 
 export function computeCompletedPaidMetrics(
-  projects: Array<{
-    status?: string | null;
-    agreedTotalPricePence?: number | null;
-    panelCostPence?: number | null;
-    batteryInverterCostPence?: number | null;
-    scaffoldingCostPence?: number | null;
-    contractorLaborCostPence?: number | null;
-  }>
+  projects: Array<
+    ProjectCostFields & {
+      status?: string | null;
+      agreedTotalPricePence?: number | null;
+    }
+  >
 ) {
   const completed = projects.filter(
     (project) => normalizePipelineStatus(project.status) === 'completed_paid'
@@ -120,10 +122,21 @@ export function computeCompletedPaidMetrics(
   };
 }
 
-export function milestoneSchedulePence(agreedTotalPricePence: number) {
-  const deposit = Math.round(agreedTotalPricePence * 0.1);
-  const hardware = Math.round(agreedTotalPricePence * 0.6);
-  const handover = agreedTotalPricePence - deposit - hardware;
+export function milestoneSchedulePence(
+  agreedTotalPricePence: number,
+  overrides?: {
+    invoiceStage1DepositPence?: number | null;
+    invoiceStage2HardwarePence?: number | null;
+    invoiceStage3BalancePence?: number | null;
+  }
+) {
+  const deposit =
+    overrides?.invoiceStage1DepositPence ?? Math.round(agreedTotalPricePence * 0.1);
+  const hardware =
+    overrides?.invoiceStage2HardwarePence ?? Math.round(agreedTotalPricePence * 0.6);
+  const handover =
+    overrides?.invoiceStage3BalancePence ??
+    agreedTotalPricePence - Math.round(agreedTotalPricePence * 0.1) - Math.round(agreedTotalPricePence * 0.6);
 
   return {
     depositPence: deposit,

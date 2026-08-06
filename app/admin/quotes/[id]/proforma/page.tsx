@@ -21,6 +21,10 @@ type ProjectData = {
   status: PipelineStatus;
   agreedTotalPricePence: number | null;
   paymentTermsNotes: string | null;
+  invoiceSystemScope: string | null;
+  invoiceStage1DepositPence: number | null;
+  invoiceStage2HardwarePence: number | null;
+  invoiceStage3BalancePence: number | null;
   date: string;
 };
 
@@ -67,8 +71,16 @@ export default function ProformaPrintPage() {
   }
 
   const agreed = project.agreedTotalPricePence ?? 0;
-  const schedule = milestoneSchedulePence(agreed);
+  const schedule = milestoneSchedulePence(agreed, {
+    invoiceStage1DepositPence: project.invoiceStage1DepositPence,
+    invoiceStage2HardwarePence: project.invoiceStage2HardwarePence,
+    invoiceStage3BalancePence: project.invoiceStage3BalancePence,
+  });
   const invoiceRef = `PF-${project.id.slice(0, 8).toUpperCase()}`;
+  const systemScope =
+    project.invoiceSystemScope?.trim() ||
+    [project.productInterest, project.quantity].filter(Boolean).join(' · ') ||
+    'Turnkey residential solar installation';
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 font-sans text-slate-900 print:bg-white print:p-0">
@@ -138,8 +150,9 @@ export default function ProformaPrintPage() {
               </span>
             </p>
             <p className="mt-1 text-sm text-slate-600">
-              Scope:{' '}
-              <span className="font-medium text-slate-900">{project.quantity ?? '—'}</span>
+              System configuration:
+              <br />
+              <span className="font-medium text-slate-900">{systemScope}</span>
             </p>
             <p className="mt-4 text-sm text-slate-600">
               Agreed turnkey total (0% VAT eligible installation):
@@ -152,7 +165,7 @@ export default function ProformaPrintPage() {
 
         <section className="py-6">
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-            Milestone payment schedule
+            Milestone Payment Terms (0% VAT)
           </h2>
           <table className="mt-4 w-full border-collapse text-left text-sm">
             <thead>
@@ -164,22 +177,22 @@ export default function ProformaPrintPage() {
             </thead>
             <tbody className="text-slate-800">
               <tr className="border-b border-slate-100">
-                <td className="py-3 pr-3 font-semibold">Stage 1 · 10%</td>
+                <td className="py-3 pr-3 font-semibold">Stage 1</td>
                 <td className="py-3 pr-3">Booking deposit</td>
                 <td className="py-3 text-right font-semibold">
                   {formatGbpFromPence(schedule.depositPence)}
                 </td>
               </tr>
               <tr className="border-b border-slate-100">
-                <td className="py-3 pr-3 font-semibold">Stage 2 · 60%</td>
-                <td className="py-3 pr-3">Hardware funding (panels, inverter, battery)</td>
+                <td className="py-3 pr-3 font-semibold">Stage 2</td>
+                <td className="py-3 pr-3">Hardware delivery allocation</td>
                 <td className="py-3 text-right font-semibold">
                   {formatGbpFromPence(schedule.hardwarePence)}
                 </td>
               </tr>
               <tr className="border-b border-slate-100">
-                <td className="py-3 pr-3 font-semibold">Stage 3 · 30%</td>
-                <td className="py-3 pr-3">Final handover balance (MCS / completion)</td>
+                <td className="py-3 pr-3 font-semibold">Stage 3</td>
+                <td className="py-3 pr-3">Final handover balance</td>
                 <td className="py-3 text-right font-semibold">
                   {formatGbpFromPence(schedule.handoverPence)}
                 </td>
@@ -189,7 +202,9 @@ export default function ProformaPrintPage() {
                   Total
                 </td>
                 <td className="py-3 text-right text-base font-extrabold">
-                  {formatGbpFromPence(agreed)}
+                  {formatGbpFromPence(
+                    schedule.depositPence + schedule.hardwarePence + schedule.handoverPence
+                  )}
                 </td>
               </tr>
             </tbody>

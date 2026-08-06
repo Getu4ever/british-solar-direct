@@ -39,6 +39,12 @@ export type QuoteLeadRecord = {
   batteryInverterCostPence: number | null;
   scaffoldingCostPence: number | null;
   contractorLaborCostPence: number | null;
+  rackingCablesCostPence: number | null;
+  otherProjectDirectCostPence: number | null;
+  invoiceSystemScope: string | null;
+  invoiceStage1DepositPence: number | null;
+  invoiceStage2HardwarePence: number | null;
+  invoiceStage3BalancePence: number | null;
   createdAt: Date;
 };
 
@@ -63,6 +69,12 @@ export type QuoteProjectPatch = {
   batteryInverterCostPence?: number | null;
   scaffoldingCostPence?: number | null;
   contractorLaborCostPence?: number | null;
+  rackingCablesCostPence?: number | null;
+  otherProjectDirectCostPence?: number | null;
+  invoiceSystemScope?: string | null;
+  invoiceStage1DepositPence?: number | null;
+  invoiceStage2HardwarePence?: number | null;
+  invoiceStage3BalancePence?: number | null;
 };
 
 function getPgPool() {
@@ -113,6 +125,12 @@ function mapQuoteRow(row: Record<string, unknown>): QuoteLeadRecord {
     batteryInverterCostPence: asNullableInt(row.batteryInverterCostPence),
     scaffoldingCostPence: asNullableInt(row.scaffoldingCostPence),
     contractorLaborCostPence: asNullableInt(row.contractorLaborCostPence),
+    rackingCablesCostPence: asNullableInt(row.rackingCablesCostPence),
+    otherProjectDirectCostPence: asNullableInt(row.otherProjectDirectCostPence),
+    invoiceSystemScope: (row.invoiceSystemScope as string | null) ?? null,
+    invoiceStage1DepositPence: asNullableInt(row.invoiceStage1DepositPence),
+    invoiceStage2HardwarePence: asNullableInt(row.invoiceStage2HardwarePence),
+    invoiceStage3BalancePence: asNullableInt(row.invoiceStage3BalancePence),
     createdAt: new Date(String(row.createdAt)),
   };
 }
@@ -150,6 +168,12 @@ async function ensurePgLifecycleColumns(pool: Pool) {
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "batteryInverterCostPence" INTEGER;
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "scaffoldingCostPence" INTEGER;
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "contractorLaborCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "rackingCablesCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "otherProjectDirectCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceSystemScope" TEXT;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage1DepositPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage2HardwarePence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage3BalancePence" INTEGER;
     UPDATE "QuoteRequest" SET "status" = 'new_lead' WHERE "status" IS NULL OR "status" = '';
   `);
 }
@@ -180,6 +204,12 @@ async function ensurePgSchema() {
           "batteryInverterCostPence" INTEGER,
           "scaffoldingCostPence" INTEGER,
           "contractorLaborCostPence" INTEGER,
+          "rackingCablesCostPence" INTEGER,
+          "otherProjectDirectCostPence" INTEGER,
+          "invoiceSystemScope" TEXT,
+          "invoiceStage1DepositPence" INTEGER,
+          "invoiceStage2HardwarePence" INTEGER,
+          "invoiceStage3BalancePence" INTEGER,
           "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
 
@@ -216,6 +246,12 @@ export async function createQuoteLead(
     | 'batteryInverterCostPence'
     | 'scaffoldingCostPence'
     | 'contractorLaborCostPence'
+    | 'rackingCablesCostPence'
+    | 'otherProjectDirectCostPence'
+    | 'invoiceSystemScope'
+    | 'invoiceStage1DepositPence'
+    | 'invoiceStage2HardwarePence'
+    | 'invoiceStage3BalancePence'
   >
 ) {
   if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
@@ -401,6 +437,30 @@ export async function updateQuoteProject(id: string, patch: QuoteProjectPatch) {
         patch.contractorLaborCostPence !== undefined
           ? patch.contractorLaborCostPence
           : current.contractorLaborCostPence,
+      rackingCablesCostPence:
+        patch.rackingCablesCostPence !== undefined
+          ? patch.rackingCablesCostPence
+          : current.rackingCablesCostPence,
+      otherProjectDirectCostPence:
+        patch.otherProjectDirectCostPence !== undefined
+          ? patch.otherProjectDirectCostPence
+          : current.otherProjectDirectCostPence,
+      invoiceSystemScope:
+        patch.invoiceSystemScope !== undefined
+          ? patch.invoiceSystemScope
+          : current.invoiceSystemScope,
+      invoiceStage1DepositPence:
+        patch.invoiceStage1DepositPence !== undefined
+          ? patch.invoiceStage1DepositPence
+          : current.invoiceStage1DepositPence,
+      invoiceStage2HardwarePence:
+        patch.invoiceStage2HardwarePence !== undefined
+          ? patch.invoiceStage2HardwarePence
+          : current.invoiceStage2HardwarePence,
+      invoiceStage3BalancePence:
+        patch.invoiceStage3BalancePence !== undefined
+          ? patch.invoiceStage3BalancePence
+          : current.invoiceStage3BalancePence,
     };
 
     await pool.query(
@@ -415,7 +475,13 @@ export async function updateQuoteProject(id: string, patch: QuoteProjectPatch) {
            "panelCostPence"=$9,
            "batteryInverterCostPence"=$10,
            "scaffoldingCostPence"=$11,
-           "contractorLaborCostPence"=$12
+           "contractorLaborCostPence"=$12,
+           "rackingCablesCostPence"=$13,
+           "otherProjectDirectCostPence"=$14,
+           "invoiceSystemScope"=$15,
+           "invoiceStage1DepositPence"=$16,
+           "invoiceStage2HardwarePence"=$17,
+           "invoiceStage3BalancePence"=$18
        WHERE "id"=$1`,
       [
         id,
@@ -430,6 +496,12 @@ export async function updateQuoteProject(id: string, patch: QuoteProjectPatch) {
         next.batteryInverterCostPence,
         next.scaffoldingCostPence,
         next.contractorLaborCostPence,
+        next.rackingCablesCostPence,
+        next.otherProjectDirectCostPence,
+        next.invoiceSystemScope,
+        next.invoiceStage1DepositPence,
+        next.invoiceStage2HardwarePence,
+        next.invoiceStage3BalancePence,
       ]
     );
     return getQuoteLeadById(id);
@@ -463,6 +535,24 @@ export async function updateQuoteProject(id: string, patch: QuoteProjectPatch) {
         : {}),
       ...(patch.contractorLaborCostPence !== undefined
         ? { contractorLaborCostPence: patch.contractorLaborCostPence }
+        : {}),
+      ...(patch.rackingCablesCostPence !== undefined
+        ? { rackingCablesCostPence: patch.rackingCablesCostPence }
+        : {}),
+      ...(patch.otherProjectDirectCostPence !== undefined
+        ? { otherProjectDirectCostPence: patch.otherProjectDirectCostPence }
+        : {}),
+      ...(patch.invoiceSystemScope !== undefined
+        ? { invoiceSystemScope: patch.invoiceSystemScope }
+        : {}),
+      ...(patch.invoiceStage1DepositPence !== undefined
+        ? { invoiceStage1DepositPence: patch.invoiceStage1DepositPence }
+        : {}),
+      ...(patch.invoiceStage2HardwarePence !== undefined
+        ? { invoiceStage2HardwarePence: patch.invoiceStage2HardwarePence }
+        : {}),
+      ...(patch.invoiceStage3BalancePence !== undefined
+        ? { invoiceStage3BalancePence: patch.invoiceStage3BalancePence }
         : {}),
     },
   });

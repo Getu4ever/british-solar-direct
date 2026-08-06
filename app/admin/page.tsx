@@ -78,6 +78,16 @@ function parsePropertyImages(value: string | null | undefined): StoredPropertyIm
   }
 }
 
+/** Strip auto-appended "Property images attached: …" lines from notes for clean display. */
+function cleanProjectNotes(value: string | null | undefined): string {
+  if (!value) return '';
+  return value
+    .split('\n')
+    .filter((line) => !/^\s*Property images attached:/i.test(line.trim()))
+    .join('\n')
+    .trim();
+}
+
 export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>('quotes');
   const [data, setData] = useState<{
@@ -169,7 +179,7 @@ export default function AdminDashboard() {
       deliveryPostcode: lead.postcode ?? '',
       quantity: lead.quantity ?? '',
       productInterest: lead.productInterest ?? '',
-      projectNotes: lead.notes ?? '',
+      projectNotes: cleanProjectNotes(lead.notes),
     });
   }
 
@@ -264,8 +274,8 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-8 font-sans">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-slate-900 p-4 font-sans text-slate-100 md:p-8">
+      <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-4 border-b border-slate-800 pb-6 mb-8 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-white">British Solar Direct</h1>
@@ -417,42 +427,47 @@ function QuoteTable({
   }
 
   return (
-    <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-xl overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
+    <div className="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-xl">
+      <table className="w-full table-fixed text-left text-xs md:text-sm">
+        <thead className="border-b border-slate-800 bg-slate-900 text-[10px] uppercase tracking-wider text-slate-400 md:text-xs">
           <tr>
-            <th className="p-4">Customer</th>
-            <th className="p-4">Status</th>
-            <th className="p-4">Email</th>
-            <th className="p-4">Phone</th>
-            <th className="p-4">Postcode</th>
-            <th className="p-4">Package scope</th>
-            <th className="p-4">Installation package</th>
-            <th className="p-4">Notes</th>
-            <th className="p-4">Images</th>
-            <th className="p-4">Submitted</th>
-            <th className="p-4">Actions</th>
+            <th className="w-[18%] p-3 md:p-4">Customer</th>
+            <th className="w-[12%] p-3 md:p-4">Status</th>
+            <th className="w-[18%] p-3 md:p-4">Contact</th>
+            <th className="w-[16%] p-3 md:p-4">Package Setup</th>
+            <th className="w-[16%] p-3 md:p-4">Notes</th>
+            <th className="w-[8%] p-3 md:p-4">Images</th>
+            <th className="w-[10%] p-3 md:p-4">Submitted</th>
+            <th className="w-[12%] p-3 md:p-4">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-800">
           {leads.map((lead) => {
             const isEditing = editingId === lead.id;
             const images = parsePropertyImages(lead.propertyImages);
+            const notesDisplay = cleanProjectNotes(lead.notes);
             return (
-              <tr key={lead.id ?? lead.email ?? Math.random()} className="hover:bg-slate-900/50 transition align-top">
-                <td className="p-4 text-slate-300">
+              <tr
+                key={lead.id ?? lead.email ?? Math.random()}
+                className="align-top transition hover:bg-slate-900/50"
+              >
+                <td className="p-3 text-slate-200 md:p-4">
                   {isEditing ? (
                     <input
                       value={draft.customerName}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, customerName: e.target.value }))}
-                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      onChange={(e) =>
+                        setDraft((prev) => ({ ...prev, customerName: e.target.value }))
+                      }
+                      className="w-full max-w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
                     />
                   ) : (
-                    lead.customer ?? '—'
+                    <span className="block truncate font-medium" title={lead.customer ?? undefined}>
+                      {lead.customer ?? '—'}
+                    </span>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">
-                  <span className="inline-flex rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-400">
+                <td className="p-3 text-slate-300 md:p-4">
+                  <span className="inline-flex max-w-full truncate rounded-full border border-slate-700 bg-slate-900 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-400 md:px-2.5 md:text-[11px]">
                     {
                       PIPELINE_STATUS_LABELS[
                         normalizePipelineStatus(lead.status ?? 'new_lead')
@@ -460,103 +475,152 @@ function QuoteTable({
                     }
                   </span>
                 </td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
-                    <input
-                      value={draft.contactEmail}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, contactEmail: e.target.value }))}
-                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
-                    />
+                    <div className="space-y-1.5">
+                      <input
+                        value={draft.contactEmail}
+                        onChange={(e) =>
+                          setDraft((prev) => ({ ...prev, contactEmail: e.target.value }))
+                        }
+                        className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
+                        placeholder="Email"
+                      />
+                      <input
+                        value={draft.deliveryPostcode}
+                        onChange={(e) =>
+                          setDraft((prev) => ({ ...prev, deliveryPostcode: e.target.value }))
+                        }
+                        className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs uppercase md:text-sm"
+                        placeholder="Postcode"
+                      />
+                    </div>
                   ) : (
-                    lead.email ?? '—'
+                    <div className="min-w-0 space-y-0.5">
+                      <p className="truncate" title={lead.email ?? undefined}>
+                        {lead.email ?? '—'}
+                      </p>
+                      <p className="truncate text-[11px] text-slate-500 md:text-xs">
+                        {lead.phone ?? '—'}
+                      </p>
+                      <p className="truncate text-[11px] uppercase text-slate-500 md:text-xs">
+                        {lead.postcode ?? '—'}
+                      </p>
+                    </div>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">{lead.phone ?? '—'}</td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
-                    <input
-                      value={draft.deliveryPostcode}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, deliveryPostcode: e.target.value }))}
-                      className="w-36 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm uppercase"
-                    />
+                    <div className="space-y-1.5">
+                      <input
+                        value={draft.productInterest}
+                        onChange={(e) =>
+                          setDraft((prev) => ({ ...prev, productInterest: e.target.value }))
+                        }
+                        className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
+                        placeholder="Installation package"
+                      />
+                      <input
+                        value={draft.quantity}
+                        onChange={(e) =>
+                          setDraft((prev) => ({ ...prev, quantity: e.target.value }))
+                        }
+                        className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
+                        placeholder="Package scope"
+                      />
+                    </div>
                   ) : (
-                    lead.postcode ?? '—'
+                    <div className="min-w-0 space-y-0.5">
+                      <p
+                        className="truncate font-medium text-slate-200"
+                        title={lead.productInterest ?? undefined}
+                      >
+                        {lead.productInterest ?? '—'}
+                      </p>
+                      <p
+                        className="truncate text-[11px] text-slate-500 md:text-xs"
+                        title={lead.quantity ?? undefined}
+                      >
+                        {lead.quantity ?? '—'}
+                      </p>
+                    </div>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">
-                  {isEditing ? (
-                    <input
-                      value={draft.quantity}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, quantity: e.target.value }))}
-                      className="w-44 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
-                    />
-                  ) : (
-                    lead.quantity ?? '—'
-                  )}
-                </td>
-                <td className="p-4 text-slate-300">
-                  {isEditing ? (
-                    <input
-                      value={draft.productInterest}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, productInterest: e.target.value }))}
-                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
-                    />
-                  ) : (
-                    lead.productInterest ?? '—'
-                  )}
-                </td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
                     <textarea
                       value={draft.projectNotes}
-                      onChange={(e) => setDraft((prev) => ({ ...prev, projectNotes: e.target.value }))}
+                      onChange={(e) =>
+                        setDraft((prev) => ({ ...prev, projectNotes: e.target.value }))
+                      }
                       rows={3}
-                      className="w-64 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      className="w-full max-w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
                       placeholder="Internal notes"
                     />
                   ) : (
-                    <span className="whitespace-pre-wrap">{lead.notes ?? '—'}</span>
+                    <div className="min-w-0">
+                      <p
+                        className="line-clamp-3 break-words text-slate-300"
+                        title={notesDisplay || undefined}
+                      >
+                        {notesDisplay || '—'}
+                      </p>
+                      {images.length > 0 && (
+                        <span className="mt-1.5 inline-flex items-center rounded-md border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] font-medium text-slate-400">
+                          📸 Image Attached
+                        </span>
+                      )}
+                    </div>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
                   {images.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {images.map((image, index) => (
+                    <div className="flex flex-wrap gap-1">
+                      {images.slice(0, 2).map((image, index) => (
                         <a
                           key={`${image.filename}-${index}`}
                           href={image.dataUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="block"
+                          className="block shrink-0"
                           title={image.filename}
                         >
                           <img
                             src={image.dataUrl}
-                            alt={image.filename}
-                            className="h-14 w-14 rounded-md border border-slate-700 object-cover"
+                            alt="Property"
+                            className="h-10 w-10 rounded-md border border-slate-700 object-cover md:h-12 md:w-12"
                           />
                         </a>
                       ))}
+                      {images.length > 2 && (
+                        <span className="self-center text-[10px] text-slate-500">
+                          +{images.length - 2}
+                        </span>
+                      )}
                     </div>
                   ) : (
-                    '—'
+                    <span className="text-slate-600">—</span>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">{lead.date ?? '—'}</td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-400 md:p-4">
+                  <span className="block truncate text-[11px] md:text-xs" title={lead.date ?? undefined}>
+                    {lead.date ?? '—'}
+                  </span>
+                </td>
+                <td className="p-3 text-slate-300 md:p-4">
                   {lead.id ? (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-col gap-1.5">
                       {isEditing ? (
                         <>
                           <button
                             onClick={() => void onSaveEdit()}
-                            className="rounded bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-500"
+                            className="rounded bg-emerald-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-emerald-500 md:text-xs"
                           >
                             Save
                           </button>
                           <button
                             onClick={onCancelEdit}
-                            className="rounded bg-slate-700 px-3 py-1 text-xs font-semibold text-white hover:bg-slate-600"
+                            className="rounded bg-slate-700 px-2 py-1 text-[11px] font-semibold text-white hover:bg-slate-600 md:text-xs"
                           >
                             Cancel
                           </button>
@@ -565,19 +629,19 @@ function QuoteTable({
                         <>
                           <Link
                             href={`/admin/quotes/${lead.id}`}
-                            className="rounded bg-sky-700 px-3 py-1 text-xs font-semibold text-white hover:bg-sky-600"
+                            className="rounded bg-sky-700 px-2 py-1 text-center text-[11px] font-semibold text-white hover:bg-sky-600 md:text-xs"
                           >
-                            Open project
+                            Open
                           </Link>
                           <button
                             onClick={() => onStartEdit(lead)}
-                            className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
+                            className="rounded bg-amber-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-amber-500 md:text-xs"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => void onDelete(lead.id as string)}
-                            className="rounded bg-rose-700 px-3 py-1 text-xs font-semibold text-white hover:bg-rose-600"
+                            className="rounded bg-rose-700 px-2 py-1 text-[11px] font-semibold text-white hover:bg-rose-600 md:text-xs"
                           >
                             Delete
                           </button>
@@ -625,73 +689,90 @@ function ContactTable({
   }
 
   return (
-    <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-xl overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
+    <div className="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-xl">
+      <table className="w-full table-fixed text-left text-xs md:text-sm">
+        <thead className="border-b border-slate-800 bg-slate-900 text-[10px] uppercase tracking-wider text-slate-400 md:text-xs">
           <tr>
-            <th className="p-4">Name</th>
-            <th className="p-4">Property</th>
-            <th className="p-4">Email</th>
-            <th className="p-4">Message</th>
-            <th className="p-4">Submitted</th>
-            <th className="p-4">Actions</th>
+            <th className="w-[16%] p-3 md:p-4">Name</th>
+            <th className="w-[14%] p-3 md:p-4">Property</th>
+            <th className="w-[18%] p-3 md:p-4">Email</th>
+            <th className="w-[28%] p-3 md:p-4">Message</th>
+            <th className="w-[12%] p-3 md:p-4">Submitted</th>
+            <th className="w-[12%] p-3 md:p-4">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-800">
           {leads.map((lead) => {
             const isEditing = editingId === lead.id;
             return (
-              <tr key={lead.id ?? lead.email ?? Math.random()} className="hover:bg-slate-900/50 transition align-top">
-                <td className="p-4 text-slate-300">
+              <tr
+                key={lead.id ?? lead.email ?? Math.random()}
+                className="align-top transition hover:bg-slate-900/50"
+              >
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
                     <input
                       value={draft.name}
                       onChange={(e) => setDraft((prev) => ({ ...prev, name: e.target.value }))}
-                      className="w-44 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
                     />
                   ) : (
-                    lead.name ?? '—'
+                    <span className="block truncate font-medium" title={lead.name ?? undefined}>
+                      {lead.name ?? '—'}
+                    </span>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">{lead.property ?? '—'}</td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
+                  <span className="block truncate" title={lead.property ?? undefined}>
+                    {lead.property ?? '—'}
+                  </span>
+                </td>
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
                     <input
                       value={draft.email}
                       onChange={(e) => setDraft((prev) => ({ ...prev, email: e.target.value }))}
-                      className="w-56 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
                     />
                   ) : (
-                    lead.email ?? '—'
+                    <span className="block truncate" title={lead.email ?? undefined}>
+                      {lead.email ?? '—'}
+                    </span>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-300 md:p-4">
                   {isEditing ? (
                     <textarea
                       value={draft.message}
                       onChange={(e) => setDraft((prev) => ({ ...prev, message: e.target.value }))}
-                      rows={4}
-                      className="w-80 rounded border border-slate-600 bg-slate-800 px-2 py-1 text-sm"
+                      rows={3}
+                      className="w-full rounded border border-slate-600 bg-slate-800 px-2 py-1 text-xs md:text-sm"
                     />
                   ) : (
-                    lead.message?.slice(0, 160) ?? '—'
+                    <p className="line-clamp-3 break-words" title={lead.message ?? undefined}>
+                      {lead.message ?? '—'}
+                    </p>
                   )}
                 </td>
-                <td className="p-4 text-slate-300">{lead.date ?? '—'}</td>
-                <td className="p-4 text-slate-300">
+                <td className="p-3 text-slate-400 md:p-4">
+                  <span className="block truncate text-[11px] md:text-xs" title={lead.date ?? undefined}>
+                    {lead.date ?? '—'}
+                  </span>
+                </td>
+                <td className="p-3 text-slate-300 md:p-4">
                   {lead.id ? (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-col gap-1.5">
                       {isEditing ? (
                         <>
                           <button
                             onClick={() => void onSaveEdit()}
-                            className="rounded bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-500"
+                            className="rounded bg-emerald-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-emerald-500 md:text-xs"
                           >
                             Save
                           </button>
                           <button
                             onClick={onCancelEdit}
-                            className="rounded bg-slate-700 px-3 py-1 text-xs font-semibold text-white hover:bg-slate-600"
+                            className="rounded bg-slate-700 px-2 py-1 text-[11px] font-semibold text-white hover:bg-slate-600 md:text-xs"
                           >
                             Cancel
                           </button>
@@ -700,13 +781,13 @@ function ContactTable({
                         <>
                           <button
                             onClick={() => onStartEdit(lead)}
-                            className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
+                            className="rounded bg-amber-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-amber-500 md:text-xs"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => void onDelete(lead.id as string)}
-                            className="rounded bg-rose-700 px-3 py-1 text-xs font-semibold text-white hover:bg-rose-600"
+                            className="rounded bg-rose-700 px-2 py-1 text-[11px] font-semibold text-white hover:bg-rose-600 md:text-xs"
                           >
                             Delete
                           </button>

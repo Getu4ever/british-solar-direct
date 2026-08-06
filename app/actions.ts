@@ -179,6 +179,8 @@ export async function getAdminDashboard() {
           batteryInverterCostPence: lead.batteryInverterCostPence,
           scaffoldingCostPence: lead.scaffoldingCostPence,
           contractorLaborCostPence: lead.contractorLaborCostPence,
+          rackingCablesCostPence: lead.rackingCablesCostPence,
+          otherProjectDirectCostPence: lead.otherProjectDirectCostPence,
           date: lead.createdAt.toLocaleString('en-GB'),
         })),
         contacts: contacts.map((item) => ({
@@ -258,6 +260,12 @@ export async function updateQuoteProject(
     batteryInverterCostPence?: number | null;
     scaffoldingCostPence?: number | null;
     contractorLaborCostPence?: number | null;
+    rackingCablesCostPence?: number | null;
+    otherProjectDirectCostPence?: number | null;
+    invoiceSystemScope?: string | null;
+    invoiceStage1DepositPence?: number | null;
+    invoiceStage2HardwarePence?: number | null;
+    invoiceStage3BalancePence?: number | null;
   }
 ) {
   const authenticated = await isAdminAuthenticated();
@@ -297,6 +305,24 @@ export async function updateQuoteProject(
   }
   if (patch.contractorLaborCostPence !== undefined) {
     nextPatch.contractorLaborCostPence = patch.contractorLaborCostPence;
+  }
+  if (patch.rackingCablesCostPence !== undefined) {
+    nextPatch.rackingCablesCostPence = patch.rackingCablesCostPence;
+  }
+  if (patch.otherProjectDirectCostPence !== undefined) {
+    nextPatch.otherProjectDirectCostPence = patch.otherProjectDirectCostPence;
+  }
+  if (patch.invoiceSystemScope !== undefined) {
+    nextPatch.invoiceSystemScope = patch.invoiceSystemScope?.trim() || null;
+  }
+  if (patch.invoiceStage1DepositPence !== undefined) {
+    nextPatch.invoiceStage1DepositPence = patch.invoiceStage1DepositPence;
+  }
+  if (patch.invoiceStage2HardwarePence !== undefined) {
+    nextPatch.invoiceStage2HardwarePence = patch.invoiceStage2HardwarePence;
+  }
+  if (patch.invoiceStage3BalancePence !== undefined) {
+    nextPatch.invoiceStage3BalancePence = patch.invoiceStage3BalancePence;
   }
 
   try {

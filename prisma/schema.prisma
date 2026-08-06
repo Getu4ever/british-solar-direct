@@ -27,6 +27,12 @@ model QuoteRequest {
   batteryInverterCostPence Int?
   scaffoldingCostPence     Int?
   contractorLaborCostPence Int?
+  rackingCablesCostPence   Int?
+  otherProjectDirectCostPence Int?
+  invoiceSystemScope       String?
+  invoiceStage1DepositPence Int?
+  invoiceStage2HardwarePence Int?
+  invoiceStage3BalancePence Int?
   createdAt                DateTime @default(now())
 }
 

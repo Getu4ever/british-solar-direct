@@ -92,6 +92,7 @@ function ensureSqliteSchema(filePath: string) {
       'projectNotes',
       'propertyImages',
       'paymentTermsNotes',
+      'invoiceSystemScope',
     ];
 
     for (const column of requiredTextColumns) {
@@ -129,6 +130,11 @@ function ensureSqliteSchema(filePath: string) {
       'batteryInverterCostPence',
       'scaffoldingCostPence',
       'contractorLaborCostPence',
+      'rackingCablesCostPence',
+      'otherProjectDirectCostPence',
+      'invoiceStage1DepositPence',
+      'invoiceStage2HardwarePence',
+      'invoiceStage3BalancePence',
     ];
 
     for (const column of integerColumns) {
