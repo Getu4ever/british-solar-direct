@@ -44,8 +44,8 @@ export default function Header() {
               BRITISH SOLAR <span className="text-amber-500">DIRECT</span>
             </span>
           </a>
-          <a href="tel:+441156712424" className="hidden md:flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 transition ml-[52px] -mt-1">
-            <PhoneIcon className="w-3 h-3" /> 0115 671 2424
+          <a href="tel:+441159904024" className="hidden md:flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 transition ml-[52px] -mt-1">
+            <PhoneIcon className="w-3 h-3" /> 0115 990 4024
           </a>
         </div>
 
@@ -81,8 +81,8 @@ export default function Header() {
       {/* Sleek Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-slate-200 shadow-xl p-6 flex flex-col gap-4 animate-in slide-in-from-top-4">
-          <a href="tel:+441156712424" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-4 p-3 rounded-xl bg-amber-50 text-amber-600 font-bold mb-2">
-            <PhoneIcon className="w-6 h-6" /> 0115 671 2424
+          <a href="tel:+441159904024" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-4 p-3 rounded-xl bg-amber-50 text-amber-600 font-bold mb-2">
+            <PhoneIcon className="w-6 h-6" /> 0115 990 4024
           </a>
           {menuItems.map((item) => (
             item.href === '/' ? (
