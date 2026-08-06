@@ -7,16 +7,27 @@ generator client {
 }
 
 model QuoteRequest {
-  id               String   @id @default(uuid())
-  customerName     String
-  contactEmail     String
-  contactPhone     String?
-  deliveryPostcode String?
-  productInterest  String?
-  quantity         String?
-  projectNotes     String?
-  propertyImages   String?
-  createdAt        DateTime @default(now())
+  id                       String   @id @default(uuid())
+  customerName             String
+  contactEmail             String
+  contactPhone             String?
+  deliveryPostcode         String?
+  productInterest          String?
+  quantity                 String?
+  projectNotes             String?
+  propertyImages           String?
+  status                   String   @default("new_lead")
+  agreedTotalPricePence    Int?
+  paymentTermsNotes        String?
+  panelsOrdered            Boolean  @default(false)
+  batteryInverterSecured   Boolean  @default(false)
+  scaffoldingBooked        Boolean  @default(false)
+  dnoFiled                 Boolean  @default(false)
+  panelCostPence           Int?
+  batteryInverterCostPence Int?
+  scaffoldingCostPence     Int?
+  contractorLaborCostPence Int?
+  createdAt                DateTime @default(now())
 }
 
 model ContactEnquiry {

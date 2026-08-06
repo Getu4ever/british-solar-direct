@@ -84,20 +84,60 @@ function ensureSqliteSchema(filePath: string) {
     const quoteColumns = db
       .prepare('PRAGMA table_info("QuoteRequest")')
       .all() as Array<{ name: string }>;
-    const requiredQuoteColumns = [
+    const requiredTextColumns = [
       'contactPhone',
       'deliveryPostcode',
       'productInterest',
       'quantity',
       'projectNotes',
       'propertyImages',
+      'paymentTermsNotes',
     ];
 
-    for (const column of requiredQuoteColumns) {
+    for (const column of requiredTextColumns) {
       if (!quoteColumns.some((entry) => entry.name === column)) {
         db.exec(`ALTER TABLE "QuoteRequest" ADD COLUMN "${column}" TEXT;`);
       }
     }
+
+    const refreshedColumns = db
+      .prepare('PRAGMA table_info("QuoteRequest")')
+      .all() as Array<{ name: string }>;
+
+    if (!refreshedColumns.some((entry) => entry.name === 'status')) {
+      db.exec(`ALTER TABLE "QuoteRequest" ADD COLUMN "status" TEXT NOT NULL DEFAULT 'new_lead';`);
+    }
+
+    const booleanColumns: Array<{ name: string; defaultSql: string }> = [
+      { name: 'panelsOrdered', defaultSql: '0' },
+      { name: 'batteryInverterSecured', defaultSql: '0' },
+      { name: 'scaffoldingBooked', defaultSql: '0' },
+      { name: 'dnoFiled', defaultSql: '0' },
+    ];
+
+    for (const column of booleanColumns) {
+      if (!refreshedColumns.some((entry) => entry.name === column.name)) {
+        db.exec(
+          `ALTER TABLE "QuoteRequest" ADD COLUMN "${column.name}" INTEGER NOT NULL DEFAULT ${column.defaultSql};`
+        );
+      }
+    }
+
+    const integerColumns = [
+      'agreedTotalPricePence',
+      'panelCostPence',
+      'batteryInverterCostPence',
+      'scaffoldingCostPence',
+      'contractorLaborCostPence',
+    ];
+
+    for (const column of integerColumns) {
+      if (!refreshedColumns.some((entry) => entry.name === column)) {
+        db.exec(`ALTER TABLE "QuoteRequest" ADD COLUMN "${column}" INTEGER;`);
+      }
+    }
+
+    db.exec(`UPDATE "QuoteRequest" SET "status" = 'new_lead' WHERE "status" IS NULL OR "status" = '';`);
   } finally {
     db.close();
   }

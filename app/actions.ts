@@ -1,6 +1,5 @@
 'use server';
 
-import type { QuoteRequest, ContactEnquiry } from '@prisma/client';
 import {
   sendQuoteNotification,
   sendContactNotification,
@@ -10,11 +9,20 @@ import {
   createQuoteLead,
   createContactLead,
   getDashboardLeads,
+  getQuoteLeadById,
   updateQuoteLead,
+  updateQuoteProject as persistQuoteProject,
   deleteQuoteLead,
   updateContactLead,
   deleteContactLead,
+  type QuoteProjectPatch,
 } from './lib/leads-store';
+import {
+  computeCompletedPaidMetrics,
+  isPipelineStatus,
+  normalizePipelineStatus,
+  type PipelineStatus,
+} from './lib/project-finance';
 
 export async function submitQuoteRequest(formData: FormData) {
   const customerName = (formData.get('customerName') as string)?.trim();
@@ -150,11 +158,12 @@ export async function getAdminDashboard() {
 
   try {
     const { quotes, contacts } = await getDashboardLeads();
+    const metrics = computeCompletedPaidMetrics(quotes);
 
     return {
       success: true,
       data: {
-        quotes: quotes.map((lead: QuoteRequest) => ({
+        quotes: quotes.map((lead) => ({
           id: lead.id,
           customer: lead.customerName,
           email: lead.contactEmail,
@@ -164,9 +173,15 @@ export async function getAdminDashboard() {
           quantity: lead.quantity,
           notes: lead.projectNotes,
           propertyImages: lead.propertyImages,
+          status: normalizePipelineStatus(lead.status),
+          agreedTotalPricePence: lead.agreedTotalPricePence,
+          panelCostPence: lead.panelCostPence,
+          batteryInverterCostPence: lead.batteryInverterCostPence,
+          scaffoldingCostPence: lead.scaffoldingCostPence,
+          contractorLaborCostPence: lead.contractorLaborCostPence,
           date: lead.createdAt.toLocaleString('en-GB'),
         })),
-        contacts: contacts.map((item: ContactEnquiry) => ({
+        contacts: contacts.map((item) => ({
           id: item.id,
           name: item.name,
           property: item.propertyName,
@@ -174,6 +189,13 @@ export async function getAdminDashboard() {
           message: item.message,
           date: item.createdAt.toLocaleString('en-GB'),
         })),
+        metrics: {
+          completedCount: metrics.completedCount,
+          grossRevenuePence: metrics.grossRevenuePence,
+          capitalReinvestedPence: metrics.capitalReinvestedPence,
+          distributableProfitPence: metrics.distributableProfitPence,
+          equityDrawdownPoolPence: metrics.equityDrawdownPoolPence,
+        },
       },
     };
   } catch (error) {
@@ -184,8 +206,116 @@ export async function getAdminDashboard() {
       data: {
         quotes: [],
         contacts: [],
+        metrics: {
+          completedCount: 0,
+          grossRevenuePence: 0,
+          capitalReinvestedPence: 0,
+          distributableProfitPence: 0,
+          equityDrawdownPoolPence: 0,
+        },
       },
     };
+  }
+}
+
+export async function getQuoteProject(id: string) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false as const, error: 'Unauthorized' };
+  }
+
+  try {
+    const lead = await getQuoteLeadById(id);
+    if (!lead) {
+      return { success: false as const, error: 'Quote project not found.' };
+    }
+
+    return {
+      success: true as const,
+      data: {
+        ...lead,
+        status: normalizePipelineStatus(lead.status),
+        date: lead.createdAt.toLocaleString('en-GB'),
+      },
+    };
+  } catch (error) {
+    console.error('Quote project fetch error:', error);
+    return { success: false as const, error: 'Failed to load quote project.' };
+  }
+}
+
+export async function updateQuoteProject(
+  id: string,
+  patch: {
+    status?: string;
+    agreedTotalPricePence?: number | null;
+    paymentTermsNotes?: string | null;
+    panelsOrdered?: boolean;
+    batteryInverterSecured?: boolean;
+    scaffoldingBooked?: boolean;
+    dnoFiled?: boolean;
+    panelCostPence?: number | null;
+    batteryInverterCostPence?: number | null;
+    scaffoldingCostPence?: number | null;
+    contractorLaborCostPence?: number | null;
+  }
+) {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    return { success: false as const, error: 'Unauthorized' };
+  }
+
+  const nextPatch: QuoteProjectPatch = {};
+
+  if (patch.status !== undefined) {
+    if (!isPipelineStatus(patch.status)) {
+      return { success: false as const, error: 'Invalid pipeline status.' };
+    }
+    nextPatch.status = patch.status as PipelineStatus;
+  }
+
+  if (patch.agreedTotalPricePence !== undefined) {
+    nextPatch.agreedTotalPricePence = patch.agreedTotalPricePence;
+  }
+  if (patch.paymentTermsNotes !== undefined) {
+    nextPatch.paymentTermsNotes = patch.paymentTermsNotes?.trim() || null;
+  }
+  if (patch.panelsOrdered !== undefined) nextPatch.panelsOrdered = patch.panelsOrdered;
+  if (patch.batteryInverterSecured !== undefined) {
+    nextPatch.batteryInverterSecured = patch.batteryInverterSecured;
+  }
+  if (patch.scaffoldingBooked !== undefined) {
+    nextPatch.scaffoldingBooked = patch.scaffoldingBooked;
+  }
+  if (patch.dnoFiled !== undefined) nextPatch.dnoFiled = patch.dnoFiled;
+  if (patch.panelCostPence !== undefined) nextPatch.panelCostPence = patch.panelCostPence;
+  if (patch.batteryInverterCostPence !== undefined) {
+    nextPatch.batteryInverterCostPence = patch.batteryInverterCostPence;
+  }
+  if (patch.scaffoldingCostPence !== undefined) {
+    nextPatch.scaffoldingCostPence = patch.scaffoldingCostPence;
+  }
+  if (patch.contractorLaborCostPence !== undefined) {
+    nextPatch.contractorLaborCostPence = patch.contractorLaborCostPence;
+  }
+
+  try {
+    const updated = await persistQuoteProject(id, nextPatch);
+    if (!updated) {
+      return { success: false as const, error: 'Quote project not found.' };
+    }
+
+    return {
+      success: true as const,
+      data: {
+        ...updated,
+        status: normalizePipelineStatus(updated.status),
+        date: updated.createdAt.toLocaleString('en-GB'),
+      },
+    };
+  } catch (error) {
+    console.error('Quote project update error:', error);
+    return { success: false as const, error: 'Failed to update quote project.' };
   }
 }
 

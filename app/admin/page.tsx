@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   getAdminDashboard,
   adminLogout,
@@ -10,6 +11,12 @@ import {
   deleteContactEnquiry,
 } from '../actions';
 import { useRouter } from 'next/navigation';
+import {
+  PIPELINE_STATUS_LABELS,
+  formatGbpFromPence,
+  normalizePipelineStatus,
+  type PipelineStatus,
+} from '../lib/project-finance';
 
 type Tab = 'quotes' | 'contacts';
 type QuoteLead = {
@@ -22,6 +29,7 @@ type QuoteLead = {
   productInterest?: string | null;
   notes?: string | null;
   propertyImages?: string | null;
+  status?: PipelineStatus | string | null;
   date?: string | null;
 };
 type ContactLead = {
@@ -31,6 +39,13 @@ type ContactLead = {
   email?: string | null;
   message?: string | null;
   date?: string | null;
+};
+type DashboardMetrics = {
+  completedCount: number;
+  grossRevenuePence: number;
+  capitalReinvestedPence: number;
+  distributableProfitPence: number;
+  equityDrawdownPoolPence: number;
 };
 type StoredPropertyImage = {
   filename: string;
@@ -68,7 +83,18 @@ export default function AdminDashboard() {
   const [data, setData] = useState<{
     quotes: QuoteLead[];
     contacts: ContactLead[];
-  }>({ quotes: [], contacts: [] });
+    metrics: DashboardMetrics;
+  }>({
+    quotes: [],
+    contacts: [],
+    metrics: {
+      completedCount: 0,
+      grossRevenuePence: 0,
+      capitalReinvestedPence: 0,
+      distributableProfitPence: 0,
+      equityDrawdownPoolPence: 0,
+    },
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
@@ -103,7 +129,17 @@ export default function AdminDashboard() {
   async function loadDashboardData() {
     const response = await getAdminDashboard();
     if (response.success && response.data) {
-      setData(response.data);
+      setData({
+        quotes: response.data.quotes,
+        contacts: response.data.contacts,
+        metrics: response.data.metrics ?? {
+          completedCount: 0,
+          grossRevenuePence: 0,
+          capitalReinvestedPence: 0,
+          distributableProfitPence: 0,
+          equityDrawdownPoolPence: 0,
+        },
+      });
       setError(null);
       if ('warning' in response && response.warning) {
         setStatus(response.warning);
@@ -233,7 +269,9 @@ export default function AdminDashboard() {
         <div className="flex flex-col gap-4 border-b border-slate-800 pb-6 mb-8 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-white">British Solar Direct</h1>
-            <p className="text-slate-400 text-sm mt-1">Lead management — respond within 24 business hours</p>
+            <p className="text-slate-400 text-sm mt-1">
+              Project lifecycle &amp; financial cockpit — respond within 24 business hours
+            </p>
           </div>
           <button
             onClick={handleLogout}
@@ -241,6 +279,44 @@ export default function AdminDashboard() {
           >
             Sign out
           </button>
+        </div>
+
+        <div className="mb-8 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 shadow-xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+              Gross revenue collected
+            </p>
+            <p className="mt-2 text-2xl font-extrabold text-white">
+              {formatGbpFromPence(data.metrics.grossRevenuePence)}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              Across {data.metrics.completedCount} completed &amp; paid project
+              {data.metrics.completedCount === 1 ? '' : 's'}
+            </p>
+          </div>
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 shadow-xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+              Capital reinvested
+            </p>
+            <p className="mt-2 text-2xl font-extrabold text-sky-300">
+              {formatGbpFromPence(data.metrics.capitalReinvestedPence)}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              Hardware / field expenses on completed jobs
+            </p>
+          </div>
+          <div className="rounded-xl border border-amber-700/40 bg-slate-950 p-5 shadow-xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-500/80">
+              50/50 equity drawdown pool
+            </p>
+            <p className="mt-2 text-2xl font-extrabold text-amber-400">
+              {formatGbpFromPence(data.metrics.equityDrawdownPoolPence)}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              Net distributable {formatGbpFromPence(data.metrics.distributableProfitPence)} ·
+              half available per partner
+            </p>
+          </div>
         </div>
 
         <div className="mb-6 flex flex-wrap gap-2">
@@ -346,6 +422,7 @@ function QuoteTable({
         <thead className="bg-slate-900 text-slate-400 border-b border-slate-800 text-xs uppercase tracking-wider">
           <tr>
             <th className="p-4">Customer</th>
+            <th className="p-4">Status</th>
             <th className="p-4">Email</th>
             <th className="p-4">Phone</th>
             <th className="p-4">Postcode</th>
@@ -373,6 +450,15 @@ function QuoteTable({
                   ) : (
                     lead.customer ?? '—'
                   )}
+                </td>
+                <td className="p-4 text-slate-300">
+                  <span className="inline-flex rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-400">
+                    {
+                      PIPELINE_STATUS_LABELS[
+                        normalizePipelineStatus(lead.status ?? 'new_lead')
+                      ]
+                    }
+                  </span>
                 </td>
                 <td className="p-4 text-slate-300">
                   {isEditing ? (
@@ -477,6 +563,12 @@ function QuoteTable({
                         </>
                       ) : (
                         <>
+                          <Link
+                            href={`/admin/quotes/${lead.id}`}
+                            className="rounded bg-sky-700 px-3 py-1 text-xs font-semibold text-white hover:bg-sky-600"
+                          >
+                            Open project
+                          </Link>
                           <button
                             onClick={() => onStartEdit(lead)}
                             className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"

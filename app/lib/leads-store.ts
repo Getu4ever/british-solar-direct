@@ -4,6 +4,7 @@ import {
   getRuntimeDatabaseUrl,
   isPostgresDatabaseUrl,
 } from './runtime-database';
+import { normalizePipelineStatus, type PipelineStatus } from './project-finance';
 
 type GlobalWithPg = typeof globalThis & {
   bsdPgPool?: Pool;
@@ -27,6 +28,17 @@ export type QuoteLeadRecord = {
   quantity: string | null;
   projectNotes: string | null;
   propertyImages: string | null;
+  status: PipelineStatus;
+  agreedTotalPricePence: number | null;
+  paymentTermsNotes: string | null;
+  panelsOrdered: boolean;
+  batteryInverterSecured: boolean;
+  scaffoldingBooked: boolean;
+  dnoFiled: boolean;
+  panelCostPence: number | null;
+  batteryInverterCostPence: number | null;
+  scaffoldingCostPence: number | null;
+  contractorLaborCostPence: number | null;
   createdAt: Date;
 };
 
@@ -39,6 +51,20 @@ export type ContactLeadRecord = {
   createdAt: Date;
 };
 
+export type QuoteProjectPatch = {
+  status?: PipelineStatus;
+  agreedTotalPricePence?: number | null;
+  paymentTermsNotes?: string | null;
+  panelsOrdered?: boolean;
+  batteryInverterSecured?: boolean;
+  scaffoldingBooked?: boolean;
+  dnoFiled?: boolean;
+  panelCostPence?: number | null;
+  batteryInverterCostPence?: number | null;
+  scaffoldingCostPence?: number | null;
+  contractorLaborCostPence?: number | null;
+};
+
 function getPgPool() {
   if (!globalWithPg.bsdPgPool) {
     globalWithPg.bsdPgPool = new Pool({
@@ -48,6 +74,47 @@ function getPgPool() {
   }
 
   return globalWithPg.bsdPgPool;
+}
+
+function asBoolean(value: unknown, fallback = false): boolean {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    return value === 'true' || value === '1' || value.toLowerCase() === 't';
+  }
+  return fallback;
+}
+
+function asNullableInt(value: unknown): number | null {
+  if (value === null || value === undefined || value === '') return null;
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(parsed) ? Math.round(parsed) : null;
+}
+
+function mapQuoteRow(row: Record<string, unknown>): QuoteLeadRecord {
+  return {
+    id: String(row.id),
+    customerName: String(row.customerName ?? ''),
+    contactEmail: String(row.contactEmail ?? ''),
+    contactPhone: (row.contactPhone as string | null) ?? null,
+    deliveryPostcode: (row.deliveryPostcode as string | null) ?? null,
+    productInterest: (row.productInterest as string | null) ?? null,
+    quantity: (row.quantity as string | null) ?? null,
+    projectNotes: (row.projectNotes as string | null) ?? null,
+    propertyImages: (row.propertyImages as string | null) ?? null,
+    status: normalizePipelineStatus(row.status as string | null | undefined),
+    agreedTotalPricePence: asNullableInt(row.agreedTotalPricePence),
+    paymentTermsNotes: (row.paymentTermsNotes as string | null) ?? null,
+    panelsOrdered: asBoolean(row.panelsOrdered),
+    batteryInverterSecured: asBoolean(row.batteryInverterSecured),
+    scaffoldingBooked: asBoolean(row.scaffoldingBooked),
+    dnoFiled: asBoolean(row.dnoFiled),
+    panelCostPence: asNullableInt(row.panelCostPence),
+    batteryInverterCostPence: asNullableInt(row.batteryInverterCostPence),
+    scaffoldingCostPence: asNullableInt(row.scaffoldingCostPence),
+    contractorLaborCostPence: asNullableInt(row.contractorLaborCostPence),
+    createdAt: new Date(String(row.createdAt)),
+  };
 }
 
 async function migratePgColumnRenames(pool: Pool) {
@@ -70,6 +137,23 @@ async function migratePgColumnRenames(pool: Pool) {
   }
 }
 
+async function ensurePgLifecycleColumns(pool: Pool) {
+  await pool.query(`
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "status" TEXT NOT NULL DEFAULT 'new_lead';
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "agreedTotalPricePence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "paymentTermsNotes" TEXT;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "panelsOrdered" BOOLEAN NOT NULL DEFAULT false;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "batteryInverterSecured" BOOLEAN NOT NULL DEFAULT false;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "scaffoldingBooked" BOOLEAN NOT NULL DEFAULT false;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "dnoFiled" BOOLEAN NOT NULL DEFAULT false;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "panelCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "batteryInverterCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "scaffoldingCostPence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "contractorLaborCostPence" INTEGER;
+    UPDATE "QuoteRequest" SET "status" = 'new_lead' WHERE "status" IS NULL OR "status" = '';
+  `);
+}
+
 async function ensurePgSchema() {
   if (!globalWithPg.bsdPgSchemaReady) {
     globalWithPg.bsdPgSchemaReady = (async () => {
@@ -85,6 +169,17 @@ async function ensurePgSchema() {
           "quantity" TEXT,
           "projectNotes" TEXT,
           "propertyImages" TEXT,
+          "status" TEXT NOT NULL DEFAULT 'new_lead',
+          "agreedTotalPricePence" INTEGER,
+          "paymentTermsNotes" TEXT,
+          "panelsOrdered" BOOLEAN NOT NULL DEFAULT false,
+          "batteryInverterSecured" BOOLEAN NOT NULL DEFAULT false,
+          "scaffoldingBooked" BOOLEAN NOT NULL DEFAULT false,
+          "dnoFiled" BOOLEAN NOT NULL DEFAULT false,
+          "panelCostPence" INTEGER,
+          "batteryInverterCostPence" INTEGER,
+          "scaffoldingCostPence" INTEGER,
+          "contractorLaborCostPence" INTEGER,
           "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
 
@@ -98,20 +193,39 @@ async function ensurePgSchema() {
         );
       `);
       await migratePgColumnRenames(pool);
+      await ensurePgLifecycleColumns(pool);
     })();
   }
 
   await globalWithPg.bsdPgSchemaReady;
 }
 
-export async function createQuoteLead(input: Omit<QuoteLeadRecord, 'id' | 'createdAt'>) {
+export async function createQuoteLead(
+  input: Omit<
+    QuoteLeadRecord,
+    | 'id'
+    | 'createdAt'
+    | 'status'
+    | 'agreedTotalPricePence'
+    | 'paymentTermsNotes'
+    | 'panelsOrdered'
+    | 'batteryInverterSecured'
+    | 'scaffoldingBooked'
+    | 'dnoFiled'
+    | 'panelCostPence'
+    | 'batteryInverterCostPence'
+    | 'scaffoldingCostPence'
+    | 'contractorLaborCostPence'
+  >
+) {
   if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
     await ensurePgSchema();
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO "QuoteRequest" (
-        "id", "customerName", "contactEmail", "contactPhone", "deliveryPostcode", "productInterest", "quantity", "projectNotes", "propertyImages"
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+        "id", "customerName", "contactEmail", "contactPhone", "deliveryPostcode",
+        "productInterest", "quantity", "projectNotes", "propertyImages", "status"
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
       [
         randomUUID(),
         input.customerName,
@@ -122,13 +236,19 @@ export async function createQuoteLead(input: Omit<QuoteLeadRecord, 'id' | 'creat
         input.quantity,
         input.projectNotes,
         input.propertyImages,
+        'new_lead',
       ]
     );
     return;
   }
 
   const prisma = await getLocalPrisma();
-  await prisma.quoteRequest.create({ data: input });
+  await prisma.quoteRequest.create({
+    data: {
+      ...input,
+      status: 'new_lead',
+    },
+  });
 }
 
 export async function createContactLead(input: Omit<ContactLeadRecord, 'id' | 'createdAt'>) {
@@ -148,7 +268,10 @@ export async function createContactLead(input: Omit<ContactLeadRecord, 'id' | 'c
   await prisma.contactEnquiry.create({ data: input });
 }
 
-export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; contacts: ContactLeadRecord[] }> {
+export async function getDashboardLeads(): Promise<{
+  quotes: QuoteLeadRecord[];
+  contacts: ContactLeadRecord[];
+}> {
   if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
     await ensurePgSchema();
     const pool = getPgPool();
@@ -158,18 +281,7 @@ export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; 
     ]);
 
     return {
-      quotes: quoteRows.rows.map((row) => ({
-        id: row.id,
-        customerName: row.customerName,
-        contactEmail: row.contactEmail,
-        contactPhone: row.contactPhone,
-        deliveryPostcode: row.deliveryPostcode,
-        productInterest: row.productInterest,
-        quantity: row.quantity,
-        projectNotes: row.projectNotes,
-        propertyImages: row.propertyImages,
-        createdAt: new Date(row.createdAt),
-      })),
+      quotes: quoteRows.rows.map((row) => mapQuoteRow(row as Record<string, unknown>)),
       contacts: contactRows.rows.map((row) => ({
         id: row.id,
         name: row.name,
@@ -187,7 +299,25 @@ export async function getDashboardLeads(): Promise<{ quotes: QuoteLeadRecord[]; 
     prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' } }),
   ]);
 
-  return { quotes, contacts };
+  return {
+    quotes: quotes.map((row) => mapQuoteRow(row as unknown as Record<string, unknown>)),
+    contacts,
+  };
+}
+
+export async function getQuoteLeadById(id: string): Promise<QuoteLeadRecord | null> {
+  if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
+    await ensurePgSchema();
+    const pool = getPgPool();
+    const result = await pool.query(`SELECT * FROM "QuoteRequest" WHERE "id" = $1 LIMIT 1`, [id]);
+    if (!result.rows[0]) return null;
+    return mapQuoteRow(result.rows[0] as Record<string, unknown>);
+  }
+
+  const prisma = await getLocalPrisma();
+  const row = await prisma.quoteRequest.findUnique({ where: { id } });
+  if (!row) return null;
+  return mapQuoteRow(row as unknown as Record<string, unknown>);
 }
 
 export async function updateQuoteLead(input: {
@@ -231,6 +361,113 @@ export async function updateQuoteLead(input: {
       projectNotes: input.projectNotes ?? null,
     },
   });
+}
+
+export async function updateQuoteProject(id: string, patch: QuoteProjectPatch) {
+  if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
+    await ensurePgSchema();
+    const pool = getPgPool();
+    const current = await getQuoteLeadById(id);
+    if (!current) {
+      throw new Error('Quote not found');
+    }
+
+    const next = {
+      status: patch.status ?? current.status,
+      agreedTotalPricePence:
+        patch.agreedTotalPricePence !== undefined
+          ? patch.agreedTotalPricePence
+          : current.agreedTotalPricePence,
+      paymentTermsNotes:
+        patch.paymentTermsNotes !== undefined
+          ? patch.paymentTermsNotes
+          : current.paymentTermsNotes,
+      panelsOrdered: patch.panelsOrdered ?? current.panelsOrdered,
+      batteryInverterSecured:
+        patch.batteryInverterSecured ?? current.batteryInverterSecured,
+      scaffoldingBooked: patch.scaffoldingBooked ?? current.scaffoldingBooked,
+      dnoFiled: patch.dnoFiled ?? current.dnoFiled,
+      panelCostPence:
+        patch.panelCostPence !== undefined ? patch.panelCostPence : current.panelCostPence,
+      batteryInverterCostPence:
+        patch.batteryInverterCostPence !== undefined
+          ? patch.batteryInverterCostPence
+          : current.batteryInverterCostPence,
+      scaffoldingCostPence:
+        patch.scaffoldingCostPence !== undefined
+          ? patch.scaffoldingCostPence
+          : current.scaffoldingCostPence,
+      contractorLaborCostPence:
+        patch.contractorLaborCostPence !== undefined
+          ? patch.contractorLaborCostPence
+          : current.contractorLaborCostPence,
+    };
+
+    await pool.query(
+      `UPDATE "QuoteRequest"
+       SET "status"=$2,
+           "agreedTotalPricePence"=$3,
+           "paymentTermsNotes"=$4,
+           "panelsOrdered"=$5,
+           "batteryInverterSecured"=$6,
+           "scaffoldingBooked"=$7,
+           "dnoFiled"=$8,
+           "panelCostPence"=$9,
+           "batteryInverterCostPence"=$10,
+           "scaffoldingCostPence"=$11,
+           "contractorLaborCostPence"=$12
+       WHERE "id"=$1`,
+      [
+        id,
+        next.status,
+        next.agreedTotalPricePence,
+        next.paymentTermsNotes,
+        next.panelsOrdered,
+        next.batteryInverterSecured,
+        next.scaffoldingBooked,
+        next.dnoFiled,
+        next.panelCostPence,
+        next.batteryInverterCostPence,
+        next.scaffoldingCostPence,
+        next.contractorLaborCostPence,
+      ]
+    );
+    return getQuoteLeadById(id);
+  }
+
+  const prisma = await getLocalPrisma();
+  const updated = await prisma.quoteRequest.update({
+    where: { id },
+    data: {
+      ...(patch.status !== undefined ? { status: patch.status } : {}),
+      ...(patch.agreedTotalPricePence !== undefined
+        ? { agreedTotalPricePence: patch.agreedTotalPricePence }
+        : {}),
+      ...(patch.paymentTermsNotes !== undefined
+        ? { paymentTermsNotes: patch.paymentTermsNotes }
+        : {}),
+      ...(patch.panelsOrdered !== undefined ? { panelsOrdered: patch.panelsOrdered } : {}),
+      ...(patch.batteryInverterSecured !== undefined
+        ? { batteryInverterSecured: patch.batteryInverterSecured }
+        : {}),
+      ...(patch.scaffoldingBooked !== undefined
+        ? { scaffoldingBooked: patch.scaffoldingBooked }
+        : {}),
+      ...(patch.dnoFiled !== undefined ? { dnoFiled: patch.dnoFiled } : {}),
+      ...(patch.panelCostPence !== undefined ? { panelCostPence: patch.panelCostPence } : {}),
+      ...(patch.batteryInverterCostPence !== undefined
+        ? { batteryInverterCostPence: patch.batteryInverterCostPence }
+        : {}),
+      ...(patch.scaffoldingCostPence !== undefined
+        ? { scaffoldingCostPence: patch.scaffoldingCostPence }
+        : {}),
+      ...(patch.contractorLaborCostPence !== undefined
+        ? { contractorLaborCostPence: patch.contractorLaborCostPence }
+        : {}),
+    },
+  });
+
+  return mapQuoteRow(updated as unknown as Record<string, unknown>);
 }
 
 export async function deleteQuoteLead(id: string) {
