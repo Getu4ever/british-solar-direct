@@ -35,12 +35,18 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20">
         {/* Logo and Phone Group */}
-        <div className="flex flex-col">
-          <a href="/" className="flex items-center gap-3 shrink-0">
-            <Image src="/BSD-logo.png" alt="BSD Logo" width={40} height={40} className="object-contain" />
-            <span className="text-xl font-bold tracking-tight text-slate-900">
+        <div className="min-w-0 flex-1 flex-col">
+          <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <Image
+              src="/BSD-logo.png"
+              alt="BSD Logo"
+              width={40}
+              height={40}
+              className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10"
+            />
+            <span className="truncate text-sm font-bold tracking-tight text-slate-900 sm:text-xl">
               BRITISH SOLAR <span className="text-amber-500">DIRECT</span>
             </span>
           </a>

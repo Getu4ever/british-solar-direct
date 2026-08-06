@@ -23,6 +23,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
           y: -10,
           transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
         }}
+        className="min-w-0 overflow-x-hidden"
       >
         {children}
       </motion.div>
