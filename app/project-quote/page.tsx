@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
-import HowOrderingWorks from '../../components/HowOrderingWorks';
 import ProjectQuoteForm from '../../components/ProjectQuoteForm';
 import { COMPANY } from '../lib/company';
 
@@ -66,8 +65,6 @@ export default function ProjectQuotePage() {
             </div>
           </Suspense>
         </section>
-
-        <HowOrderingWorks showCta={false} />
       </div>
 
       <Footer />

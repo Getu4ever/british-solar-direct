@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
-import HowOrderingWorks from '../../components/HowOrderingWorks';
 import { COMPANY, DIRECTOR_BIO } from '../lib/company';
 
 const homeownerProfiles = [
@@ -143,8 +142,6 @@ export default function AboutPage() {
             </p>
           </div>
         </section>
-
-        <HowOrderingWorks />
       </div>
 
       <Footer />

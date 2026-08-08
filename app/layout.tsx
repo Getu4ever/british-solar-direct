@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | British Solar Direct",
   },
   description:
-    "Turnkey LONGi EcoLife solar for Nottingham homeowners. Fixed packages, local delivery, and installation by Juma Mohammedi.",
+    "Turnkey LONGi EcoLife solar for Nottingham homeowners. Fixed packages, local delivery, and installation by Juma Mohammedi. Call 0115 990 4024 or email info@britishsolardirect.co.uk.",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
