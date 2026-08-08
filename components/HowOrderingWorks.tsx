@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ClipboardList, FileCheck2, Landmark, Truck } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 const steps = [
   {
@@ -15,7 +15,7 @@ const steps = [
   {
     title: 'Confirm & pay',
     description:
-      'Approve your quote and pay by BACS using the pro-forma invoice we send over.',
+      'Approve your quote and pay by BACS using the pro-forma invoice we send over to confirm.',
   },
   {
     title: 'Delivery & install',
@@ -34,7 +34,6 @@ export default function HowOrderingWorks({
   showCta = true,
 }: HowOrderingWorksProps) {
   const isDark = variant === 'dark';
-  const stepIcons = [ClipboardList, FileCheck2, Landmark, Truck];
 
   return (
     <section
@@ -70,37 +69,35 @@ export default function HowOrderingWorks({
           )}
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-5">
           {steps.map((step, index) => {
-            const StepIcon = stepIcons[index];
+            const stepNumber = String(index + 1).padStart(2, '0');
 
             return (
-              <div
-                key={step.title}
-                className={`rounded-2xl border p-6 shadow-sm ring-1 transition hover:-translate-y-1 hover:shadow-lg ${
-                  isDark
-                    ? 'border-slate-800 bg-slate-900/55 ring-slate-800/80 hover:border-amber-400/40'
-                    : 'border-slate-200 bg-slate-50/95 ring-slate-100 hover:border-amber-300'
-                }`}
-              >
-                <div
-                  className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl shadow-sm ${
-                    isDark ? 'bg-slate-800 text-amber-400' : 'bg-slate-900 text-amber-400'
-                  }`}
-                >
-                  <StepIcon className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <p
-                  className={`mb-2 text-xs font-bold uppercase tracking-wider ${
-                    isDark ? 'text-amber-400' : 'text-amber-600'
-                  }`}
-                >
-                  Step {index + 1}
-                </p>
-                <h3 className="mb-2 text-lg font-bold">{step.title}</h3>
-                <p className={`text-sm leading-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  {step.description}
-                </p>
+              <div key={step.title} className="relative">
+                <article className="relative overflow-hidden rounded-2xl border border-l-4 border-slate-800 border-l-amber-500 bg-slate-950 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40">
+                  <span
+                    className="absolute top-3 right-4 select-none text-5xl font-black tracking-tighter text-amber-500/10"
+                    aria-hidden="true"
+                  >
+                    {stepNumber}
+                  </span>
+
+                  <p className="text-xs font-bold tracking-wider text-amber-400 uppercase">
+                    Step {index + 1}
+                  </p>
+                  <h3 className="mt-2 mb-2 text-lg font-bold text-white">{step.title}</h3>
+                  <p className="text-xs leading-relaxed text-slate-400">{step.description}</p>
+                </article>
+
+                {index < steps.length - 1 && (
+                  <div
+                    className="pointer-events-none absolute top-1/2 -right-3 z-10 hidden -translate-y-1/2 md:flex"
+                    aria-hidden="true"
+                  >
+                    <ChevronRight className="h-5 w-5 text-slate-700" />
+                  </div>
+                )}
               </div>
             );
           })}

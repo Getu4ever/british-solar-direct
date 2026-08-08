@@ -10,13 +10,96 @@ import HowOrderingWorks from '../components/HowOrderingWorks';
 import UkAddressLookup from '../components/UkAddressLookup';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
-import { Home, Wrench, Building2 } from 'lucide-react';
 
 const guideSystemPriceBySlug: Record<string, string> = {
   'cottage-setup-4kw': 'Complete Package Guide Price: From £5,500 (0% VAT)',
   'family-homestead-8kw': 'Complete Package Guide Price: From £9,750 (0% VAT)',
   'estate-powerhouse-12kw': 'Complete Package Guide Price: Custom Quote Required',
 };
+
+const packageHighlightsBySlug: Record<string, [string, string, string]> = {
+  'cottage-setup-4kw': [
+    '9x Premium LONGi 480W Panels',
+    '5kWh Intelligent Battery Stack',
+    'Scaffolding & DNO Included',
+  ],
+  'family-homestead-8kw': [
+    '18x Premium LONGi 480W Panels',
+    '10kWh Storage Battery Stack',
+    'Full MCS Grid Certification',
+  ],
+  'estate-powerhouse-12kw': [
+    '26+ Premium LONGi 480W Panels',
+    '15kWh Custom Scalable Stack',
+    'EV Smart Charging Optimized',
+  ],
+};
+
+const marqueeBadgeShell =
+  'flex items-center gap-3 rounded-full border border-slate-700/60 bg-slate-800/40 px-5 py-2.5 text-xs font-bold tracking-wider text-slate-100 uppercase shadow-sm';
+
+const trustMarqueeBadges = [
+  {
+    key: 'vat',
+    label: 'Statutory VAT Relief',
+    iconClass:
+      'flex h-8 w-8 items-center justify-center rounded-full border border-amber-500 bg-amber-500/10 text-[10px] font-extrabold text-amber-400',
+    icon: <span>0%</span>,
+  },
+  {
+    key: 'mcs',
+    label: 'Fully MCS Certified',
+    iconClass:
+      'flex h-8 w-8 items-center justify-center rounded-full border border-blue-500 bg-blue-500/10 text-blue-400',
+    icon: (
+      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+        <path
+          d="M3.5 8.2 6.4 11l6.1-6.4"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    key: 'niceic',
+    label: 'NICEIC / Part P Regulated',
+    iconClass:
+      'flex h-8 w-8 items-center justify-center rounded-full border border-yellow-500 bg-yellow-500/10 text-yellow-400',
+    icon: (
+      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+        <path d="M9.2 1.2 3.6 9.1h3.1L6.5 14.8l6.1-8.4H9.4L9.2 1.2Z" />
+      </svg>
+    ),
+  },
+  {
+    key: 'recc',
+    label: 'RECC Code Protected',
+    iconClass:
+      'flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500 bg-emerald-500/10 text-emerald-400',
+    icon: (
+      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+        <rect
+          x="3.2"
+          y="2.2"
+          width="9.6"
+          height="11.6"
+          rx="1.4"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
+        <path
+          d="M5.6 5.5h4.8M5.6 8h4.8M5.6 10.5h3.2"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+];
 
 export default function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,35 +181,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 text-sm sm:px-6 md:grid-cols-4">
-            <div>
-              <p className="font-semibold text-slate-900">Turnkey residential service</p>
-              <p className="mt-1 text-slate-500">
-                From design-ready quote to commissioning, one local team manages everything.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-slate-900">0% VAT eligible packages</p>
-              <p className="mt-1 text-slate-500">
-                Our guide prices are structured around full turnkey installations qualifying for green-energy VAT relief.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-slate-900">MCS and DNO handled</p>
-              <p className="mt-1 text-slate-500">
-                We manage the paperwork, electrical coordination, and certification handover without extra admin for you.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-slate-900">24 business hour response</p>
-              <p className="mt-1 text-slate-500">
-                Clear timescales, fixed quote guidance, and responsive support from a Nottingham-based team.
-              </p>
-            </div>
-          </div>
-        </section>
-
         <HowOrderingWorks />
 
         <section className="mx-auto w-full max-w-7xl px-5 py-20 sm:px-6">
@@ -150,55 +204,178 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product, index) => (
-              <article
-                key={product.slug}
-                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-amber-500 hover:shadow-lg"
-              >
-                <div className="mb-5 flex h-64 items-center justify-center rounded-xl bg-slate-100 p-4">
+            {products.map((product, index) => {
+              const highlights = packageHighlightsBySlug[product.slug] ?? [
+                product.type,
+                product.efficiency,
+                product.availability ?? 'Turnkey Installation',
+              ];
+
+              return (
+                <article
+                  key={product.slug}
+                  className="flex h-full flex-col rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md"
+                >
                   <img
                     src={product.image}
-                    alt={`${product.name} solar panel`}
-                    className="h-full object-contain transition duration-300 group-hover:scale-105"
+                    alt={`${product.name} installation`}
+                    className="h-56 w-full rounded-xl object-cover brightness-[0.95]"
                   />
-                </div>
 
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <div>
-                    <p className="mb-1 text-sm font-medium text-amber-600">{product.brand}</p>
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-amber-500">
-                      {product.name}
-                    </h3>
+                  <div className="mt-4 mb-3 flex items-start justify-between gap-3">
+                    <div>
+                      <p className="mb-1 text-sm font-medium text-amber-600">{product.brand}</p>
+                      <h3 className="text-xl font-bold text-slate-900">{product.name}</h3>
+                    </div>
+                    <span
+                      className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                        index === 1 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                      }`}
+                    >
+                      {index === 1 ? 'Most Popular' : 'Turnkey Package'}
+                    </span>
                   </div>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      index === 1 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
-                    }`}
-                  >
-                    {index === 1 ? 'Most Popular' : 'Turnkey Package'}
-                  </span>
-                </div>
 
-                <p className="mb-4 flex-1 text-sm leading-6 text-slate-500">{product.description}</p>
+                  <ul className="mb-4 space-y-2">
+                    {highlights.map((highlight) => (
+                      <li key={highlight} className="flex items-start text-sm text-slate-600">
+                        <span className="mr-2 text-amber-500" aria-hidden="true">
+                          ✓
+                        </span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
-                  <p>
-                    <span className="font-semibold text-slate-900">Guide System Price:</span>{' '}
-                    {guideSystemPriceBySlug[product.slug] ??
-                      'Complete Package Guide Price: Custom Quote Required'}
-                  </p>
-                </div>
+                  <div className="mt-auto space-y-4 border-t border-slate-100 pt-4">
+                    <p className="text-sm text-slate-600">
+                      <span className="font-semibold text-slate-900">Guide System Price:</span>{' '}
+                      {guideSystemPriceBySlug[product.slug] ??
+                        'Complete Package Guide Price: Custom Quote Required'}
+                    </p>
 
-                <Link
-                  href={`/products/${product.slug}`}
-                  className="mt-5 text-sm font-semibold text-amber-600 transition hover:text-amber-700"
-                >
-                  View {product.name} details →
-                </Link>
-              </article>
-            ))}
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="inline-block text-sm font-semibold text-amber-600 transition hover:text-amber-700"
+                    >
+                      View details →
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
+
+        <section className="mx-auto w-full max-w-7xl px-5 py-16 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">Meet the Power Players</h2>
+          <p className="mt-2 mb-10 max-w-2xl text-sm text-slate-500">
+            Every installation features our exclusive single-manufacturer Tier-1 hardware framework,
+            engineered for extreme reliability and clean architectural aesthetics.
+          </p>
+
+          <div className="grid grid-cols-1 gap-6 md:auto-rows-[260px] md:grid-cols-3">
+            <article className="relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white shadow-md transition-all duration-300 hover:border-amber-500/30 md:row-span-2 md:min-h-0">
+              <div className="mb-4 flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-white p-4">
+                <img
+                  src="/images/bento-longi-panels.png"
+                  alt="Premium all-black LONGi EcoLife solar panels"
+                  className="h-full max-h-72 w-full object-contain md:max-h-none"
+                />
+              </div>
+              <div>
+                <p className="text-xs font-bold tracking-wider text-amber-400 uppercase">
+                  LONGi EcoLife™ 480W Arrays
+                </p>
+                <h3 className="mt-1 text-xl font-extrabold text-white">
+                  Breakthrough HPBC 2.0 Cell Architecture
+                </h3>
+                <p className="mt-3 text-xs leading-relaxed text-slate-400">
+                  Our premium all-black architectural panels feature front-side busbar-free
+                  technology, allowing cells to absorb maximized light voltage even under cloudy,
+                  low-light Nottingham skies.
+                </p>
+              </div>
+            </article>
+
+            <article className="flex min-h-[260px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 p-5 text-white transition-all duration-300 hover:border-amber-500/30">
+              <div className="mb-3 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white p-3">
+                <img
+                  src="/images/bento-hybrid-inverter.png"
+                  alt="Smart hybrid solar inverter"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-[10px] font-bold tracking-widest text-amber-400">THE ENGINE</p>
+                <h3 className="text-base font-bold text-white">Smart Hybrid Inverter Hub</h3>
+                <p className="mt-1.5 text-xs text-slate-400">
+                  The absolute brain of your system. Automatically converts and distributes direct
+                  current into household electricity or battery banks.
+                </p>
+              </div>
+            </article>
+
+            <article className="flex min-h-[260px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 p-5 text-white transition-all duration-300 hover:border-amber-500/30">
+              <div className="mb-3 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white p-3">
+                <img
+                  src="/images/bento-battery-stack.png"
+                  alt="Intelligent lithium home battery storage stack"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-[10px] font-bold tracking-widest text-amber-400">THE STORAGE</p>
+                <h3 className="text-base font-bold text-white">Intelligent Lithium Battery Stack</h3>
+                <p className="mt-1.5 text-xs text-slate-400">
+                  High-density modular storage blocks that store daytime energy, completely wiping
+                  out peak-rate evening grid electricity costs.
+                </p>
+              </div>
+            </article>
+
+            <article className="flex min-h-[220px] flex-col justify-between gap-5 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white transition-all duration-300 hover:border-amber-500/30 sm:flex-row sm:items-center md:col-span-2">
+              <div className="flex h-36 w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f4d3c4] p-2 sm:h-40 sm:w-44">
+                <img
+                  src="/images/bento-monitoring-app.png"
+                  alt="Solar monitoring mobile app interface"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-[10px] font-bold tracking-widest text-amber-400">THE CONTROL</p>
+                <h3 className="text-lg font-bold text-white">Real-Time Mobile Performance App</h3>
+                <p className="mt-1.5 max-w-md text-xs text-slate-400">
+                  Track your active generation yields, home energy savings metrics, and ongoing
+                  national grid payback export revenues directly from your smartphone anywhere,
+                  anytime.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <div
+          className="relative w-full select-none overflow-hidden border-y border-slate-800 bg-slate-900 py-5 text-white"
+          aria-label="Trust credentials"
+        >
+          <div className="animate-marquee">
+            {[0, 1].map((copy) => (
+              <div
+                key={copy}
+                className="flex shrink-0 items-center gap-6 pr-6 whitespace-nowrap"
+                aria-hidden={copy === 1 ? true : undefined}
+              >
+                {trustMarqueeBadges.map((badge) => (
+                  <div key={`${copy}-${badge.key}`} className={marqueeBadgeShell}>
+                    <span className={badge.iconClass}>{badge.icon}</span>
+                    <span>{badge.label}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
 
         <section className="border-y border-slate-200 bg-white py-16">
           <div className="mx-auto max-w-4xl px-5 sm:px-6">
@@ -291,58 +468,6 @@ export default function HomePage() {
                 </p>
                 <p className="mt-5 text-sm font-semibold text-slate-900">Family home package brief</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.18em] text-amber-600">Clear guide pricing</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-20">
-          <div className="mx-auto max-w-7xl px-5 sm:px-6">
-            <div className="mb-12 text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
-                <Building2 className="h-7 w-7" />
-              </div>
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                Fully Compliant &amp; Certified
-              </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Our turnkey model is built for Nottingham homeowners who want complete peace of
-                mind, verified compliance, and director-led accountability from start to finish.
-              </p>
-            </div>
-
-            <div className="grid gap-8 md:grid-cols-3">
-              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-                  <Home className="h-6 w-6" />
-                </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">MCS Certified Work</h3>
-                <p className="text-sm leading-6 text-slate-600">
-                  All physical installations are signed off by fully vetted, MCS-registered
-                  engineers, enabling your Smart Export Guarantee (SEG) payments.
-                </p>
-              </div>
-
-              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-                  <Wrench className="h-6 w-6" />
-                </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">Part P Approved</h3>
-                <p className="text-sm leading-6 text-slate-600">
-                  Full electrical self-certification and official Distribution Network Operator grid
-                  notifications handled entirely by our team.
-                </p>
-              </div>
-
-              <div className="group rounded-2xl border border-slate-200 bg-slate-50 p-8 transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
-                  <Building2 className="h-6 w-6" />
-                </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">£5M Public Liability</h3>
-                <p className="text-sm leading-6 text-slate-600">
-                  Comprehensive insurance coverage on every project, backed by over 20 years of
-                  premier local construction experience.
-                </p>
               </div>
             </div>
           </div>
