@@ -3,12 +3,23 @@ export const COMPANY = {
   director: 'Juma Mohammedi',
   directorTitle: 'Company Director & Lead Installer',
   address: 'Southwell Lane, Kirkby-in-Ashfield, Nottingham NG17 8EY',
+  streetAddress: 'Southwell Lane',
+  addressLocality: 'Kirkby-in-Ashfield',
+  addressRegion: 'Nottingham',
+  postalCode: 'NG17 8EY',
+  addressCountry: 'GB',
   city: 'Nottingham',
   phone: '+441159904024',
   phoneDisplay: '0115 990 4024',
   email: 'info@britishsolardirect.co.uk',
   website: 'https://britishsolardirect.co.uk',
   responseTime: 'within 24 business hours',
+  /** Short HTML meta / Open Graph description (keep ≤ ~155 chars / ~1000px). */
+  metaDescription:
+    'Turnkey LONGi EcoLife solar for Nottingham homeowners. Fixed packages with local delivery and install. Call 0115 990 4024.',
+  /** Google Business Profile / JSON-LD description (max 750 characters). */
+  description:
+    'British Solar Direct supplies and installs turnkey LONGi EcoLife solar and battery packages for homeowners across Nottinghamshire, Derbyshire, Leicestershire, and South Yorkshire. Based at Southwell Lane, Kirkby-in-Ashfield, Nottingham NG17 8EY, we manage survey, supply, and professional installation led by Company Director Juma Mohammedi. Choose fixed residential packages — Cottage Setup, Family Homestead, or Estate Powerhouse — with clear guide pricing, local delivery, and installation typically completed within 2 weeks. Call 0115 990 4024 or email info@britishsolardirect.co.uk for a fixed quote.',
 } as const;
 
 export const DIRECTOR_BIO =
