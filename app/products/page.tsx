@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
-import HowOrderingWorks from '../../components/HowOrderingWorks';
 import GuidePriceLabel from '../../components/GuidePriceLabel';
 import { products } from '../lib/products';
 
@@ -287,8 +286,6 @@ export default function ProductsPage() {
             </div>
           </div>
         </section>
-
-        <HowOrderingWorks variant="dark" />
       </div>
 
       <Footer />
