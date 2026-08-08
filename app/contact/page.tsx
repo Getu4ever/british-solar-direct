@@ -70,6 +70,7 @@ export default function ContactPage() {
                 package size, the dedicated quote page will help us respond faster.
               </p>
               <form onSubmit={handleSubmit} className="space-y-5">
+                <input type="hidden" name="type" value="contact_enquiry" />
                 <div>
                   <label className="mb-1 block text-sm font-semibold text-slate-900">Name</label>
                   <input name="name" required type="text" className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm outline-none transition focus:border-amber-500" placeholder="Your name" />
@@ -127,7 +128,12 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Email</p>
-                    <a href="mailto:juma@britishsolardirect.co.uk" className="text-sm text-amber-600 hover:text-amber-700 font-semibold">juma@britishsolardirect.co.uk</a>
+                    <a
+                      href={`mailto:${COMPANY.email}`}
+                      className="text-sm font-semibold text-amber-600 hover:text-amber-700"
+                    >
+                      {COMPANY.email}
+                    </a>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase text-slate-500">Phone</p>

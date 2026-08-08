@@ -118,7 +118,8 @@ export default function InstallationPage() {
             <h2 className="text-3xl font-bold tracking-tight">Ready to start your installation?</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
               Secure a detailed fixed quote covering survey, design, hardware, and full installation
-              delivery managed by Juma Mohammedi and his local engineering team.
+              delivery completed within 2 weeks, fully managed by Juma Mohammedi and his local
+              engineering team.
             </p>
 
             <Link

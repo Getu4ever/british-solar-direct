@@ -101,6 +101,7 @@ export async function submitQuoteRequest(formData: FormData) {
       quantity,
       projectNotes: notesWithUploads,
       propertyImages: propertyImagesJson,
+      type: ((formData.get('type') as string)?.trim() || 'quote_request'),
     });
   } catch (dbError) {
     console.error('Quote request save failed; continuing with email delivery:', dbError);
@@ -130,13 +131,14 @@ export async function submitContactEnquiry(formData: FormData) {
   const propertyName = (formData.get('propertyName') as string)?.trim() || null;
   const email = (formData.get('email') as string)?.trim().toLowerCase();
   const message = (formData.get('message') as string)?.trim();
+  const type = (formData.get('type') as string)?.trim() || 'contact_enquiry';
 
   if (!name || !email || !message) {
     return { success: false, error: 'Please fill in all required fields.' };
   }
 
   try {
-    await createContactLead({ name, propertyName, email, message });
+    await createContactLead({ name, propertyName, email, message, type });
   } catch (dbError) {
     console.error('Contact enquiry save failed; continuing with email delivery:', dbError);
   }
@@ -189,6 +191,7 @@ export async function getAdminDashboard() {
           property: item.propertyName,
           email: item.email,
           message: item.message,
+          type: item.type ?? 'contact_enquiry',
           date: item.createdAt.toLocaleString('en-GB'),
         })),
         metrics: {

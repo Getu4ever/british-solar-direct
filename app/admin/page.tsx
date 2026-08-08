@@ -38,6 +38,7 @@ type ContactLead = {
   property?: string | null;
   email?: string | null;
   message?: string | null;
+  type?: string | null;
   date?: string | null;
 };
 type DashboardMetrics = {

@@ -75,11 +75,22 @@ function ensureSqliteSchema(filePath: string) {
         "propertyName" TEXT,
         "email" TEXT NOT NULL,
         "message" TEXT NOT NULL,
+        "type" TEXT NOT NULL DEFAULT 'contact_enquiry',
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
     migrateSqliteColumnRenames(db);
+
+    const contactColumns = db
+      .prepare('PRAGMA table_info("ContactEnquiry")')
+      .all() as Array<{ name: string }>;
+
+    if (!contactColumns.some((entry) => entry.name === 'type')) {
+      db.exec(
+        `ALTER TABLE "ContactEnquiry" ADD COLUMN "type" TEXT NOT NULL DEFAULT 'contact_enquiry';`
+      );
+    }
 
     const quoteColumns = db
       .prepare('PRAGMA table_info("QuoteRequest")')
@@ -93,6 +104,7 @@ function ensureSqliteSchema(filePath: string) {
       'propertyImages',
       'paymentTermsNotes',
       'invoiceSystemScope',
+      'type',
     ];
 
     for (const column of requiredTextColumns) {

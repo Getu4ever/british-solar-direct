@@ -33,6 +33,7 @@ model QuoteRequest {
   invoiceStage1DepositPence Int?
   invoiceStage2HardwarePence Int?
   invoiceStage3BalancePence Int?
+  type                     String   @default("quote_request")
   createdAt                DateTime @default(now())
 }
 
@@ -42,5 +43,6 @@ model ContactEnquiry {
   propertyName String?
   email        String
   message      String
+  type         String   @default("contact_enquiry")
   createdAt    DateTime @default(now())
 }

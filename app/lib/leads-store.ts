@@ -28,6 +28,7 @@ export type QuoteLeadRecord = {
   quantity: string | null;
   projectNotes: string | null;
   propertyImages: string | null;
+  type: string;
   status: PipelineStatus;
   agreedTotalPricePence: number | null;
   paymentTermsNotes: string | null;
@@ -54,6 +55,7 @@ export type ContactLeadRecord = {
   propertyName: string | null;
   email: string;
   message: string;
+  type: string;
   createdAt: Date;
 };
 
@@ -114,6 +116,7 @@ function mapQuoteRow(row: Record<string, unknown>): QuoteLeadRecord {
     quantity: (row.quantity as string | null) ?? null,
     projectNotes: (row.projectNotes as string | null) ?? null,
     propertyImages: (row.propertyImages as string | null) ?? null,
+    type: (row.type as string | null) ?? 'quote_request',
     status: normalizePipelineStatus(row.status as string | null | undefined),
     agreedTotalPricePence: asNullableInt(row.agreedTotalPricePence),
     paymentTermsNotes: (row.paymentTermsNotes as string | null) ?? null,
@@ -174,6 +177,8 @@ async function ensurePgLifecycleColumns(pool: Pool) {
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage1DepositPence" INTEGER;
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage2HardwarePence" INTEGER;
     ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "invoiceStage3BalancePence" INTEGER;
+    ALTER TABLE "QuoteRequest" ADD COLUMN IF NOT EXISTS "type" TEXT NOT NULL DEFAULT 'quote_request';
+    ALTER TABLE "ContactEnquiry" ADD COLUMN IF NOT EXISTS "type" TEXT NOT NULL DEFAULT 'contact_enquiry';
     UPDATE "QuoteRequest" SET "status" = 'new_lead' WHERE "status" IS NULL OR "status" = '';
   `);
 }
@@ -210,6 +215,7 @@ async function ensurePgSchema() {
           "invoiceStage1DepositPence" INTEGER,
           "invoiceStage2HardwarePence" INTEGER,
           "invoiceStage3BalancePence" INTEGER,
+          "type" TEXT NOT NULL DEFAULT 'quote_request',
           "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
 
@@ -219,6 +225,7 @@ async function ensurePgSchema() {
           "propertyName" TEXT,
           "email" TEXT NOT NULL,
           "message" TEXT NOT NULL,
+          "type" TEXT NOT NULL DEFAULT 'contact_enquiry',
           "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
       `);
@@ -254,14 +261,16 @@ export async function createQuoteLead(
     | 'invoiceStage3BalancePence'
   >
 ) {
+  const type = input.type?.trim() || 'quote_request';
+
   if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
     await ensurePgSchema();
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO "QuoteRequest" (
         "id", "customerName", "contactEmail", "contactPhone", "deliveryPostcode",
-        "productInterest", "quantity", "projectNotes", "propertyImages", "status"
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+        "productInterest", "quantity", "projectNotes", "propertyImages", "status", "type"
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
       [
         randomUUID(),
         input.customerName,
@@ -273,6 +282,7 @@ export async function createQuoteLead(
         input.projectNotes,
         input.propertyImages,
         'new_lead',
+        type,
       ]
     );
     return;
@@ -281,27 +291,45 @@ export async function createQuoteLead(
   const prisma = await getLocalPrisma();
   await prisma.quoteRequest.create({
     data: {
-      ...input,
+      customerName: input.customerName,
+      contactEmail: input.contactEmail,
+      contactPhone: input.contactPhone,
+      deliveryPostcode: input.deliveryPostcode,
+      productInterest: input.productInterest,
+      quantity: input.quantity,
+      projectNotes: input.projectNotes,
+      propertyImages: input.propertyImages,
+      type,
       status: 'new_lead',
     },
   });
 }
 
 export async function createContactLead(input: Omit<ContactLeadRecord, 'id' | 'createdAt'>) {
+  const type = input.type?.trim() || 'contact_enquiry';
+
   if (isPostgresDatabaseUrl(getRuntimeDatabaseUrl())) {
     await ensurePgSchema();
     const pool = getPgPool();
     await pool.query(
       `INSERT INTO "ContactEnquiry" (
-        "id", "name", "propertyName", "email", "message"
-      ) VALUES ($1,$2,$3,$4,$5)`,
-      [randomUUID(), input.name, input.propertyName, input.email, input.message]
+        "id", "name", "propertyName", "email", "message", "type"
+      ) VALUES ($1,$2,$3,$4,$5,$6)`,
+      [randomUUID(), input.name, input.propertyName, input.email, input.message, type]
     );
     return;
   }
 
   const prisma = await getLocalPrisma();
-  await prisma.contactEnquiry.create({ data: input });
+  await prisma.contactEnquiry.create({
+    data: {
+      name: input.name,
+      propertyName: input.propertyName,
+      email: input.email,
+      message: input.message,
+      type,
+    },
+  });
 }
 
 export async function getDashboardLeads(): Promise<{
@@ -324,6 +352,7 @@ export async function getDashboardLeads(): Promise<{
         propertyName: row.propertyName,
         email: row.email,
         message: row.message,
+        type: (row.type as string | null) ?? 'contact_enquiry',
         createdAt: new Date(row.createdAt),
       })),
     };
@@ -337,7 +366,10 @@ export async function getDashboardLeads(): Promise<{
 
   return {
     quotes: quotes.map((row) => mapQuoteRow(row as unknown as Record<string, unknown>)),
-    contacts,
+    contacts: contacts.map((row) => ({
+      ...row,
+      type: row.type ?? 'contact_enquiry',
+    })),
   };
 }
 
