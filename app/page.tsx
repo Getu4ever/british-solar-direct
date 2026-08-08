@@ -276,9 +276,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 gap-6 md:auto-rows-[260px] md:grid-cols-3">
             <article className="relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white shadow-md transition-all duration-300 hover:border-amber-500/30 md:row-span-2 md:min-h-0">
-              <div className="mb-4 flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-white p-4">
+              <div className="mb-4 flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-slate-900 p-3">
                 <img
-                  src="/images/bento-longi-panels.png"
+                  src="/images/bento-longi-panels.jpg"
                   alt="Premium all-black LONGi EcoLife solar panels"
                   className="h-full max-h-72 w-full object-contain md:max-h-none"
                 />
@@ -299,11 +299,11 @@ export default function HomePage() {
             </article>
 
             <article className="flex min-h-[260px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 p-5 text-white transition-all duration-300 hover:border-amber-500/30">
-              <div className="mb-3 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white p-3">
+              <div className="mb-3 flex h-36 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 p-1">
                 <img
-                  src="/images/bento-hybrid-inverter.png"
+                  src="/images/bento-hybrid-inverter.jpg"
                   alt="Smart hybrid solar inverter"
-                  className="h-full w-full object-contain"
+                  className="h-full w-full scale-110 object-contain"
                 />
               </div>
               <div>
@@ -317,11 +317,11 @@ export default function HomePage() {
             </article>
 
             <article className="flex min-h-[260px] flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 p-5 text-white transition-all duration-300 hover:border-amber-500/30">
-              <div className="mb-3 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white p-3">
+              <div className="mb-3 flex h-36 items-center justify-center overflow-hidden rounded-2xl bg-slate-950 p-1">
                 <img
-                  src="/images/bento-battery-stack.png"
+                  src="/images/bento-battery-stack.jpg"
                   alt="Intelligent lithium home battery storage stack"
-                  className="h-full w-full object-contain"
+                  className="h-full w-full scale-110 object-contain"
                 />
               </div>
               <div>
@@ -337,7 +337,7 @@ export default function HomePage() {
             <article className="flex min-h-[220px] flex-col justify-between gap-5 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white transition-all duration-300 hover:border-amber-500/30 sm:flex-row sm:items-center md:col-span-2">
               <div className="flex h-36 w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f4d3c4] p-2 sm:h-40 sm:w-44">
                 <img
-                  src="/images/bento-monitoring-app.png"
+                  src="/images/bento-monitoring-app.jpg"
                   alt="Solar monitoring mobile app interface"
                   className="h-full w-full object-contain"
                 />

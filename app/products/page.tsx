@@ -3,9 +3,7 @@ import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import HowOrderingWorks from '../../components/HowOrderingWorks';
 import GuidePriceLabel from '../../components/GuidePriceLabel';
-import { BatteryCharging, Building2, Home, House, ShieldCheck, SunMedium, Zap } from 'lucide-react';
 import { products } from '../lib/products';
-import { PRODUCT_RANGE } from '../lib/company';
 
 const guideSystemPriceBySlug: Record<string, string> = {
   'cottage-setup-4kw': 'From £5,500 (0% VAT)',
@@ -13,18 +11,29 @@ const guideSystemPriceBySlug: Record<string, string> = {
   'estate-powerhouse-12kw': 'Custom Quote Required',
 };
 
-const rangeIcons = [Home, House, Building2];
-const rangeAccents = [
-  'from-amber-50 to-white text-amber-600',
-  'from-emerald-50 to-white text-emerald-600',
-  'from-sky-50 to-white text-sky-600',
-];
+const packageHighlightsBySlug: Record<string, [string, string, string]> = {
+  'cottage-setup-4kw': [
+    '9x Premium LONGi 480W Panels',
+    '5kWh Intelligent Battery Stack',
+    'Scaffolding & DNO Included',
+  ],
+  'family-homestead-8kw': [
+    '18x Premium LONGi 480W Panels',
+    '10kWh Storage Battery Stack',
+    'Full MCS Grid Certification',
+  ],
+  'estate-powerhouse-12kw': [
+    '26+ Premium LONGi 480W Panels',
+    '15kWh Custom Scalable Stack',
+    'EV Smart Charging Optimized',
+  ],
+};
 
 export default function ProductsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
       <div className="flex-1">
-        <section className="relative border-b border-slate-200 bg-slate-950 overflow-hidden">
+        <section className="relative overflow-hidden border-b border-slate-200 bg-slate-950">
           <div className="absolute inset-0">
             <img
               src="/images/products-hero.webp"
@@ -51,93 +60,87 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-8 sm:px-6">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ring-1 ring-slate-100">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-2xl bg-slate-50 p-5 transition hover:-translate-y-1 hover:bg-white hover:shadow-md">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-amber-400 shadow-sm">
-                  <SunMedium className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <p className="text-sm font-semibold text-slate-900">Category</p>
-                <p className="mt-2 text-base font-medium text-slate-700">Solar Panels</p>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Premium LONGi homeowner systems designed for efficient UK rooftop performance.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 p-5 transition hover:-translate-y-1 hover:bg-white hover:shadow-md">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-amber-400 shadow-sm">
-                  <Home className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <p className="text-sm font-semibold text-slate-900">Supply Model</p>
-                <p className="mt-2 text-base font-medium text-slate-700">Complete Turnkey Packages</p>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Built around Cottage, Family Homestead, and Estate Powerhouse system sizes.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 p-5 transition hover:-translate-y-1 hover:bg-white hover:shadow-md">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-amber-400 shadow-sm">
-                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <p className="text-sm font-semibold text-slate-900">Order Support</p>
-                <p className="mt-2 text-base font-medium text-slate-700">Managed Installation Handover</p>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Scaffolding, labor, DNO grid notifications, and MCS handover certificates included.
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6">
+            <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <div>
+                <h2 className="mb-3 text-3xl font-bold tracking-tight text-slate-900">
+                  Three Flagship Installation Packages
+                </h2>
+                <p className="max-w-2xl text-slate-500">
+                  A focused selection of complete solar setups using premium all-black LONGi EcoLife
+                  technology, tailored directly to standard UK home footprints.
                 </p>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6">
-            <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-900">Three flagship residential packages</h2>
-            <p className="mb-8 max-w-2xl text-sm text-slate-500">
-                  Turnkey homeowner installation packages built around our flagship LONGi EcoLife
-              LR7-54HVB-480M 480W panel. Every guide price includes scaffolding, installation labor, and final compliance certification.
-            </p>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {PRODUCT_RANGE.map((item, index) => {
-                const RangeIcon = rangeIcons[index] ?? Home;
-                const accentClass = rangeAccents[index] ?? 'from-slate-50 to-white text-slate-700';
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {products.map((product, index) => {
+                const highlights = packageHighlightsBySlug[product.slug] ?? [
+                  product.type,
+                  product.efficiency,
+                  product.availability ?? 'Turnkey Installation',
+                ];
 
                 return (
-                  <div
-                    key={item.title}
-                    className="rounded-3xl border border-slate-200 bg-slate-50/80 p-6 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg"
+                  <article
+                    key={product.slug}
+                    className="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm"
                   >
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-amber-400 shadow-sm">
-                      <RangeIcon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <div className="mb-3 flex flex-wrap items-center gap-2">
-                      <h3 className="font-bold text-slate-900">{item.title}</h3>
-                      <span
-                        className={`rounded-full bg-gradient-to-r px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                          item.badge === 'on-request'
-                            ? 'from-amber-100 to-amber-50 text-amber-700'
-                            : item.badge === 'most-popular'
-                              ? 'from-emerald-100 to-emerald-50 text-emerald-700'
-                              : 'from-sky-100 to-sky-50 text-sky-700'
-                        }`}
-                      >
-                        {item.badge === 'in-catalogue'
-                          ? 'SMALL HOME PACKAGE'
-                          : item.badge === 'most-popular'
-                            ? 'MOST POPULAR'
-                            : 'LARGE HOME PACKAGE'}
-                      </span>
-                    </div>
-                    <p className="text-sm leading-6 text-slate-600">{item.description}</p>
-                    <div className={`mt-5 rounded-2xl bg-gradient-to-r p-[1px] ${accentClass}`}>
-                      <div className="rounded-[15px] bg-white/90 px-4 py-3 text-xs font-medium text-slate-600">
-                        Full scaffolding, premium LONGi hardware, installation labor, and certification handover included.
+                    <div>
+                      <img
+                        src={product.image}
+                        alt={`${product.name} installation`}
+                        className="mb-5 h-56 w-full rounded-xl object-cover brightness-[0.95]"
+                      />
+
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <div>
+                          <p className="mb-1 text-sm font-medium text-amber-600">{product.brand}</p>
+                          <h3 className="text-xl font-bold text-slate-900">{product.name}</h3>
+                        </div>
+                        <span
+                          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                            index === 1
+                              ? 'bg-emerald-50 text-emerald-700'
+                              : 'bg-amber-50 text-amber-700'
+                          }`}
+                        >
+                          {index === 1 ? 'Most Popular' : 'Turnkey Package'}
+                        </span>
                       </div>
+
+                      <ul className="mb-4 space-y-2">
+                        {highlights.map((highlight) => (
+                          <li key={highlight} className="flex items-start text-sm text-slate-600">
+                            <span className="mr-2 text-amber-500" aria-hidden="true">
+                              ✓
+                            </span>
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
+
+                    <div className="mt-auto space-y-4 border-t border-slate-100 pt-4">
+                      <p className="text-sm text-slate-600">
+                        <span className="font-semibold text-slate-900">Guide System Price:</span>{' '}
+                        {guideSystemPriceBySlug[product.slug] ?? 'Custom Quote Required'}
+                      </p>
+
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="inline-block text-sm font-semibold text-amber-600 transition hover:text-amber-700"
+                      >
+                        View package details →
+                      </Link>
+                    </div>
+                  </article>
                 );
               })}
             </div>
+
+            <GuidePriceLabel className="mt-8 text-center" />
           </div>
         </section>
 
@@ -257,114 +260,32 @@ export default function ProductsPage() {
                   Next Step
                 </div>
                 <div className="px-6 py-4 lg:border-r">
-                  <Link href="/project-quote?product=cottage-setup-4kw" className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600">
+                  <Link
+                    href="/project-quote?product=cottage-setup-4kw"
+                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                  >
                     Request Quote
                   </Link>
                 </div>
                 <div className="px-6 py-4 lg:border-r">
-                  <Link href="/project-quote?product=family-homestead-8kw" className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600">
+                  <Link
+                    href="/project-quote?product=family-homestead-8kw"
+                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                  >
                     Request Quote
                   </Link>
                 </div>
                 <div className="px-6 py-4">
-                  <Link href="/project-quote?product=estate-powerhouse-12kw" className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600">
+                  <Link
+                    href="/project-quote?product=estate-powerhouse-12kw"
+                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                  >
                     Request Quote
                   </Link>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-5 pb-20 pt-4 sm:px-6">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Package breakdowns
-            </h2>
-            <span className="text-sm text-slate-500">{products.length} residential packages</span>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product, index) => {
-              const ProductIcon = rangeIcons[index] ?? SunMedium;
-
-              return (
-                <Link
-                  key={product.slug}
-                  href={`/products/${product.slug}`}
-                  className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"
-                >
-                  <div className="mb-5 flex items-center justify-between gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-amber-400 shadow-sm">
-                      <ProductIcon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                      {product.power}
-                    </span>
-                  </div>
-
-                  <div className="mb-5 flex h-64 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 p-4">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-full object-contain transition duration-300 group-hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <p className="mb-1 text-sm font-medium text-amber-600">{product.brand}</p>
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-amber-500">
-                      {product.name}
-                    </h3>
-                  </div>
-
-                  <div className="mb-4 flex flex-wrap gap-2 text-xs font-medium text-slate-600">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-amber-700">
-                      <Zap className="h-3.5 w-3.5" aria-hidden="true" />
-                      {product.efficiency}
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-3 py-1 text-sky-700">
-                      <BatteryCharging className="h-3.5 w-3.5" aria-hidden="true" />
-                      {product.type}
-                    </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700">
-                      <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                      {product.productWarranty}
-                    </span>
-                  </div>
-
-                  <p className="mb-4 flex-1 text-sm leading-6 text-slate-600">
-                    {product.description}
-                  </p>
-
-                  <div className="space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-600">
-                    <p>
-                      <span className="font-semibold text-slate-900">Turnkey Guide Price:</span>{' '}
-                      {guideSystemPriceBySlug[product.slug] ?? 'Custom Quote Required'}
-                    </p>
-                    <p>
-                      <span className="font-semibold text-slate-900">Ideal Home:</span>{' '}
-                      {product.category}
-                    </p>
-                    <p>
-                      <span className="font-semibold text-slate-900">What&apos;s Included:</span>{' '}
-                      Full scaffolding, installation labor, DNO approvals, and MCS certification.
-                    </p>
-                    <p>
-                      <span className="font-semibold text-slate-900">Installation Window:</span>{' '}
-                      {product.leadTime}
-                    </p>
-                  </div>
-
-                  <div className="mt-5 text-sm font-semibold text-amber-600">
-                    View package details →
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          <GuidePriceLabel className="mt-8 text-center" />
         </section>
 
         <HowOrderingWorks variant="dark" />

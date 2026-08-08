@@ -39,11 +39,11 @@ export default function ProductDetailPage() {
         </button>
 
         <div className="grid md:grid-cols-2 gap-12 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-          <div className="bg-slate-100 rounded-xl p-6 flex items-center justify-center h-96">
+          <div className="h-96 overflow-hidden rounded-xl bg-slate-100">
             <img
               src={product.image}
               alt={product.name}
-              className="h-full object-contain mix-blend-multiply"
+              className="h-full w-full object-cover brightness-[0.95]"
             />
           </div>
 
