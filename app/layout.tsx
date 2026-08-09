@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RootClientWrapper from "./RootClientWrapper";
 import { COMPANY, DELIVERY_AREAS } from "./lib/company";
+import GoogleAnalytics from "../components/GoogleAnalytics";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -109,6 +110,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
+        <GoogleAnalytics />
         <RootClientWrapper>{children}</RootClientWrapper>
       </body>
     </html>
