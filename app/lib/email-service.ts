@@ -79,6 +79,37 @@ export async function sendQuoteNotification({
   });
 }
 
+export async function sendNottsLocalLeadNotification({
+  name,
+  postcode,
+  phone,
+}: {
+  name: string;
+  postcode: string;
+  phone: string;
+}) {
+  const adminDetails = [
+    buildDetailRow('Name', name),
+    buildDetailRow('Postcode', postcode),
+    buildDetailRow(
+      'Phone',
+      `<a href="tel:${phone.replace(/\s/g, '')}" style="color:#d97706;text-decoration:none;">${phone}</a>`
+    ),
+    buildDetailRow('Source', 'Nottingham local landing (/notts-local)'),
+  ].join('');
+
+  await resend.emails.send({
+    from: FROM_EMAIL,
+    to: ADMIN_EMAIL,
+    subject: `Nottingham Local Lead - ${name} (${postcode})`,
+    html: buildEmailHtml(`
+      <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">New Nottingham Local Lead</h2>
+      <p style="margin:0 0 20px;color:#64748b;font-size:14px;">Call back ${COMPANY.responseTime}.</p>
+      ${buildDetailsTable(adminDetails)}
+    `),
+  });
+}
+
 export async function sendContactNotification({
   name,
   propertyName,

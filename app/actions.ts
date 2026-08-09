@@ -3,6 +3,7 @@
 import {
   sendQuoteNotification,
   sendContactNotification,
+  sendNottsLocalLeadNotification,
 } from './lib/email-service';
 import { isAdminAuthenticated } from './lib/admin-auth';
 import {
@@ -123,6 +124,40 @@ export async function submitQuoteRequest(formData: FormData) {
   } catch (emailError) {
     console.error('Quote submission email failed:', emailError);
     return { success: false, error: 'Failed to submit your request. Please try again.' };
+  }
+}
+
+export async function submitNottsLocalLead(formData: FormData) {
+  const name = (formData.get('name') as string)?.trim();
+  const postcode = (formData.get('postcode') as string)?.trim().toUpperCase();
+  const phone = (formData.get('phone') as string)?.trim();
+
+  if (!name || !postcode || !phone) {
+    return { success: false, error: 'Please enter your name, postcode, and phone number.' };
+  }
+
+  try {
+    await createQuoteLead({
+      customerName: name,
+      contactEmail: 'pending@britishsolardirect.co.uk',
+      contactPhone: phone,
+      deliveryPostcode: postcode,
+      productInterest: 'Nottingham local landing — package advice',
+      quantity: '1 full turnkey installation package',
+      projectNotes: `Lead captured on /notts-local (name + postcode + phone). Call back preferred.`,
+      propertyImages: null,
+      type: 'notts_local_lead',
+    });
+  } catch (dbError) {
+    console.error('Notts local lead save failed; continuing with email delivery:', dbError);
+  }
+
+  try {
+    await sendNottsLocalLeadNotification({ name, postcode, phone });
+    return { success: true };
+  } catch (emailError) {
+    console.error('Notts local lead email failed:', emailError);
+    return { success: false, error: 'Failed to send your request. Please call us instead.' };
   }
 }
 
