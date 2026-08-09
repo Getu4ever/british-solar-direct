@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { submitNottsLocalLead } from '../actions';
 import { COMPANY } from '../lib/company';
+import { trackGenerateLead } from '../lib/gtag';
 
 export default function NottsLocalLeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,6 +19,7 @@ export default function NottsLocalLeadForm() {
     setIsSubmitting(false);
 
     if (result.success) {
+      trackGenerateLead('notts_local');
       setStatus({
         success: true,
         msg: `Thanks — we’ll call you ${COMPANY.responseTime} with a fixed Nottingham package quote.`,

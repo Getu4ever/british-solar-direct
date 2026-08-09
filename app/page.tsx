@@ -11,6 +11,7 @@ import LongiEcoLifeAds from '../components/LongiEcoLifeAds';
 import UkAddressLookup from '../components/UkAddressLookup';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
+import { trackGenerateLead } from './lib/gtag';
 
 const guideSystemPriceBySlug: Record<string, string> = {
   'cottage-setup-4kw': 'Complete Package Guide Price: From £5,500 (0% VAT)',
@@ -118,6 +119,7 @@ export default function HomePage() {
     setIsSubmitting(false);
 
     if (result.success) {
+      trackGenerateLead('home_quote');
       setSubmissionStatus({
         success: true,
         msg: `Thank you. ${COMPANY.director} will review your request and contact you ${COMPANY.responseTime}.`,

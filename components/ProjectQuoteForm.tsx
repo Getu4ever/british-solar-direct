@@ -7,6 +7,7 @@ import UkAddressLookup from './UkAddressLookup';
 import { submitQuoteRequest } from '../app/actions';
 import { products } from '../app/lib/products';
 import { COMPANY } from '../app/lib/company';
+import { trackGenerateLead } from '../app/lib/gtag';
 
 type StoredEstimate = {
   product?: string;
@@ -64,6 +65,7 @@ export default function ProjectQuoteForm() {
     setIsSubmitting(false);
 
     if (result.success) {
+      trackGenerateLead('project_quote');
       setSubmissionStatus({
         success: true,
         msg: `Thank you. ${COMPANY.director} will review your request and contact you ${COMPANY.responseTime}.`,

@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
 import { submitContactEnquiry } from '../actions';
 import { COMPANY } from '../lib/company';
+import { trackGenerateLead } from '../lib/gtag';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +26,7 @@ export default function ContactPage() {
     setIsSubmitting(false);
 
     if (result.success) {
+      trackGenerateLead('contact');
       setSubmissionStatus({
         success: true,
         msg: 'Thank you. Your enquiry has been submitted successfully.',
