@@ -17,6 +17,7 @@ import {
   normalizePipelineStatus,
   type PipelineStatus,
 } from '../lib/project-finance';
+import AnalyticsWidget from '../../components/AnalyticsWidget';
 
 type Tab = 'quotes' | 'contacts';
 type QuoteLead = {
@@ -383,6 +384,10 @@ export default function AdminDashboard() {
             onDelete={removeContact}
           />
         )}
+
+        <div className="mt-8">
+          <AnalyticsWidget />
+        </div>
       </div>
     </div>
   );
