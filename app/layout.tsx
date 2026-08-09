@@ -102,9 +102,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full max-w-full overflow-x-hidden antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full max-w-full antialiased`}
     >
-      <body className="relative flex min-h-screen w-full max-w-full flex-col overflow-x-hidden overscroll-x-none touch-pan-y bg-slate-50 text-slate-900 antialiased">
+      <body className="relative min-h-screen w-full max-w-full overscroll-x-none touch-pan-y bg-slate-50 text-slate-900 antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}

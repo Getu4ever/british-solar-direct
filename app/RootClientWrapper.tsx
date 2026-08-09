@@ -16,9 +16,11 @@ export default function RootClientWrapper({
     <>
       {!isAdmin && <Header />}
 
-      <main className="min-w-0 max-w-full flex-grow overflow-x-clip">
-        {/* Skip transform-based page transitions on admin — they expand iOS scroll width */}
-        {isAdmin ? children : <PageTransition>{children}</PageTransition>}
+      <main className="min-w-0 w-full max-w-full">
+        {/*
+          Homepage skips PageTransition — transform containment breaks CSS sticky.
+        */}
+        {isAdmin || pathname === '/' ? children : <PageTransition>{children}</PageTransition>}
       </main>
     </>
   );

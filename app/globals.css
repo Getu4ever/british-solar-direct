@@ -58,11 +58,12 @@
   }
 }
 
-/* Kill iOS sideways rubber-band / wobble */
+/* Kill iOS sideways rubber-band / wobble.
+   Do NOT set overflow-x:hidden on html/body — it creates a scroll
+   containment that breaks position:sticky for the homepage ad stack. */
 html {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
   overscroll-behavior-x: none;
   touch-action: pan-y;
 }
@@ -71,7 +72,6 @@ body {
   font-feature-settings: "kern" 1, "ss01" 1;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
   overscroll-behavior-x: none;
   touch-action: pan-y;
   position: relative;

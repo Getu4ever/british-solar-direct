@@ -7,6 +7,7 @@ import Calculator from '../components/Calculator';
 import Footer from '../components/Footer';
 import HeroSlideIn from '../components/HeroSlideIn';
 import HowOrderingWorks from '../components/HowOrderingWorks';
+import LongiEcoLifeAds from '../components/LongiEcoLifeAds';
 import UkAddressLookup from '../components/UkAddressLookup';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
@@ -131,7 +132,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <div>
         <section className="relative -mt-8 overflow-hidden bg-slate-950 py-20 text-white shadow-xl">
           <video
@@ -182,6 +183,8 @@ export default function HomePage() {
         </section>
 
         <HowOrderingWorks />
+
+        <LongiEcoLifeAds />
 
         <section className="mx-auto w-full max-w-7xl px-5 py-20 sm:px-6">
           <div className="mb-12 flex flex-col justify-between gap-4 md:flex-row md:items-end">
