@@ -276,20 +276,23 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-slate-900 p-4 font-sans text-slate-100 md:p-8">
+    <div className="min-h-screen w-full max-w-full bg-slate-900 px-[max(1rem,env(safe-area-inset-left))] py-4 pr-[max(1rem,env(safe-area-inset-right))] font-sans text-slate-100 md:px-8 md:py-8">
       <div className="mx-auto w-full min-w-0 max-w-7xl">
-        <div className="mb-8 flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-center md:justify-between">
-          <div className="min-w-0">
+        <div className="mb-8 flex flex-col gap-3 border-b border-slate-800 pb-6 md:flex-row md:items-start md:justify-between md:gap-4">
+          <div className="min-w-0 max-w-full">
             <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
               British Solar Direct
             </h1>
-            <p className="mt-1 text-sm text-slate-400">
-              Project lifecycle &amp; financial cockpit — respond within 24 business hours
+            <p className="mt-1 max-w-prose text-sm leading-relaxed text-slate-400 break-words">
+              Project lifecycle &amp; financial cockpit
+            </p>
+            <p className="mt-0.5 text-sm leading-relaxed text-slate-400">
+              Respond within 24 business hours
             </p>
           </div>
           <button
             onClick={handleLogout}
-            className="self-start text-sm text-slate-400 transition hover:text-white"
+            className="shrink-0 self-start text-sm text-slate-400 transition hover:text-white"
           >
             Sign out
           </button>
@@ -304,7 +307,8 @@ export default function AdminDashboard() {
               {formatGbpFromPence(data.metrics.grossRevenuePence)}
             </p>
             <p className="mt-1 text-xs text-slate-500">
-              Across {data.metrics.completedCount} completed &amp; paid project
+              Across {data.metrics.completedCount}{' '}
+              completed &amp; paid project
               {data.metrics.completedCount === 1 ? '' : 's'}
             </p>
           </div>
