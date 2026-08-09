@@ -28,6 +28,42 @@ const packageHighlightsBySlug: Record<string, [string, string, string]> = {
   ],
 };
 
+const packageComparisons = [
+  {
+    slug: 'cottage-setup-4kw',
+    name: 'Cottage Setup',
+    audience: 'Small home / compact roof',
+    highlight: false,
+    panelLayout: '9 x LONGi LR7-54HVB-480M all-black panels',
+    output: '4.32kW Array',
+    battery: '5kWh Hybrid Battery',
+    included: 'Scaffolding, labor, DNO, MCS',
+    priceKey: 'cottage-setup-4kw',
+  },
+  {
+    slug: 'family-homestead-8kw',
+    name: 'Family Homestead',
+    audience: 'Standard family home',
+    highlight: true,
+    panelLayout: '18 x LONGi LR7-54HVB-480M all-black panels',
+    output: '8.64kW Array',
+    battery: '10kWh Storage Stack',
+    included: 'Scaffolding, labor, DNO, MCS',
+    priceKey: 'family-homestead-8kw',
+  },
+  {
+    slug: 'estate-powerhouse-12kw',
+    name: 'Estate Powerhouse',
+    audience: 'Large home / high usage',
+    highlight: false,
+    panelLayout: '26 x LONGi LR7-54HVB-480M all-black panels',
+    output: '12.48kW Array',
+    battery: '15kWh Multi-Stack Array',
+    included: 'Scaffolding, labor, DNO, MCS',
+    priceKey: 'estate-powerhouse-12kw',
+  },
+] as const;
+
 export default function ProductsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
@@ -42,7 +78,7 @@ export default function ProductsPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950/55 via-slate-950/32 to-slate-950/15" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-8 py-24 lg:py-32">
+          <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24 lg:py-32">
             <HeroSlideIn>
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
                 Products
@@ -73,7 +109,7 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
               {products.map((product, index) => {
                 const highlights = packageHighlightsBySlug[product.slug] ?? [
                   product.type,
@@ -84,17 +120,17 @@ export default function ProductsPage() {
                 return (
                   <article
                     key={product.slug}
-                    className="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm"
+                    className="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6"
                   >
                     <div>
                       <img
                         src={product.image}
                         alt={`${product.name} installation`}
-                        className="mb-5 h-56 w-full rounded-xl object-cover brightness-[0.95]"
+                        className="mb-5 h-48 w-full rounded-xl object-cover brightness-[0.95] sm:h-56"
                       />
 
-                      <div className="mb-3 flex items-start justify-between gap-3">
-                        <div>
+                      <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
                           <p className="mb-1 text-sm font-medium text-amber-600">{product.brand}</p>
                           <h3 className="text-xl font-bold text-slate-900">{product.name}</h3>
                         </div>
@@ -129,7 +165,7 @@ export default function ProductsPage() {
 
                       <Link
                         href={`/products/${product.slug}`}
-                        className="inline-block text-sm font-semibold text-amber-600 transition hover:text-amber-700"
+                        className="inline-flex min-h-11 items-center text-sm font-semibold text-amber-600 transition hover:text-amber-700"
                       >
                         View package details →
                       </Link>
@@ -160,128 +196,150 @@ export default function ProductsPage() {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm ring-1 ring-slate-100">
-              <div className="grid border-b border-slate-200 bg-slate-900 text-white lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="border-b border-slate-800 px-6 py-5 text-sm font-semibold uppercase tracking-[0.18em] text-slate-300 lg:border-b-0 lg:border-r">
+            {/* Mobile / tablet: one clear card per package */}
+            <div className="grid gap-5 lg:hidden">
+              {packageComparisons.map((pkg) => (
+                <article
+                  key={pkg.slug}
+                  className={`rounded-2xl border bg-white p-5 shadow-sm ${
+                    pkg.highlight
+                      ? 'border-amber-300 ring-1 ring-amber-200'
+                      : 'border-slate-200'
+                  }`}
+                >
+                  <div className="mb-4 flex items-start justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div>
+                      <h3
+                        className={`text-xl font-bold ${
+                          pkg.highlight ? 'text-amber-700' : 'text-slate-900'
+                        }`}
+                      >
+                        {pkg.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-slate-500">{pkg.audience}</p>
+                    </div>
+                    {pkg.highlight ? (
+                      <span className="shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                        Most Popular
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <dl className="space-y-3 text-sm">
+                    <div className="flex flex-col gap-1 border-b border-slate-50 pb-3 sm:flex-row sm:justify-between sm:gap-4">
+                      <dt className="font-semibold text-slate-900">Panel Layout</dt>
+                      <dd className="text-slate-600 sm:text-right">{pkg.panelLayout}</dd>
+                    </div>
+                    <div className="flex flex-col gap-1 border-b border-slate-50 pb-3 sm:flex-row sm:justify-between sm:gap-4">
+                      <dt className="font-semibold text-slate-900">Output</dt>
+                      <dd className="text-slate-600 sm:text-right">{pkg.output}</dd>
+                    </div>
+                    <div className="flex flex-col gap-1 border-b border-slate-50 pb-3 sm:flex-row sm:justify-between sm:gap-4">
+                      <dt className="font-semibold text-slate-900">Battery Storage</dt>
+                      <dd className="text-slate-600 sm:text-right">{pkg.battery}</dd>
+                    </div>
+                    <div className="flex flex-col gap-1 border-b border-slate-50 pb-3 sm:flex-row sm:justify-between sm:gap-4">
+                      <dt className="font-semibold text-slate-900">Included in Guide Price</dt>
+                      <dd className="text-slate-600 sm:text-right">{pkg.included}</dd>
+                    </div>
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                      <dt className="font-semibold text-slate-900">Turnkey Guide Price</dt>
+                      <dd className="text-base font-semibold text-slate-900 sm:text-right">
+                        {guideSystemPriceBySlug[pkg.priceKey]}
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <Link
+                    href={`/project-quote?product=${pkg.slug}`}
+                    className="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-amber-500 px-4 py-3 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                  >
+                    Request Quote
+                  </Link>
+                </article>
+              ))}
+            </div>
+
+            {/* Desktop: side-by-side comparison table */}
+            <div className="hidden overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm ring-1 ring-slate-100 lg:block">
+              <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] border-b border-slate-200 bg-slate-900 text-white">
+                <div className="border-r border-slate-800 px-6 py-5 text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
                   Package Comparison
                 </div>
-                <div className="border-b border-slate-800 px-6 py-5 lg:border-b-0 lg:border-r">
-                  <p className="text-lg font-bold">Cottage Setup</p>
-                  <p className="mt-1 text-sm text-slate-300">Small home / compact roof</p>
-                </div>
-                <div className="border-b border-slate-800 px-6 py-5 lg:border-b-0 lg:border-r">
-                  <p className="text-lg font-bold text-amber-300">Family Homestead</p>
-                  <p className="mt-1 text-sm text-slate-300">Standard family home</p>
-                </div>
-                <div className="px-6 py-5">
-                  <p className="text-lg font-bold">Estate Powerhouse</p>
-                  <p className="mt-1 text-sm text-slate-300">Large home / high usage</p>
-                </div>
+                {packageComparisons.map((pkg) => (
+                  <div
+                    key={`head-${pkg.slug}`}
+                    className="border-r border-slate-800 px-6 py-5 last:border-r-0"
+                  >
+                    <p
+                      className={`text-lg font-bold ${
+                        pkg.highlight ? 'text-amber-300' : 'text-white'
+                      }`}
+                    >
+                      {pkg.name}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-300">{pkg.audience}</p>
+                  </div>
+                ))}
               </div>
 
-              <div className="grid lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900 lg:border-b-0 lg:border-r">
-                  Panel Layout
+              {(
+                [
+                  ['Panel Layout', 'panelLayout'],
+                  ['Output', 'output'],
+                  ['Battery Storage', 'battery'],
+                  ['Included in Guide Price', 'included'],
+                ] as const
+              ).map(([label, key]) => (
+                <div
+                  key={label}
+                  className="grid grid-cols-[1.1fr_1fr_1fr_1fr] border-t border-slate-100"
+                >
+                  <div className="border-r border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900">
+                    {label}
+                  </div>
+                  {packageComparisons.map((pkg) => (
+                    <div
+                      key={`${pkg.slug}-${key}`}
+                      className="border-r border-slate-100 px-6 py-4 text-sm text-slate-600 last:border-r-0"
+                    >
+                      {pkg[key]}
+                    </div>
+                  ))}
                 </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  9 x LONGi LR7-54HVB-480M all-black panels
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  18 x LONGi LR7-54HVB-480M all-black panels
-                </div>
-                <div className="px-6 py-4 text-sm text-slate-600">
-                  26 x LONGi LR7-54HVB-480M all-black panels
-                </div>
-              </div>
+              ))}
 
-              <div className="grid border-t border-slate-100 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900 lg:border-b-0 lg:border-r">
-                  Output
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  4.32kW Array
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  8.64kW Array
-                </div>
-                <div className="px-6 py-4 text-sm text-slate-600">
-                  12.48kW Array
-                </div>
-              </div>
-
-              <div className="grid border-t border-slate-100 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900 lg:border-b-0 lg:border-r">
-                  Battery Storage
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  5kWh Hybrid Battery
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  10kWh Storage Stack
-                </div>
-                <div className="px-6 py-4 text-sm text-slate-600">
-                  15kWh Multi-Stack Array
-                </div>
-              </div>
-
-              <div className="grid border-t border-slate-100 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="border-b border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900 lg:border-b-0 lg:border-r">
-                  Included in Guide Price
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  Scaffolding, labor, DNO, MCS
-                </div>
-                <div className="border-b border-slate-100 px-6 py-4 text-sm text-slate-600 lg:border-b-0 lg:border-r">
-                  Scaffolding, labor, DNO, MCS
-                </div>
-                <div className="px-6 py-4 text-sm text-slate-600">
-                  Scaffolding, labor, DNO, MCS
-                </div>
-              </div>
-
-              <div className="grid border-t border-slate-100 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900 lg:border-r">
+              <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] border-t border-slate-100">
+                <div className="border-r border-slate-200 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-900">
                   Turnkey Guide Price
                 </div>
-                <div className="px-6 py-4 text-sm font-semibold text-slate-900 lg:border-r">
-                  {guideSystemPriceBySlug['cottage-setup-4kw']}
-                </div>
-                <div className="px-6 py-4 text-sm font-semibold text-slate-900 lg:border-r">
-                  {guideSystemPriceBySlug['family-homestead-8kw']}
-                </div>
-                <div className="px-6 py-4 text-sm font-semibold text-slate-900">
-                  {guideSystemPriceBySlug['estate-powerhouse-12kw']}
-                </div>
+                {packageComparisons.map((pkg) => (
+                  <div
+                    key={`price-${pkg.slug}`}
+                    className="border-r border-slate-100 px-6 py-4 text-sm font-semibold text-slate-900 last:border-r-0"
+                  >
+                    {guideSystemPriceBySlug[pkg.priceKey]}
+                  </div>
+                ))}
               </div>
 
-              <div className="grid border-t border-slate-100 bg-slate-50 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
-                <div className="px-6 py-4 text-sm font-semibold text-slate-900 lg:border-r">
+              <div className="grid grid-cols-[1.1fr_1fr_1fr_1fr] border-t border-slate-100 bg-slate-50">
+                <div className="border-r border-slate-200 px-6 py-4 text-sm font-semibold text-slate-900">
                   Next Step
                 </div>
-                <div className="px-6 py-4 lg:border-r">
-                  <Link
-                    href="/project-quote?product=cottage-setup-4kw"
-                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                {packageComparisons.map((pkg) => (
+                  <div
+                    key={`cta-${pkg.slug}`}
+                    className="border-r border-slate-100 px-6 py-4 last:border-r-0"
                   >
-                    Request Quote
-                  </Link>
-                </div>
-                <div className="px-6 py-4 lg:border-r">
-                  <Link
-                    href="/project-quote?product=family-homestead-8kw"
-                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
-                  >
-                    Request Quote
-                  </Link>
-                </div>
-                <div className="px-6 py-4">
-                  <Link
-                    href="/project-quote?product=estate-powerhouse-12kw"
-                    className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
-                  >
-                    Request Quote
-                  </Link>
-                </div>
+                    <Link
+                      href={`/project-quote?product=${pkg.slug}`}
+                      className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-amber-600"
+                    >
+                      Request Quote
+                    </Link>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
