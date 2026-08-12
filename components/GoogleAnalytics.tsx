@@ -4,7 +4,7 @@ import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 
 const MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || 'G-N1HB4206BV';
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || 'G-PMRGTM81C5';
 
 /** GA4 browser tag — skipped on /admin so dashboard traffic does not inflate public stats. */
 export default function GoogleAnalytics() {

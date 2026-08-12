@@ -9,8 +9,12 @@ import type {
 
 export type { AnalyticsPayload, AnalyticsSummary, NottsLocalSourceRow };
 
-/** Default GA4 property for Measurement ID G-N1HB4206BV */
-const DEFAULT_PROPERTY_ID = '549213644';
+/**
+ * GA4 property for stream "British Solar Direct Website"
+ * Measurement ID G-PMRGTM81C5 · Stream ID 15424109299
+ * Stream URL https://www.britishsolardirect.co.uk
+ */
+const DEFAULT_PROPERTY_ID = '545166893';
 
 function metricValue(
   row: { metricValues?: Array<{ value?: string | null }> | null } | undefined,
@@ -151,7 +155,7 @@ export async function GET() {
     const payload: AnalyticsPayload = {
       range: { startDate: '30daysAgo', endDate: 'today' },
       propertyId,
-      measurementIdHint: 'G-N1HB4206BV',
+      measurementIdHint: 'G-PMRGTM81C5',
       summary,
       nottsLocalSources,
     };

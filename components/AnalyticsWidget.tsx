@@ -62,7 +62,11 @@ export default function AnalyticsWidget() {
           </p>
           <h2 className="mt-1 text-lg font-bold text-white">Site traffic · last 30 days</h2>
           <p className="mt-1 text-xs text-slate-500">
-            Property 549213644 · Measurement ID G-N1HB4206BV
+            British Solar Direct Website · {data?.measurementIdHint ?? 'G-PMRGTM81C5'} ·
+            Property {data?.propertyId ?? '545166893'}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-600">
+            britishsolardirect.co.uk · Stream 15424109299
           </p>
         </div>
         <p className="text-xs text-slate-500">/notts-local · sessionSource</p>
@@ -76,8 +80,8 @@ export default function AnalyticsWidget() {
             <p className="font-semibold">Analytics unavailable</p>
             <p className="mt-1 text-rose-300/90">{error}</p>
             <p className="mt-3 text-xs text-rose-200/70">
-              Check GA_SERVICE_ACCOUNT_JSON (or GA_CLIENT_EMAIL + GA_PRIVATE_KEY) in `.env.local`
-              and that the service account has Viewer access on property 549213644.
+              Check GA_SERVICE_ACCOUNT_JSON (or GA_CLIENT_EMAIL + GA_PRIVATE_KEY) and that the
+              service account has Viewer access on property 545166893 (G-PMRGTM81C5).
             </p>
           </div>
         ) : data ? (
