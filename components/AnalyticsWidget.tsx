@@ -11,6 +11,10 @@ export default function AnalyticsWidget() {
   const [data, setData] = useState<AnalyticsPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorDetails, setErrorDetails] = useState<{
+    serviceAccountEmail?: string;
+    propertyId?: string;
+  } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -18,6 +22,7 @@ export default function AnalyticsWidget() {
     async function loadAnalytics() {
       setLoading(true);
       setError(null);
+      setErrorDetails(null);
 
       try {
         const response = await fetch('/api/analytics', {
@@ -25,9 +30,19 @@ export default function AnalyticsWidget() {
           credentials: 'same-origin',
           cache: 'no-store',
         });
-        const payload = (await response.json()) as AnalyticsPayload & { error?: string };
+        const payload = (await response.json()) as AnalyticsPayload & {
+          error?: string;
+          serviceAccountEmail?: string;
+          propertyId?: string;
+        };
 
         if (!response.ok) {
+          if (!cancelled) {
+            setErrorDetails({
+              serviceAccountEmail: payload.serviceAccountEmail,
+              propertyId: payload.propertyId,
+            });
+          }
           throw new Error(payload.error || `Analytics request failed (${response.status})`);
         }
 
@@ -63,7 +78,7 @@ export default function AnalyticsWidget() {
           <h2 className="mt-1 text-lg font-bold text-white">Site traffic · last 30 days</h2>
           <p className="mt-1 text-xs text-slate-500">
             British Solar Direct Website · {data?.measurementIdHint ?? 'G-PMRGTM81C5'} ·
-            Property {data?.propertyId ?? '545166893'}
+            Property {data?.propertyId ?? '549575430'}
           </p>
           <p className="mt-0.5 text-xs text-slate-600">
             britishsolardirect.co.uk · Stream 15424109299
@@ -80,8 +95,24 @@ export default function AnalyticsWidget() {
             <p className="font-semibold">Analytics unavailable</p>
             <p className="mt-1 text-rose-300/90">{error}</p>
             <p className="mt-3 text-xs text-rose-200/70">
-              Check GA_SERVICE_ACCOUNT_JSON (or GA_CLIENT_EMAIL + GA_PRIVATE_KEY) and that the
-              service account has Viewer access on property 545166893 (G-PMRGTM81C5).
+              {errorDetails?.serviceAccountEmail ? (
+                <>
+                  Service account:{' '}
+                  <span className="font-mono text-rose-100/90">{errorDetails.serviceAccountEmail}</span>
+                  {' · '}
+                  Property ID queried:{' '}
+                  <span className="font-mono text-rose-100/90">
+                    {errorDetails.propertyId ?? '549575430'}
+                  </span>
+                  . In GA Admin → Property settings, copy the Property ID for G-PMRGTM81C5 and ensure
+                  it matches. Viewer access can take a few minutes after being added.
+                </>
+              ) : (
+                <>
+                  Check GA_SERVICE_ACCOUNT_JSON and that the service account has Viewer access on
+                  property 549575430 (G-PMRGTM81C5).
+                </>
+              )}
             </p>
           </div>
         ) : data ? (

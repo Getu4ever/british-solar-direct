@@ -14,7 +14,7 @@ export type { AnalyticsPayload, AnalyticsSummary, NottsLocalSourceRow };
  * Measurement ID G-PMRGTM81C5 · Stream ID 15424109299
  * Stream URL https://www.britishsolardirect.co.uk
  */
-const DEFAULT_PROPERTY_ID = '545166893';
+const DEFAULT_PROPERTY_ID = '549575430';
 
 function metricValue(
   row: { metricValues?: Array<{ value?: string | null }> | null } | undefined,
@@ -163,8 +163,28 @@ export async function GET() {
     return NextResponse.json(payload);
   } catch (error) {
     console.error('GA4 analytics fetch failed:', error);
-    const message =
+    const rawMessage =
       error instanceof Error ? error.message : 'Failed to fetch Google Analytics data.';
-    return NextResponse.json({ error: message }, { status: 500 });
+
+    if (rawMessage.includes('PERMISSION_DENIED')) {
+      let serviceAccountEmail = 'british-solar-direct@vellonex-storefr-1772540681697.iam.gserviceaccount.com';
+      try {
+        serviceAccountEmail = resolveCredentials().client_email;
+      } catch {
+        // keep default hint email
+      }
+
+      return NextResponse.json(
+        {
+          error:
+            `GA Data API access denied for property ${propertyId}. Confirm this numeric Property ID matches Admin → Property settings for G-PMRGTM81C5, and that ${serviceAccountEmail} has Viewer (or Analyst) access on that exact property. New access can take a few minutes to apply.`,
+          propertyId,
+          serviceAccountEmail,
+        },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.json({ error: rawMessage }, { status: 500 });
   }
 }
