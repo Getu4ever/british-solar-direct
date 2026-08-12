@@ -82,7 +82,11 @@ export async function GET() {
     const property = `properties/${propertyId}`;
     const dateRanges = [{ startDate: '30daysAgo', endDate: 'today' }];
 
-    const [[summaryResponse], [sourcesResponse]] = await Promise.all([
+    const [[realtimeResponse], [summaryResponse], [sourcesResponse]] = await Promise.all([
+      client.runRealtimeReport({
+        property,
+        metrics: [{ name: 'activeUsers' }],
+      }),
       client.runReport({
         property,
         dateRanges,
@@ -115,6 +119,7 @@ export async function GET() {
       }),
     ]);
 
+    const realtimeRow = realtimeResponse.rows?.[0];
     const summaryRow = summaryResponse.rows?.[0];
     const summary: AnalyticsSummary = {
       activeUsers: metricValue(summaryRow, 0),
@@ -156,6 +161,9 @@ export async function GET() {
       range: { startDate: '30daysAgo', endDate: 'today' },
       propertyId,
       measurementIdHint: 'G-PMRGTM81C5',
+      realtime: {
+        activeUsers: metricValue(realtimeRow, 0),
+      },
       summary,
       nottsLocalSources,
     };

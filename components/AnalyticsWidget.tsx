@@ -20,7 +20,6 @@ export default function AnalyticsWidget() {
     let cancelled = false;
 
     async function loadAnalytics() {
-      setLoading(true);
       setError(null);
       setErrorDetails(null);
 
@@ -48,6 +47,7 @@ export default function AnalyticsWidget() {
 
         if (!cancelled) {
           setData(payload);
+          setError(null);
         }
       } catch (err) {
         if (!cancelled) {
@@ -62,9 +62,13 @@ export default function AnalyticsWidget() {
     }
 
     void loadAnalytics();
+    const intervalId = window.setInterval(() => {
+      void loadAnalytics();
+    }, 60_000);
 
     return () => {
       cancelled = true;
+      window.clearInterval(intervalId);
     };
   }, []);
 
@@ -117,10 +121,25 @@ export default function AnalyticsWidget() {
           </div>
         ) : data ? (
           <>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-lg border border-emerald-700/50 bg-emerald-950/30 p-4 ring-1 ring-emerald-500/20">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="h-2 w-2 animate-pulse rounded-full bg-emerald-400"
+                    aria-hidden="true"
+                  />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+                    Live visitors
+                  </p>
+                </div>
+                <p className="mt-2 text-2xl font-extrabold text-white">
+                  {formatNumber(data.realtime.activeUsers)}
+                </p>
+                <p className="mt-1 text-xs text-emerald-200/60">Last 30 minutes · GA Realtime</p>
+              </div>
               <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                  Active visitors
+                  Visitors (30 days)
                 </p>
                 <p className="mt-2 text-2xl font-extrabold text-white">
                   {formatNumber(data.summary.activeUsers)}
