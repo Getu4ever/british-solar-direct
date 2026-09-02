@@ -30,7 +30,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-6 md:p-12">
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <button
           onClick={() => router.push('/products')}
           className="text-sm font-medium text-slate-500 hover:text-amber-500 transition flex items-center gap-1 mb-8"

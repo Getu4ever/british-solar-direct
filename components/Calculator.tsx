@@ -123,7 +123,7 @@ export default function Calculator() {
 
   return (
     <section id="calculator" className="border-y border-slate-200 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.14),_transparent_28%),linear-gradient(180deg,_#f8fafc,_#eef2f7)] px-4 py-16">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 lg:grid-cols-[2fr_3fr]">
           <div className="relative overflow-hidden rounded-[2rem] border border-slate-800/80 bg-[linear-gradient(160deg,rgba(15,23,42,0.96),rgba(17,24,39,0.92)),radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_40%)] p-6 text-white shadow-[0_25px_80px_rgba(15,23,42,0.35)]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_24%)]" />

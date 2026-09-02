@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 lg:px-6 xl:px-8">
         {/* Logo and Phone Group */}
         <div className="min-w-0 flex-1 flex-col">
           <a href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">

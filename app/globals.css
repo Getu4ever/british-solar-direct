@@ -5,6 +5,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --container-7xl: 80rem;
 }
 
 :root {
@@ -75,6 +76,21 @@ body {
   overscroll-behavior-x: none;
   touch-action: pan-y;
   position: relative;
+}
+
+/*
+  Phone and laptop keep the 80rem (1280px) column.
+  From 1600px (large desktop), fill the screen with a modest side gutter.
+  Cap at 140rem so ultrawides stay readable.
+*/
+@media (min-width: 100rem) {
+  html {
+    --container-7xl: min(140rem, calc(100vw - 6rem));
+  }
+
+  .max-w-7xl {
+    max-width: min(140rem, calc(100vw - 6rem));
+  }
 }
 
 /* Admin dashboard: force vertical-only gestures on iOS Safari */

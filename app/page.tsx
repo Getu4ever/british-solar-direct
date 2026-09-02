@@ -150,7 +150,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/22 to-slate-950/8" />
 
           <div className="relative mx-auto w-full max-w-7xl px-8">
-            <HeroSlideIn className="max-w-3xl">
+            <HeroSlideIn className="max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
               <span className="mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-amber-400">
                 Nottingham&apos;s trusted residential supply &amp; install partner
               </span>
@@ -383,7 +383,7 @@ export default function HomePage() {
         </div>
 
         <section className="border-y border-slate-200 bg-white py-16">
-          <div className="mx-auto max-w-4xl px-5 sm:px-6">
+          <div className="mx-auto max-w-4xl px-5 sm:px-6 xl:max-w-5xl 2xl:max-w-6xl">
             <div className="mb-8 text-center">
               <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
                 LONGi EcoLife
@@ -479,7 +479,7 @@ export default function HomePage() {
         </section>
 
         <section className="border-t border-slate-800 bg-slate-950 px-5 py-16 text-white sm:px-6">
-          <div className="mx-auto max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+          <div className="mx-auto max-w-4xl rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl xl:max-w-5xl">
             <h2 className="mb-2 text-center text-2xl font-bold">Request Your Fixed Quote</h2>
             <p className="mb-6 text-center text-sm text-slate-400">
               {COMPANY.director} will confirm pricing, system scope, installation timing, and next steps —{' '}
