@@ -10,6 +10,7 @@ import HowOrderingWorks from '../components/HowOrderingWorks';
 import LongiEcoLifeAds from '../components/LongiEcoLifeAds';
 import UkAddressLookup from '../components/UkAddressLookup';
 import FaqSection from '../components/FaqSection';
+import JoinUsPopup from '../components/JoinUsPopup';
 import { products } from './lib/products';
 import { COMPANY } from './lib/company';
 import { trackGenerateLead } from './lib/gtag';
@@ -136,6 +137,7 @@ export default function HomePageClient() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <JoinUsPopup />
       <div>
         <section className="relative -mt-8 overflow-hidden bg-slate-950 py-20 text-white shadow-xl">
           <video
