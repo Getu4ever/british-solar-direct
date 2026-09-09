@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Turnkey Solar for Nottingham Homes',
   description:
     'Local LONGi EcoLife solar packages for Nottingham homeowners. Cottage Setup from £5,500 and Family Homestead from £9,750 with 0% statutory VAT relief. Call 0115 990 4024.',
+  alternates: {
+    canonical: '/notts-local',
+  },
   openGraph: {
     title: 'Turnkey Solar for Nottingham Homes | British Solar Direct',
     description:

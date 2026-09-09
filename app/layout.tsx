@@ -95,6 +95,28 @@ const localBusinessJsonLd = {
   priceRange: "£££",
 };
 
+const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: COMPANY.name,
+  url: siteUrl,
+  description: COMPANY.metaDescription,
+  publisher: {
+    "@type": "Organization",
+    name: COMPANY.name,
+    url: siteUrl,
+    logo: `${siteUrl}/BSD-logo.png`,
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -109,6 +131,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
         <GoogleAnalytics />
         <RootClientWrapper>{children}</RootClientWrapper>

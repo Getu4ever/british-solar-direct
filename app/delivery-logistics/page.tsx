@@ -1,12 +1,23 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import HeroSlideIn from '../../components/HeroSlideIn';
+import FaqSection from '../../components/FaqSection';
 import { HardHat, HousePlus, MapPin, Truck } from 'lucide-react';
 import {
   COMPANY,
   DELIVERY_EXCLUSIONS,
-  PAYMENT_NOTE,
 } from '../lib/company';
+import { buildFaqPageJsonLd } from '../lib/faqs';
+
+export const metadata: Metadata = {
+  title: 'Delivery & Logistics',
+  description:
+    'East Midlands solar delivery and installation logistics for Nottingham homeowners, with delivery FAQ and coverage areas.',
+  alternates: {
+    canonical: '/delivery-logistics',
+  },
+};
 
 const deliveryRegions = [
   'Nottinghamshire Core',
@@ -18,6 +29,10 @@ const deliveryRegions = [
 export default function DeliveryLogisticsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqPageJsonLd()) }}
+      />
       <div className="flex-1">
         <section className="relative overflow-hidden border-b border-slate-200 bg-slate-950">
           <div className="absolute inset-0">
@@ -147,46 +162,7 @@ export default function DeliveryLogisticsPage() {
         <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <div className="grid items-start gap-8 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <h2 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
-                Delivery FAQ
-              </h2>
-              <div className="space-y-7">
-                <div>
-                  <p className="mb-1 text-base font-bold text-slate-900">Can you deliver to my home?</p>
-                  <p className="text-sm leading-6 text-slate-500">
-                    Yes. Confirm your postcode and basic driveway or frontage access details in
-                    your quote form, and we will schedule suitable delivery van access directly to
-                    your home site.
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-1 text-base font-bold text-slate-900">
-                    How long does a standard installation take?
-                  </p>
-                  <p className="text-sm leading-6 text-slate-500">
-                    Most typical residential arrays take 1 to 2 days to fully mount, wire, and
-                    connect to your home grid once scaffolding is live.
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-1 text-base font-bold text-slate-900">Can Juma install the panels?</p>
-                  <p className="text-sm leading-6 text-slate-500">
-                    Yes. Juma has over 20 years of building experience in Nottingham. Select
-                    installation on your quote request and we will include fitting options.
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-1 text-base font-bold text-slate-900">Are grid approvals handled?</p>
-                  <p className="text-sm leading-6 text-slate-500">
-                    Yes. We manage your full DNO grid notification paperwork and arrange final MCS
-                    certification handover end-to-end.
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-1 text-base font-bold text-slate-900">How do I pay?</p>
-                  <p className="text-sm leading-6 text-slate-500">{PAYMENT_NOTE}</p>
-                </div>
-              </div>
+              <FaqSection title="Delivery FAQ" />
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-slate-900 p-8 text-white shadow-sm">

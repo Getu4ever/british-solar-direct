@@ -20,6 +20,7 @@ const staticRoutes: Array<{
   { path: '/delivery-logistics', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/certifications-datasheets', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/contact', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/search', changeFrequency: 'monthly', priority: 0.4 },
   { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
 ];

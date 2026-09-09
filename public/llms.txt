@@ -1,0 +1,29 @@
+# British Solar Direct
+
+> British Solar Direct supplies and installs turnkey LONGi EcoLife solar and battery packages for homeowners across Nottinghamshire, Derbyshire, Leicestershire, and South Yorkshire. Based in Kirkby-in-Ashfield, Nottingham NG17 8EY.
+
+Fixed residential packages with local delivery and installation led by Company Director Juma Mohammedi. Call 0115 990 4024 or email info@britishsolardirect.co.uk for a fixed quote.
+
+## Core pages
+
+- [Home](https://britishsolardirect.co.uk/): Overview of turnkey LONGi EcoLife packages for Nottingham homes
+- [Our Packages](https://britishsolardirect.co.uk/products): Cottage Setup, Family Homestead, and Estate Powerhouse systems
+- [Installation](https://britishsolardirect.co.uk/installation): Survey, scaffolding, roof mounting, wiring, and MCS handover
+- [Delivery & Logistics](https://britishsolardirect.co.uk/delivery-logistics): East Midlands coverage, exclusions, and delivery FAQ
+- [Project Quote](https://britishsolardirect.co.uk/project-quote): Request a fixed quote with postcode and package details
+- [Contact](https://britishsolardirect.co.uk/contact): Phone, email, and address for British Solar Direct
+
+## Packages
+
+- [Cottage Setup 4.3kW](https://britishsolardirect.co.uk/products/cottage-setup-4kw): 9× LONGi 480W panels with 5kWh hybrid battery for smaller homes
+- [Family Homestead 8.6kW](https://britishsolardirect.co.uk/products/family-homestead-8kw): 18× LONGi 480W panels with 10kWh battery for 3–4 bedroom homes
+- [Estate Powerhouse 12.4kW](https://britishsolardirect.co.uk/products/estate-powerhouse-12kw): 26× LONGi 480W panels with 15kWh storage for large homes and EV charging
+
+## Optional
+
+- [About](https://britishsolardirect.co.uk/about): Company story and director background
+- [LONGi Tech](https://britishsolardirect.co.uk/brands): LONGi EcoLife module technology details
+- [Certifications & Datasheets](https://britishsolardirect.co.uk/certifications-datasheets): MCS, NICEIC, RECC, and product datasheets
+- [Nottingham Local](https://britishsolardirect.co.uk/notts-local): Local solar installation for Nottingham homeowners
+- [Full AI summary](https://britishsolardirect.co.uk/llms-full.txt): Longer plain-text summary for AI assistants
+- [Site search](https://britishsolardirect.co.uk/search): Search packages and key pages
