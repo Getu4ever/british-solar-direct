@@ -12,7 +12,7 @@ export const COMPANY = {
   phone: '+441159904024',
   phoneDisplay: '0115 990 4024',
   email: 'info@britishsolardirect.co.uk',
-  website: 'https://britishsolardirect.co.uk',
+  website: 'https://www.britishsolardirect.co.uk',
   responseTime: 'within 24 business hours',
   /** Short HTML meta / Open Graph description (keep ≤ ~155 chars / ~1000px). */
   metaDescription:

@@ -9,7 +9,7 @@ British Solar Direct is a residential solar supplier and installer based at Sout
 Contact:
 - Phone: 0115 990 4024 (+44 115 990 4024)
 - Email: info@britishsolardirect.co.uk
-- Website: https://britishsolardirect.co.uk
+- Website: https://www.britishsolardirect.co.uk
 - Response time: within 24 business hours
 
 ## What we offer
@@ -19,21 +19,21 @@ Turnkey LONGi EcoLife solar and battery packages with fixed guide pricing, local
 Packages:
 
 ### Cottage Setup (4.3kW)
-- URL: https://britishsolardirect.co.uk/products/cottage-setup-4kw
+- URL: https://www.britishsolardirect.co.uk/products/cottage-setup-4kw
 - 9 × LONGi 480W All-Black panels
 - Compact 5kWh hybrid battery system
 - Suited to smaller 1–2 bedroom homes and tight roof layouts
 - Guide price from £5,500 (0% VAT where eligible)
 
 ### Family Homestead (8.6kW)
-- URL: https://britishsolardirect.co.uk/products/family-homestead-8kw
+- URL: https://www.britishsolardirect.co.uk/products/family-homestead-8kw
 - 18 × LONGi 480W All-Black panels
 - Premium 10kWh home battery backup
 - Engineered for typical 3–4 bedroom detached/semi properties
 - Guide price from £9,750 (0% VAT where eligible)
 
 ### Estate Powerhouse (12.4kW)
-- URL: https://britishsolardirect.co.uk/products/estate-powerhouse-12kw
+- URL: https://www.britishsolardirect.co.uk/products/estate-powerhouse-12kw
 - 26 × LONGi 480W All-Black panels
 - High-capacity 15kWh multi-stack battery bank
 - Designed for large detached properties, home businesses, and EV fast charging
@@ -45,7 +45,7 @@ Flagship residential module: LONGi EcoLife LR7-54HVB-480M
 - N-Type HPBC 2.0 All-Black
 - 480W, 23.5% efficiency
 - 25-year product warranty / 30-year linear performance warranty
-- Details: https://britishsolardirect.co.uk/brands
+- Details: https://www.britishsolardirect.co.uk/brands
 
 ## Installation and compliance
 
@@ -64,7 +64,7 @@ Core coverage:
 
 Exclusions (unless specially arranged): Scottish Highlands & Islands, Northern Ireland, Isle of Man & Channel Islands, and remote locations requiring specialist freight.
 
-Delivery page: https://britishsolardirect.co.uk/delivery-logistics
+Delivery page: https://www.britishsolardirect.co.uk/delivery-logistics
 
 ## Payment
 
@@ -72,12 +72,12 @@ New customers: pro-forma invoice and BACS payment after quote approval.
 
 ## Key URLs
 
-- Home: https://britishsolardirect.co.uk/
-- Packages: https://britishsolardirect.co.uk/products
-- Installation: https://britishsolardirect.co.uk/installation
-- Quote: https://britishsolardirect.co.uk/project-quote
-- Contact: https://britishsolardirect.co.uk/contact
-- About: https://britishsolardirect.co.uk/about
-- Search: https://britishsolardirect.co.uk/search
-- Short AI index: https://britishsolardirect.co.uk/llms.txt
-- Sitemap: https://britishsolardirect.co.uk/sitemap.xml
+- Home: https://www.britishsolardirect.co.uk/
+- Packages: https://www.britishsolardirect.co.uk/products
+- Installation: https://www.britishsolardirect.co.uk/installation
+- Quote: https://www.britishsolardirect.co.uk/project-quote
+- Contact: https://www.britishsolardirect.co.uk/contact
+- About: https://www.britishsolardirect.co.uk/about
+- Search: https://www.britishsolardirect.co.uk/search
+- Short AI index: https://www.britishsolardirect.co.uk/llms.txt
+- Sitemap: https://www.britishsolardirect.co.uk/sitemap.xml

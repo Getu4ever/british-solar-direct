@@ -29,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   const pages = staticRoutes.map((route) => ({
-    url: `${siteUrl}${route.path === '/' ? '' : route.path}`,
+    url: `${siteUrl}${route.path === '/' ? '/' : route.path}`,
     lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,

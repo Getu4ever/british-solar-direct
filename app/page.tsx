@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import HomePageClient from './HomePageClient';
+import { COMPANY } from './lib/company';
 import { buildFaqPageJsonLd } from './lib/faqs';
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: '/',
+    canonical: `${COMPANY.website}/`,
   },
 };
 
